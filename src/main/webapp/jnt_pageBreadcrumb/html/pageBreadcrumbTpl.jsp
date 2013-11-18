@@ -65,7 +65,7 @@
             <c:set var="pageNode" value="${renderContext.mainResource.node}"/>
             <li>
                 <c:if test="${displayLinkOnCurrentPage.boolean}">
-                    <a href="${url.base}${pageNode.path}.html">
+                    <a href="<c:url value='${url.base}${pageNode.path}.html'/>">
                 </c:if>
                     <c:choose>
                         <c:when test="${param.moduleView == 'noAbbr'}">

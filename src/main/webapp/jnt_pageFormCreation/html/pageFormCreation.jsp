@@ -14,7 +14,7 @@
 </c:if>
 
 <template:tokenizedForm>
-<form class="pageFormCreation" method="post" action="${renderContext.mainResource.node.name}/*" name="${formid}">
+<form class="pageFormCreation" method="post" action="<c:url value='${url.base}${functions:escapePath(renderContext.mainResource.node.path)}/*'/>" name="${formid}">
     <c:if test="${currentNode.properties.i18npages.boolean}">
         <input type="hidden" name="jcrNodeType" value="jnt:page">
     </c:if>

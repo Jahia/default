@@ -24,7 +24,7 @@
     </c:choose>
 </c:if>
 <c:if test="${not empty pageNode}">
-    <h2 class="pageTitle"><c:out value="${pageNode.displayableName}" /><c:if
+    <h1 class="pageTitle"><c:out value="${pageNode.displayableName}" /><c:if
             test="${not jcr:isNodeType(renderContext.mainResource.node, 'jnt:page')}">
-        > <c:out value="${functions:abbreviate(renderContext.mainResource.node.displayableName,15,30,'...')}" /></c:if></h2>
+        > <c:out value="${functions:abbreviate(renderContext.mainResource.node.displayableName,15,30,'...')}" /></c:if></h1>
 </c:if>

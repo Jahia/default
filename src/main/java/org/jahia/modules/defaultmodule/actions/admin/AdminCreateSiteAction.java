@@ -122,6 +122,7 @@ public class AdminCreateSiteAction extends AdminAction {
                     systemSite.getLanguages().addAll(site.getLanguages());
                     sitesService.updateSite(systemSite);
                 }
+                configureSite(site, req, renderContext, resource, session, parameters, urlResolver);
             } else {
                 result.put("warn", getMessage(renderContext.getUILocale(), "label.error.processingRequestError"));
                 return new ActionResult(HttpServletResponse.SC_OK, null, new JSONObject(result));
@@ -144,5 +145,6 @@ public class AdminCreateSiteAction extends AdminAction {
         return ActionResult.OK_JSON;
     }
 
-
+    protected void configureSite(JahiaSite site, HttpServletRequest req, RenderContext renderContext, Resource resource, JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) {
+    }
 }

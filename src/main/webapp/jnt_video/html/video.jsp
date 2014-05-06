@@ -88,9 +88,14 @@
      <%--If it is not a flv file, try to display it as a HTML 5 video--%>
     <c:if test="${!flv && !currentNode.properties.forceFlashPlayer.boolean}">
         <video id="${currentNode.UUID}" class="video-js" width="${currentNode.properties.width.string}" height="${currentNode.properties.height.string}" controls="controls" <c:if test="${currentNode.properties.autoplay.boolean}">autoplay="autoplay"</c:if> preload="auto" poster="" >
-
+         	<c:set var="mp4" value="${fn:endsWith(currentNode.properties.source.node.url,'.mp4')}" />	
+            <c:set var="videoType" value='' />
+            <c:if test="${mp4}">
+            	<%-- some Browser (like IE9 and IE10) needs videoType in case of MP4 video --%>
+	  			<c:set var="videoType" value='type="video/mp4"' />
+			</c:if>	
             <%--Prefer the HTML5 version--%>
-            <source src="${currentNode.properties.source.node.url}" />
+            <source src="${currentNode.properties.source.node.url}" ${videoType} />
     </c:if>
 
             <%--If not available fallback to the flash player--%>

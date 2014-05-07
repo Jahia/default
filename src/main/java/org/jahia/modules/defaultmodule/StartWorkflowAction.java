@@ -40,20 +40,24 @@
 
 package org.jahia.modules.defaultmodule;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
-import org.jahia.bin.ActionResult;
 import org.jahia.bin.Action;
-import org.jahia.services.content.JCRPublicationService;
+import org.jahia.bin.ActionResult;
 import org.jahia.services.content.JCRSessionWrapper;
-import org.jahia.services.content.PublicationInfo;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
 import org.jahia.services.workflow.WorkflowService;
 import org.jahia.services.workflow.WorkflowVariable;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import org.slf4j.Logger;
 
 /**
  * @author toto
@@ -62,6 +66,8 @@ import java.util.*;
  */
 public class StartWorkflowAction extends Action {
     protected WorkflowService workflowService;
+    
+    private static Logger logger = org.slf4j.LoggerFactory.getLogger(StartWorkflowAction.class);
 
     public void setWorkflowService(WorkflowService workflowService) {
         this.workflowService = workflowService;
@@ -69,6 +75,12 @@ public class StartWorkflowAction extends Action {
 
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
+    	
+    	if (parameters.get("process") == null) {
+    		logger.error("Missing parameter: \"process\" with value <workflow provider>:<workflow key>");
+    		return ActionResult.BAD_REQUEST;
+    	}
+    	
         String process = parameters.get("process").get(0);
         String workflowDefinitionKey = StringUtils.substringAfter(process, ":");
         String providerKey = StringUtils.substringBefore(process, ":");

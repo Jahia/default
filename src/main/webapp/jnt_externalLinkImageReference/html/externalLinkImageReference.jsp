@@ -10,9 +10,9 @@
 <c:set var="node" value="${reference.node}"/>
 <c:if test="${not empty node}">
     <jahia:addCacheDependency node="${node}" />
-<c:url var="url" value="${node.url}" context="/"/>
+<c:url var="linkImageurl" value="${node.url}" context="/"/>
 </c:if>
 <c:if test="${empty node}">
-	<c:set var="url" value=""/>
+	<c:set var="linkImageurl" value=""/>
 </c:if>	
-<a href="${linkurl.string}" ${target} ${linkTitle}><img src="${url}" alt="${fn:escapeXml(not empty title.string ? title.string : currentNode.name)}" /></a>
+<a href="${linkurl.string}" ${target} ${linkTitle}><img src="${linkImageurl}" alt="${fn:escapeXml(not empty title.string ? title.string : currentNode.name)}" /></a>

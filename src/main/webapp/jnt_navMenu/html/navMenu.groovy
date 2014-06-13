@@ -64,7 +64,7 @@ printMenu = { node, navMenuLevel, omitFormatting ->
                 }
             }
             if ((startLevelValue < navMenuLevel || inpath) && correctType) {
-                hasChildren = navMenuLevel < maxDepth.long && JCRTagUtils.hasChildrenOfType(menuItem, "jnt:page,jnt:nodeLink,jnt:externalLink")
+                hasChildren = navMenuLevel < maxDepth.long && JCRTagUtils.hasChildrenOfType(menuItem, "jmix:navMenuItem")
                 if (startLevelValue < navMenuLevel) {
 
 //                    print ("<h1>"+itemPath+closeUl+"</h1>")

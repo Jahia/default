@@ -81,28 +81,29 @@
 <template:addResources type="css" resources="video-js.css"/>
 
   <div class="video-js-box">
+    <c:set var="videoUrl" value="${currentNode.properties.source.node.url}"/>
 
       <%--Test if it is a flv file--%>
-    <c:set var="flv" value="${fn:endsWith(currentNode.properties.source.node.url,'.flv')}" />
+    <c:set var="flv" value="${fn:endsWith(videoUrl,'.flv')}" />
 
      <%--If it is not a flv file, try to display it as a HTML 5 video--%>
     <c:if test="${!flv && !currentNode.properties.forceFlashPlayer.boolean}">
         <video id="${currentNode.UUID}" class="video-js" width="${currentNode.properties.width.string}" height="${currentNode.properties.height.string}" controls="controls" <c:if test="${currentNode.properties.autoplay.boolean}">autoplay="autoplay"</c:if> preload="auto" poster="" >
-         	<c:set var="mp4" value="${fn:endsWith(currentNode.properties.source.node.url,'.mp4')}" />	
+         	<c:set var="mp4" value="${fn:endsWith(videoUrl,'.mp4')}" />	
             <c:set var="videoType" value='' />
             <c:if test="${mp4}">
             	<%-- some Browser (like IE9 and IE10) needs videoType in case of MP4 video --%>
 	  			<c:set var="videoType" value='type="video/mp4"' />
 			</c:if>	
             <%--Prefer the HTML5 version--%>
-            <source src="${currentNode.properties.source.node.url}" ${videoType} />
+            <source src="${videoUrl}" ${videoType} />
     </c:if>
 
             <%--If not available fallback to the flash player--%>
             <object id="${currentNode.UUID}" class="vjs-flash-fallback" width="${currentNode.properties.width.string}" height="${currentNode.properties.height.string}" type="application/x-shockwave-flash" data="${url.server}${url.context}/modules/assets/swf/flowplayer-3.2.6.swf">
                 <param name="movie" value="${url.server}${url.context}/modules/assets/swf/flowplayer-3.2.6.swf" />
                 <param name="allowfullscreen" value="true" />
-                <param name="flashvars" value='config={"playlist":[{"url": "${url.server}${currentNode.properties.source.node.url}","autoPlay":${currentNode.properties.autoplay.boolean},"autoBuffering":true}]}' />
+                <param name="flashvars" value='config={"playlist":[{"url": "${url.server}${videoUrl}","autoPlay":${currentNode.properties.autoplay.boolean},"autoBuffering":true}]}' />
 
                 <img src="" width="${currentNode.properties.width.string}" height="${currentNode.properties.height.string}" alt="Poster Image" title="No video playback capabilities." />
             </object>

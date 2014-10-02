@@ -1,9 +1,9 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
 to-users: assignableFor(review)
-subject: Workflow de publication, de ${currentUser.getName()}
+subject: Workflow de publication, de ${currentUser.getUsername()}
 text: Bonjour,
 
-Un workflow de publication a été démarré le ${date.format("short","short",$submissionDate,$locale)} par ${currentUser.getName()}, sur les éléments suivants :
+Un workflow de publication a été démarré le ${date.format("short","short",$submissionDate,$locale)} par ${currentUser.getUsername()}, sur les éléments suivants :
 #foreach( $node in $nodes )
 #if( $velocityCount <= 10)
     - ${node.getDisplayableName()}
@@ -14,7 +14,7 @@ html: Bonjour,
 <br>
 <br>
 <div>
-Un workflow de publication a été démarré le ${date.format("short","short",$submissionDate,$locale)} par ${currentUser.getName()}, sur les éléments suivants :
+Un workflow de publication a été démarré le ${date.format("short","short",$submissionDate,$locale)} par ${currentUser.getUsername()}, sur les éléments suivants :
 </div>
 <div>
     <ul>

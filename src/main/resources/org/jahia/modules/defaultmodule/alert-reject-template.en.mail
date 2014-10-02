@@ -1,8 +1,8 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Publication workflow rejected by ${currentUser.getName()}
+subject: Publication workflow rejected by ${currentUser.getUsername()}
 text: Hi,
 
-The publication of the following items has been rejected on ${date.format("short","short",$submissionDate,$locale)} by ${currentUser.getName()} :
+The publication of the following items has been rejected on ${date.format("short","short",$submissionDate,$locale)} by ${currentUser.getUsername()} :
 #foreach( $node in $nodes )
 #if( $velocityCount <= 10)
     - ${node.getDisplayableName()}
@@ -13,7 +13,7 @@ html: Hi,
 <br>
 <br>
 <div>
-The publication of the following items has been rejected on ${date.format("short","short",$submissionDate,$locale)} by ${currentUser.getName()} :
+The publication of the following items has been rejected on ${date.format("short","short",$submissionDate,$locale)} by ${currentUser.getUsername()} :
 </div>
 <div>
     <ul>

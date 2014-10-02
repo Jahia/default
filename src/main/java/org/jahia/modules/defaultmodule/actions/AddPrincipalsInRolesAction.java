@@ -74,12 +74,12 @@ package org.jahia.modules.defaultmodule.actions;
 import org.jahia.bin.Action;
 import org.jahia.bin.ActionResult;
 import org.jahia.services.content.JCRSessionWrapper;
-import org.jahia.services.content.decorator.JCRGroupNode;
-import org.jahia.services.content.decorator.JCRUserNode;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
+import org.jahia.services.usermanager.JahiaGroup;
 import org.jahia.services.usermanager.JahiaGroupManagerService;
+import org.jahia.services.usermanager.JahiaUser;
 import org.jahia.services.usermanager.JahiaUserManagerService;
 import org.slf4j.Logger;
 
@@ -117,7 +117,7 @@ public class AddPrincipalsInRolesAction extends Action {
             for (String principalKey : principals) {
                 if (principalKey.startsWith("u:")) {
                     String userKey = principalKey.substring("u:".length());
-                    JCRUserNode jahiaUser = jahiaUserManagerService.lookupUser(userKey);
+                    JahiaUser jahiaUser = jahiaUserManagerService.lookupUserByKey(userKey);
                     if (jahiaUser == null) {
                         logger.warn("User " + userKey + " could not be found, will not add to roles");
                         return ActionResult.BAD_REQUEST;
@@ -126,7 +126,7 @@ public class AddPrincipalsInRolesAction extends Action {
                     session.save();
                 } else if (principalKey.startsWith("g:")) {
                     String groupKey = principalKey.substring("g:".length());
-                    JCRGroupNode jahiaGroup = jahiaGroupManagerService.lookupGroupByPath(groupKey);
+                    JahiaGroup jahiaGroup = jahiaGroupManagerService.lookupGroup(groupKey);
                     if (jahiaGroup == null) {
                         logger.warn("Group " + groupKey + " could not be found, will not add to roles");
                         return ActionResult.BAD_REQUEST;

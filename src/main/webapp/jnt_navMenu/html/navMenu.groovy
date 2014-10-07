@@ -5,6 +5,9 @@ import org.jahia.services.render.Resource
 import org.jahia.taglibs.jcr.node.JCRTagUtils
 import org.slf4j.LoggerFactory
 
+import javax.jcr.ItemNotFoundException
+import javax.jcr.PathNotFoundException
+
 title = currentNode.properties['jcr:title']
 baseline = currentNode.properties['j:baselineNode']
 maxDepth = currentNode.properties['j:maxDepth']
@@ -46,11 +49,22 @@ printMenu = { node, navMenuLevel, omitFormatting ->
         def closeUl = false;
         children.eachWithIndex() { menuItem, index ->
           try {
-            itemPath = menuItem.path
-            inpath = renderContext.mainResource.node.path == itemPath || renderContext.mainResource.node.path.startsWith(itemPath+"/")
-            selected = menuItem.isNodeType("jmix:nodeReference") ?
-                       renderContext.mainResource.node.path == menuItem.properties['j:node'].node.path :
-                       renderContext.mainResource.node.path == itemPath
+              itemPath = menuItem.path;
+              inpath = renderContext.mainResource.node.path == itemPath || renderContext.mainResource.node.path.startsWith(itemPath + "/");
+              if (menuItem.isNodeType("jmix:nodeReference")) {
+                  try {
+                      if (menuItem.properties['j:node'].node != null) {
+                          selected = renderContext.mainResource.node.path == menuItem.properties['j:node'].node.path;
+                      } else {
+                          selected = false;
+                      }
+                  } catch (ItemNotFoundException e) {
+                      selected = false;
+                  }
+              } else {
+                  selected = renderContext.mainResource.node.path == itemPath
+              }
+
             correctType = true
             if(menuItem.isNodeType("jmix:navMenu")){
                 correctType = false
@@ -58,7 +72,7 @@ printMenu = { node, navMenuLevel, omitFormatting ->
             if (menuItem.properties['j:displayInMenu']) {
                 correctType = false
                 menuItem.properties['j:displayInMenu'].each() {
-                  if (it.node != null) {                  
+                  if (it.node != null) {
                     correctType |= (it.node.name == currentNode.name)
                   }
                 }
@@ -70,9 +84,9 @@ printMenu = { node, navMenuLevel, omitFormatting ->
 //                    print ("<h1>"+itemPath+closeUl+"</h1>")
                     listItemCssClass = (hasChildren ? "hasChildren" : "noChildren") + (inpath ? " inPath" : "") + (selected ? " selected" : "") + (index == 0 ? " firstInLevel" : "") + (index == nbOfChilds - 1 ? " lastInLevel" : "");
                     Resource resource = new Resource(menuItem, "html", "menuElement", currentResource.getContextConfiguration());
-                    
+
                     currentResource.getDependencies().add(menuItem.getCanonicalPath())
-                    
+
                     def render = RenderService.getInstance().render(resource, renderContext)
                     if (render != "") {
                         if (firstEntry) {
@@ -128,13 +142,13 @@ printMenu = { node, navMenuLevel, omitFormatting ->
             }
           } catch (Exception e) {
               logger = LoggerFactory.getLogger(this.class)
-              logger.warn("Error processing nav-menu link with id " + menuItem.identifier, e);          
+              logger.warn("Error processing nav-menu link with id " + menuItem.identifier, e);
           }
           if (closeUl && index == (nbOfChilds - 1)) {
               print("</ul>");
               print("</div>")
               closeUl = false;
-          }          
+          }
         }
 
         if (empty && renderContext.editMode) {

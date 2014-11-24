@@ -51,15 +51,22 @@ printMenu = { node, navMenuLevel, omitFormatting ->
           try {
               itemPath = menuItem.path;
               inpath = renderContext.mainResource.node.path == itemPath || renderContext.mainResource.node.path.startsWith(itemPath + "/");
+              def referenceIsBroken = false;
               if (menuItem.isNodeType("jmix:nodeReference")) {
+                  try {
+                      currentResource.dependencies.add(menuItem.properties['j:node'].string);
+                  } catch (ItemNotFoundException e) {
+                  }
                   try {
                       if (menuItem.properties['j:node'].node != null) {
                           selected = renderContext.mainResource.node.path == menuItem.properties['j:node'].node.path;
                       } else {
                           selected = false;
+                          referenceIsBroken = true;
                       }
                   } catch (ItemNotFoundException e) {
                       selected = false;
+                      referenceIsBroken = true;
                   }
               } else {
                   selected = renderContext.mainResource.node.path == itemPath
@@ -72,12 +79,12 @@ printMenu = { node, navMenuLevel, omitFormatting ->
             if (menuItem.properties['j:displayInMenu']) {
                 correctType = false
                 menuItem.properties['j:displayInMenu'].each() {
-                  if (it.node != null) {
-                    correctType |= (it.node.name == currentNode.name)
-                  }
+                    if (it.node != null) {
+                        correctType |= (it.node.name == currentNode.name)
+                    }
                 }
             }
-            if ((startLevelValue < navMenuLevel || inpath) && correctType) {
+              if (!referenceIsBroken && correctType && (startLevelValue < navMenuLevel || inpath)) {
                 hasChildren = navMenuLevel < maxDepth.long && JCRTagUtils.hasChildrenOfType(menuItem, "jmix:navMenuItem")
                 if (startLevelValue < navMenuLevel) {
 

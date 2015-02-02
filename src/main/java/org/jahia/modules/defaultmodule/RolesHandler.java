@@ -185,7 +185,7 @@ public class RolesHandler implements Serializable {
         Map<String, List<String[]>> acl = node.getAclEntries();
 
         for (Map.Entry<String, List<String[]>> entry : acl.entrySet()) {
-            Principal p;
+            Principal p = null;
             if (entry.getKey().startsWith("u:")) {
                 p = userManagerService.lookupUser(entry.getKey().substring(2));
             } else if (entry.getKey().startsWith("g:")) {
@@ -194,21 +194,18 @@ public class RolesHandler implements Serializable {
                     int siteID = node.getResolveSite().getID();
                     p = groupManagerService.lookupGroup(siteID, entry.getKey().substring(2));
                 }
-                if (p == null) {
-                    continue;
-                }
-            } else {
-                continue;
             }
-            final List<String[]> value = entry.getValue();
-            Collections.reverse(value);
-            for (String[] strings : value) {
-                String role = strings[2];
+            if (p != null) {
+                final List<String[]> value = entry.getValue();
+                Collections.reverse(value);
+                for (String[] strings : value) {
+                    String role = strings[2];
 
-                if (strings[1].equals("GRANT") && rolesFromName.containsKey(role) && !result.get(rolesFromName.get(role)).contains(p)) {
-                    result.get(rolesFromName.get(role)).add(p);
-                } else if (strings[1].equals("DENY") && rolesFromName.containsKey(role)) {
-                    result.get(rolesFromName.get(role)).remove(p);
+                    if (strings[1].equals("GRANT") && rolesFromName.containsKey(role) && !result.get(rolesFromName.get(role)).contains(p)) {
+                        result.get(rolesFromName.get(role)).add(p);
+                    } else if (strings[1].equals("DENY") && rolesFromName.containsKey(role)) {
+                        result.get(rolesFromName.get(role)).remove(p);
+                    }
                 }
             }
         }

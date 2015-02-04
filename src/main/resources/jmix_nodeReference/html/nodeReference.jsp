@@ -13,6 +13,8 @@
         </template:module>
     </c:when>
     <c:otherwise>
-        <fmt:message key="label.missingReference"/>
+        <c:if test="${renderContext.editMode}"> 
+        	<fmt:message key="label.missingReference"/>
+        </c:if>
     </c:otherwise>
 </c:choose>        

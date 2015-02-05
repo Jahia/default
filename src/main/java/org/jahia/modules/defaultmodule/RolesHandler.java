@@ -74,10 +74,7 @@ package org.jahia.modules.defaultmodule;
 import org.jahia.ajax.gwt.helper.PublicationHelper;
 import org.jahia.api.Constants;
 import org.jahia.data.viewhelper.principal.PrincipalViewHelper;
-import org.jahia.services.content.JCRNodeWrapper;
-import org.jahia.services.content.JCRPublicationService;
-import org.jahia.services.content.JCRSessionFactory;
-import org.jahia.services.content.JCRSessionWrapper;
+import org.jahia.services.content.*;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.usermanager.JahiaGroupManagerProvider;
 import org.jahia.services.usermanager.JahiaGroupManagerService;
@@ -168,14 +165,14 @@ public class RolesHandler implements Serializable {
         final JCRSessionWrapper defaultSession = JCRSessionFactory.getInstance().getCurrentUserSession(null, locale, fallbackLocale);
         QueryManager qm = defaultSession.getWorkspace().getQueryManager();
         if (role != null) {
-            Query q = qm.createQuery("select * from [jnt:role] where localname()='" + role + "'", Query.JCR_SQL2);
+            Query q = qm.createQuery("select * from [jnt:role] where localname()='" + JCRContentUtils.sqlEncode(role) + "'", Query.JCR_SQL2);
             getRoles(q, rolesFromName, result);
         } else if (roles == null) {
-            Query q = qm.createQuery("select * from [jnt:role] where [j:roleGroup]='" + roleGroup + "'", Query.JCR_SQL2);
+            Query q = qm.createQuery("select * from [jnt:role] where [j:roleGroup]='" + JCRContentUtils.sqlEncode(roleGroup) + "'", Query.JCR_SQL2);
             getRoles(q, rolesFromName, result);
         } else {
             for (String r : roles) {
-                Query q = qm.createQuery("select * from [jnt:role] where localname()='" + r + "'", Query.JCR_SQL2);
+                Query q = qm.createQuery("select * from [jnt:role] where localname()='" + JCRContentUtils.sqlEncode(r) + "'", Query.JCR_SQL2);
                 getRoles(q, rolesFromName, result);
             }
         }

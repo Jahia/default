@@ -51,10 +51,10 @@
  * =                                   ABOUT JAHIA                                          =
  * ==========================================================================================
  *
- *     Rooted in Open Source CMS, Jahia’s Digital Industrialization paradigm is about
+ *     Rooted in Open Source CMS, Jahia's Digital Industrialization paradigm is about
  *     streamlining Enterprise digital projects across channels to truly control
  *     time-to-market and TCO, project after project.
- *     Putting an end to “the Tunnel effect”, the Jahia Studio enables IT and
+ *     Putting an end to "the Tunnel effect", the Jahia Studio enables IT and
  *     marketing teams to collaboratively and iteratively build cutting-edge
  *     online business solutions.
  *     These, in turn, are securely and easily deployed as modules and apps,
@@ -125,6 +125,7 @@ public class ChainAction extends Action implements InitializingBean {
             String[] actions = chainOfactions.get(0).split(",");
             Map<String, Action> actionsMap = templateService.getActions();
             ActionResult result = null;
+            String path = null;
             for (String actionToDo : actions) {
                 if (DefaultPostAction.ACTION_NAME.equals(actionToDo)) {
                     String s = urlResolver.getUrlPathInfo().replace(".chain.do", "/*");
@@ -138,8 +139,14 @@ public class ChainAction extends Action implements InitializingBean {
                     } else {
                         throw new AccessDeniedException();
                     }
+                    if (actionToDo.equals("redirect") && result != null && result.getUrl() != null) {
+                    	path = result.getUrl();
+                    }                    
                 }
             }
+            if (path != null) {
+            	result.setUrl(path);
+            }            
             return result;
         }
         return ActionResult.BAD_REQUEST;

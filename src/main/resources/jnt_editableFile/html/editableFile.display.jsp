@@ -119,6 +119,7 @@
                     }
                     $("#alertReload").html(error);
                     $("#alertReload").show();
+                    $('#saveButton').prop('disabled', false);
                 },
                 dataType: 'json'
             });

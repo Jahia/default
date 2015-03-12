@@ -12,11 +12,6 @@
     <template:addResources type="css" resources="goto-links.css"/>
     <c:url var="link" value="/cms/admin/default/${renderContext.UILocale.language}/settings.aboutJahia.html"/>
     <c:if test="${!empty currentNode.properties['toAdminComponent']}">
-        <template:addResources>
-            <script type="text/javascript">
-                $.post("${url.context}/welcome/adminmode", null, null, "json");
-            </script>
-        </template:addResources>
         <c:choose>
             <c:when test="${currentNode.properties['toAdminComponent'].string eq 'users'}">
                 <c:url var="link" value="${url.basePreview}/settings.manageUsers.html"/>

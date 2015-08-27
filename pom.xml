@@ -80,7 +80,7 @@
     <version>7.0.0.4</version>
   </parent>
   <artifactId>default</artifactId>
-  <version>7.0.2-SNAPSHOT</version>
+  <version>7.0.2</version>
   <packaging>bundle</packaging>
   <name>Default Jahia Templates</name>
   <description>These are the custom templates for running on a Jahia server.</description>
@@ -88,7 +88,7 @@
         <connection>scm:git:git@github.com:Jahia/default.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/default.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/default.git</url>
-		<tag>JAHIA-7-0-X-X-BRANCH</tag>
+		<tag>7_0_2</tag>
     </scm>
   <dependencies>
     <dependency>

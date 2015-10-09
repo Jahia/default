@@ -81,7 +81,7 @@
 		<relativePath />
     </parent>
     <artifactId>default</artifactId>
-	<version>7.1.1</version>
+	<version>7.1.2-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Default Jahia Templates</name>
     <description>These are the custom templates for running on a Jahia server.</description>
@@ -89,7 +89,7 @@
         <connection>scm:git:git@github.com:Jahia/default.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/default.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/default.git</url>
-      <tag>7_1_1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <properties>

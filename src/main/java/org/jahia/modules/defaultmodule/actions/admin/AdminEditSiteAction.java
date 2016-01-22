@@ -94,7 +94,7 @@ public class AdminEditSiteAction extends AdminSiteAction {
             // check validity...
             if (siteTitle != null && (siteTitle.trim().length() > 0) && siteServerName != null &&
                     (siteServerName.trim().length() > 0)) {
-                if (!isServerNameValid(siteServerName)) {
+                if (!sitesService.isServerNameValid(siteServerName)) {
                     result.put("warn", getMessage(renderContext.getUILocale(), "serverSettings.manageWebProjects.warningMsg.invalidServerName"));
                     return new ActionResult(HttpServletResponse.SC_OK, null, new JSONObject(result));
                 } else if (!site.getServerName().equals(siteServerName)) {
@@ -135,10 +135,6 @@ public class AdminEditSiteAction extends AdminSiteAction {
             result.put("warn", getMessage(renderContext.getUILocale(),"label.error.processingRequestError"));
             return new ActionResult(HttpServletResponse.SC_OK, null, new JSONObject(result));
         }
-    }
-
-    public boolean isServerNameValid(String serverName) {
-        return StringUtils.isNotEmpty(serverName) && !serverName.contains(" ") && !serverName.contains(":");
     }
 
 

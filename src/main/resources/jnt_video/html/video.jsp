@@ -34,7 +34,8 @@
 <jcr:node path="${source.path}/jcr:content" var="sourceContent" />
 <jcr:nodeProperty node="${sourceContent}" name="jcr:mimeType" var="mimeType" />
 
-<video id="video-${currentNode.identifier}" class="video-js vjs-default-skin" controls <c:if test="${currentNode.properties.autoplay.boolean}">autoplay</c:if> preload="auto"
+<video id="video-${currentNode.identifier}" class="video-js vjs-default-skin" controls <c:if test="${currentNode.properties.autoplay.boolean}">autoplay</c:if>
+       preload="${renderContext.editMode ? "metadata" : "auto"}"
        width="${currentNode.properties.width.string}" height="${currentNode.properties.height.string}"
        data-setup='{<c:if test="${currentNode.properties.forceFlashPlayer.boolean}">"techOrder":["flash", "html5"]</c:if>}'>
   <source src="${source.url}" type='${mimeType.string == "video/x-f4v" ? "video/mp4" : mimeType.string}' />

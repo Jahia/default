@@ -14,7 +14,9 @@
 
 <c:set var="node" value="${reference.node}"/>
 <c:if test="${not empty node}">
-    <jahia:addCacheDependency node="${node}" />
+    <jahia:addCacheDependency path="${node}" />
+    <!-- Add A cache dependency for the provider mount point -->
+    <jahia:addCacheDependency path="${node.provider.mountPoint}" />
     <c:url var="imageUrl" value="${node.url}" context="/"/>
     <c:set var="height" value=""/>
     <c:set var="width" value=""/>

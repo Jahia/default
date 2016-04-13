@@ -81,6 +81,10 @@
         <property name="requiredPermission" value="addComment" />
     </bean>
 
+    <bean class="org.jahia.modules.defaultmodule.actions.CreateBoardAction" >
+        <property name="name" value="createBoard"/>
+    </bean>
+
     <bean class="org.jahia.modules.defaultmodule.actions.PublishAction">
         <property name="publicationService" ref="jcrPublicationService"/>
         <property name="requiredPermission" value="publish"/>

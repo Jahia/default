@@ -45,6 +45,7 @@ package org.jahia.modules.defaultmodule.actions;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.jahia.ajax.gwt.client.widget.Linker;
 import org.jahia.bin.Action;
 import org.jahia.services.content.*;
 import org.jahia.bin.ActionResult;
@@ -52,9 +53,12 @@ import org.jahia.bin.ActionResult;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +80,7 @@ public class CreateBoardAction extends Action {
 
         // Board Type can be server-settings-base, site-settings-base
         String boardType = req.getParameter("boardType");
-        // Apply on can be jnt:globalSetting , .....
+        // Apply on can be jnt:globalSettings , .....
         String applyOn = req.getParameter("applyOn");
         //View for the Board
         String view = req.getParameter("view");
@@ -104,6 +108,13 @@ public class CreateBoardAction extends Action {
         contentTemplateNode.setProperty("j:applyOn", types);
 
         base.getSession().save();
-        return ActionResult.OK;
+
+        // Add a parameter to refresh screen after reception
+        JSONObject jsonObject = new JSONObject();
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put(Linker.REFRESH_ALL, true);
+        jsonObject.put("refreshData", data);
+        return new ActionResult(HttpServletResponse.SC_OK, null, jsonObject);
+
     }
 }

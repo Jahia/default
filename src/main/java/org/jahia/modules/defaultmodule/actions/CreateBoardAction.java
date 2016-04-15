@@ -44,7 +44,7 @@
 package org.jahia.modules.defaultmodule.actions;
 
 
-import com.extjs.gxt.ui.client.widget.MessageBox;
+
 import org.apache.commons.lang.StringUtils;
 import org.jahia.ajax.gwt.client.widget.Linker;
 import org.jahia.bin.Action;
@@ -62,8 +62,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.text.DateFormat;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

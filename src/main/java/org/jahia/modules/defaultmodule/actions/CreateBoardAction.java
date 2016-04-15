@@ -44,6 +44,7 @@
 package org.jahia.modules.defaultmodule.actions;
 
 
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import org.apache.commons.lang.StringUtils;
 import org.jahia.ajax.gwt.client.widget.Linker;
 import org.jahia.bin.Action;
@@ -53,11 +54,16 @@ import org.jahia.bin.ActionResult;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
+import org.jahia.utils.i18n.Messages;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +73,8 @@ import java.util.Map;
  * @author achaabni
  */
 public class CreateBoardAction extends Action {
+
+    private static final Logger logger = LoggerFactory.getLogger(CreateBoardAction.class);
     @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource, JCRSessionWrapper jcrSessionWrapper, Map<String, List<String>> map, URLResolver urlResolver) throws Exception {
         // This action should be called only in the studio
@@ -114,6 +122,16 @@ public class CreateBoardAction extends Action {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put(Linker.REFRESH_ALL, true);
         jsonObject.put("refreshData", data);
+        JSONObject messageDisplay = new JSONObject();
+        messageDisplay.put("title", Messages.get("resources.DefaultJahiaTemplates", "label.board.create.successful.title",
+                jcrSessionWrapper
+                        .getLocale()));
+        messageDisplay.put("text",Messages.get("resources.DefaultJahiaTemplates","label.board.create.successful" +
+                ".message",jcrSessionWrapper
+                .getLocale()));
+        messageDisplay.put("messageBoxType","info");
+        jsonObject.put("messageDisplay",messageDisplay);
+
         return new ActionResult(HttpServletResponse.SC_OK, null, jsonObject);
 
     }

@@ -73,7 +73,6 @@ import java.util.Map;
  */
 public class CreateBoardAction extends Action {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateBoardAction.class);
     @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource, JCRSessionWrapper jcrSessionWrapper, Map<String, List<String>> map, URLResolver urlResolver) throws Exception {
         // This action should be called only in the studio
@@ -111,7 +110,7 @@ public class CreateBoardAction extends Action {
         JCRNodeWrapper contentTemplateNode = base.addNode(JCRContentUtils.findAvailableNodeName(base,
                 contentTemplateName),
                 "jnt:contentTemplate");
-        String[] types = new String[]{applyOn};
+        String[] types = applyOn.split(",");
         contentTemplateNode.setProperty("j:applyOn", types);
 
         base.getSession().save();
@@ -122,12 +121,11 @@ public class CreateBoardAction extends Action {
         data.put(Linker.REFRESH_ALL, true);
         jsonObject.put("refreshData", data);
         JSONObject messageDisplay = new JSONObject();
-        messageDisplay.put("title", Messages.get("resources.DefaultJahiaTemplates", "label.board.create.successful.title",
-                jcrSessionWrapper
-                        .getLocale()));
-        messageDisplay.put("text",Messages.get("resources.DefaultJahiaTemplates","label.board.create.successful" +
-                ".message",jcrSessionWrapper
-                .getLocale()));
+        String defaultJahiaTemplatesBundles = "resources.DefaultJahiaTemplates";
+        messageDisplay.put("title", Messages.get(defaultJahiaTemplatesBundles, "label.board.create.successful.title",
+                jcrSessionWrapper.getLocale()));
+        messageDisplay.put("text",Messages.get(defaultJahiaTemplatesBundles, "label.board.create.successful.message",
+                renderContext.getUILocale()));
         messageDisplay.put("messageBoxType","info");
         jsonObject.put("messageDisplay",messageDisplay);
 

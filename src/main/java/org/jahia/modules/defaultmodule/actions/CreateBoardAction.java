@@ -110,7 +110,7 @@ public class CreateBoardAction extends Action {
         JCRNodeWrapper contentTemplateNode = base.addNode(JCRContentUtils.findAvailableNodeName(base,
                 contentTemplateName),
                 "jnt:contentTemplate");
-        String[] types = applyOn.split(",");
+        String[] types = StringUtils.split(applyOn, " ,");
         contentTemplateNode.setProperty("j:applyOn", types);
 
         base.getSession().save();
@@ -123,7 +123,7 @@ public class CreateBoardAction extends Action {
         JSONObject messageDisplay = new JSONObject();
         String defaultJahiaTemplatesBundles = "resources.DefaultJahiaTemplates";
         messageDisplay.put("title", Messages.get(defaultJahiaTemplatesBundles, "label.board.create.successful.title",
-                jcrSessionWrapper.getLocale()));
+                renderContext.getUILocale()));
         messageDisplay.put("text",Messages.get(defaultJahiaTemplatesBundles, "label.board.create.successful.message",
                 renderContext.getUILocale()));
         messageDisplay.put("messageBoxType","info");

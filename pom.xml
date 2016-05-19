@@ -50,10 +50,10 @@
         <groupId>org.jahia.modules</groupId>
         <artifactId>jahia-modules</artifactId>
         <version>7.1.0.0</version>
-		<relativePath />
+        <relativePath />
     </parent>
     <artifactId>default</artifactId>
-	<version>7.1.4-SNAPSHOT</version>
+    <version>7.1.4-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Default Jahia Templates</name>
     <description>These are the custom templates for running on a Jahia server.</description>

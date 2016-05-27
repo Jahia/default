@@ -65,6 +65,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -122,14 +123,26 @@ public class CreateBoardAction extends Action {
         jsonObject.put("refreshData", data);
         JSONObject messageDisplay = new JSONObject();
         String defaultJahiaTemplatesBundles = "resources.DefaultJahiaTemplates";
-        messageDisplay.put("title", Messages.get(defaultJahiaTemplatesBundles, "label.board.create.successful.title",
-                renderContext.getUILocale()));
-        messageDisplay.put("text",Messages.get(defaultJahiaTemplatesBundles, "label.board.create.successful.message",
-                renderContext.getUILocale()));
+        String boardLabel = getBoardLabel(boardType,renderContext.getUILocale(),defaultJahiaTemplatesBundles);
+        messageDisplay.put("title", Messages.getWithArgs(defaultJahiaTemplatesBundles, "label.board.create.successful.title",
+                renderContext.getUILocale(), boardLabel));
+        messageDisplay.put("text",Messages.getWithArgs(defaultJahiaTemplatesBundles, "label.board.create.successful.message",
+                renderContext.getUILocale(), boardLabel));
         messageDisplay.put("messageBoxType","info");
         jsonObject.put("messageDisplay",messageDisplay);
 
         return new ActionResult(HttpServletResponse.SC_OK, null, jsonObject);
 
+    }
+
+    /**
+     * Get a board label
+     * @param boardType boardType
+     * @param uiLocale locale
+     * @param bundle bundle name
+     * @return the board label in the specific locale
+     */
+    private String getBoardLabel(String boardType, Locale uiLocale, String bundle) {
+        return Messages.get(bundle, "label.board." + boardType.replaceAll("-", ""),uiLocale);
     }
 }

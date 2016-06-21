@@ -33,10 +33,10 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>${fn:escapeXml(title)}</title>
-        <link><c:url value="${url.server}${url.context}${url.base}${currentNode.path}.html" /></link>
-		<atom:link href="<c:url value="${url.server}${url.context}${url.base}${currentNode.path}.rss" />" rel="self" type="application/rss+xml" />
+        <link><c:set var="baseRssPath" value="${url.server}${url.context}${url.base}${currentNode.path}"/><c:url value="${baseRssPath}.html" /></link>
+        <atom:link href="<c:url value='${baseRssPath}.rss' />" rel="self" type="application/rss+xml" />
         <description>${fn:escapeXml(description)}</description>
-        <generator>Jahia <%= Jahia.VERSION + " r" + Jahia.getBuildNumber() %>, http://www.jahia.org</generator>
+        <generator>Digital Experience Manager <%= Jahia.VERSION + " r" + Jahia.getBuildNumber() %>, http://www.jahia.com</generator>
         <c:forEach items="${moduleMap.currentList}" var="subchild">
             <c:if test="${functions:hasScriptView(subchild, 'default' , renderContext)}">
                 <template:module node="${subchild}" editable="false" view="default"/>

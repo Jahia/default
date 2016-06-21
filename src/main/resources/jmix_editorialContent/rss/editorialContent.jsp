@@ -27,8 +27,8 @@
 <jcr:nodeProperty node="${currentNode}" name="jcr:created" var="created"/>
 <item>
     <title>${fn:escapeXml(title)}</title>
-    <link><c:url value="${url.server}${url.context}${url.base}${currentNode.path}.html" /></link>
-	<guid><c:url value="${url.server}${url.context}${url.base}${currentNode.path}.html" /></guid>
+    <link><c:url value="${url.server}${url.context}${url.base}${currentNode.path}.html" var="itemUrl"/>${fn:escapeXml(itemUrl)}</link>
+    <guid>${fn:escapeXml(itemUrl)}</guid>
     <description>${fn:escapeXml(description)}</description>
-    <pubDate><fmt:formatDate value="${created.date.time}" pattern="EE, dd MMM yyyy HH:mm:ss Z"/></pubDate>
+    <pubDate><fmt:formatDate value="${created.date.time}" pattern="EEE, dd MMM yyyy HH:mm:ss Z"/></pubDate>
 </item>

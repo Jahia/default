@@ -49,6 +49,7 @@ import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.filter.AbstractFilter;
+import org.jahia.services.render.filter.AggregateFilter;
 import org.jahia.services.render.filter.RenderChain;
 
 import javax.jcr.PathNotFoundException;
@@ -71,6 +72,7 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
                 renderContext.getMainResource().setNode(s.getNode(renderContext.getMainResource().getNode().getPath()));
                 request.setAttribute("workspace", newWorkspace);
                 request.setAttribute("currentNode", n);
+                request.setAttribute(AggregateFilter.SKIP_AGGREGATION, Boolean.TRUE);
             } catch (PathNotFoundException e) {
                 return "";
             }
@@ -90,6 +92,7 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
             renderContext.getMainResource().setNode(s.getNode(renderContext.getMainResource().getNode().getPath()));
             request.setAttribute("workspace", previousWorkspace);
             request.setAttribute("currentNode", n);
+            request.setAttribute(AggregateFilter.SKIP_AGGREGATION, Boolean.FALSE);
         }
         return previousOut;
     }

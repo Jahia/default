@@ -58,6 +58,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class WorkspaceSwitchFilter extends AbstractFilter {
 
+    private boolean skipAggregation = false;
+
     @Override
     public String prepare(RenderContext renderContext, Resource resource, RenderChain chain) throws Exception {
         String newWorkspace = resource.getNode().getProperty("workspace").getString();
@@ -72,7 +74,10 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
                 renderContext.getMainResource().setNode(s.getNode(renderContext.getMainResource().getNode().getPath()));
                 request.setAttribute("workspace", newWorkspace);
                 request.setAttribute("currentNode", n);
-                request.setAttribute(AggregateFilter.SKIP_AGGREGATION, Boolean.TRUE);
+                if(!AggregateFilter.skipAggregation(request)) {
+                    skipAggregation = true;
+                    request.setAttribute(AggregateFilter.SKIP_AGGREGATION, true);
+                }
             } catch (PathNotFoundException e) {
                 return "";
             }
@@ -92,8 +97,15 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
             renderContext.getMainResource().setNode(s.getNode(renderContext.getMainResource().getNode().getPath()));
             request.setAttribute("workspace", previousWorkspace);
             request.setAttribute("currentNode", n);
-            request.setAttribute(AggregateFilter.SKIP_AGGREGATION, Boolean.FALSE);
+            if (skipAggregation) {
+                request.removeAttribute(AggregateFilter.SKIP_AGGREGATION);
+            }
         }
         return previousOut;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof WorkspaceSwitchFilter && super.equals(obj) && ((WorkspaceSwitchFilter) obj).skipAggregation == this.skipAggregation;
     }
 }

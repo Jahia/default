@@ -56,6 +56,9 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Filter that switches to another workspace
+ */
 public class WorkspaceSwitchFilter extends AbstractFilter {
 
     private boolean skipAggregation = false;

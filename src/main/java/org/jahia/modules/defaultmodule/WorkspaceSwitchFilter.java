@@ -53,7 +53,6 @@ import org.jahia.services.render.filter.AggregateFilter;
 import org.jahia.services.render.filter.RenderChain;
 
 import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -61,7 +60,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class WorkspaceSwitchFilter extends AbstractFilter {
 
-    private boolean skipAggregation = false;
+    private static final String SKIP_IN_FILTER ="skipAggregationWorkspaceSwitchFilter";
 
     @Override
     public String prepare(RenderContext renderContext, Resource resource, RenderChain chain) throws Exception {
@@ -78,7 +77,7 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
                 request.setAttribute("workspace", newWorkspace);
                 request.setAttribute("currentNode", n);
                 if(!AggregateFilter.skipAggregation(request)) {
-                    skipAggregation = true;
+                    resource.getModuleParams().put(SKIP_IN_FILTER, true);
                     request.setAttribute(AggregateFilter.SKIP_AGGREGATION, true);
                 }
             } catch (PathNotFoundException e) {
@@ -100,15 +99,11 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
             renderContext.getMainResource().setNode(s.getNode(renderContext.getMainResource().getNode().getPath()));
             request.setAttribute("workspace", previousWorkspace);
             request.setAttribute("currentNode", n);
-            if (skipAggregation) {
+            if (resource.getModuleParams().get(SKIP_IN_FILTER) != null) {
                 request.removeAttribute(AggregateFilter.SKIP_AGGREGATION);
+                resource.getModuleParams().remove(SKIP_IN_FILTER);
             }
         }
         return previousOut;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof WorkspaceSwitchFilter && super.equals(obj) && ((WorkspaceSwitchFilter) obj).skipAggregation == this.skipAggregation;
     }
 }

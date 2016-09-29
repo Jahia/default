@@ -53,10 +53,14 @@ import org.jahia.services.render.filter.AggregateFilter;
 import org.jahia.services.render.filter.RenderChain;
 
 import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Filter that switches to another workspace
+ */
 public class WorkspaceSwitchFilter extends AbstractFilter {
+
+    private static final String SKIP_IN_FILTER ="skipAggregationWorkspaceSwitchFilter";
 
     @Override
     public String prepare(RenderContext renderContext, Resource resource, RenderChain chain) throws Exception {
@@ -72,7 +76,10 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
                 renderContext.getMainResource().setNode(s.getNode(renderContext.getMainResource().getNode().getPath()));
                 request.setAttribute("workspace", newWorkspace);
                 request.setAttribute("currentNode", n);
-                request.setAttribute(AggregateFilter.SKIP_AGGREGATION, Boolean.TRUE);
+                if(!AggregateFilter.skipAggregation(request)) {
+                    resource.getModuleParams().put(SKIP_IN_FILTER, true);
+                    request.setAttribute(AggregateFilter.SKIP_AGGREGATION, true);
+                }
             } catch (PathNotFoundException e) {
                 return "";
             }
@@ -92,7 +99,10 @@ public class WorkspaceSwitchFilter extends AbstractFilter {
             renderContext.getMainResource().setNode(s.getNode(renderContext.getMainResource().getNode().getPath()));
             request.setAttribute("workspace", previousWorkspace);
             request.setAttribute("currentNode", n);
-            request.setAttribute(AggregateFilter.SKIP_AGGREGATION, Boolean.FALSE);
+            if (resource.getModuleParams().get(SKIP_IN_FILTER) != null) {
+                request.removeAttribute(AggregateFilter.SKIP_AGGREGATION);
+                resource.getModuleParams().remove(SKIP_IN_FILTER);
+            }
         }
         return previousOut;
     }

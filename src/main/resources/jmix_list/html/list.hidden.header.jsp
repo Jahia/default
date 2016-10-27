@@ -8,6 +8,7 @@
 <%@ taglib prefix="facet" uri="http://www.jahia.org/tags/facetLib" %>
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
+<%--@elvariable id="areaResource" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="out" type="java.io.PrintWriter"--%>
 <%--@elvariable id="script" type="org.jahia.services.render.scripting.Script"--%>
 <%--@elvariable id="scriptInfo" type="java.lang.String"--%>
@@ -100,6 +101,17 @@
     </c:if>
     <c:if test="${!empty areaResource.properties['j:numberOfItems']}">
         <c:set value="${areaResource.properties['j:numberOfItems'].string -1}" target="${moduleMap}" property="end"/>
+    </c:if>
+    <c:if test="${!empty areaResource.properties['j:allowedTypes']}">
+        <c:set var="allowedTypes" value=""/>
+        <c:forEach items="${areaResource.properties['j:allowedTypes']}" var="allowedType" varStatus="allowedTypesStatus">
+            <c:set var="allowedTypes" value="${allowedTypes}${allowedTypesStatus.first ? '' : ','}${allowedType.string}"/>
+        </c:forEach>
+
+        <jcr:filter var="currentList" list="${moduleMap.currentList}" types="${allowedTypes}"/>
+        <c:set value="${currentList}" target="${moduleMap}" property="currentList"/>
+        <c:set target="${moduleMap}" property="end" value="${fn:length(moduleMap.currentList)}" />
+        <c:set target="${moduleMap}" property="listTotalSize" value="${moduleMap.end}" />
     </c:if>
 </c:if>
 

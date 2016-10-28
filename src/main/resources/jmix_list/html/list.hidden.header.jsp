@@ -102,7 +102,7 @@
     <c:if test="${!empty areaResource.properties['j:numberOfItems']}">
         <c:set value="${areaResource.properties['j:numberOfItems'].string -1}" target="${moduleMap}" property="end"/>
     </c:if>
-    <c:if test="${!empty areaResource.properties['j:allowedTypes']}">
+    <c:if test="${!empty areaResource.properties['j:allowedTypes'] && !jcr:isNodeType(currentNode, 'jmix:skipConstraintCheck')}">
         <c:set var="allowedTypes" value=""/>
         <c:forEach items="${areaResource.properties['j:allowedTypes']}" var="allowedType" varStatus="allowedTypesStatus">
             <c:set var="allowedTypes" value="${allowedTypes}${allowedTypesStatus.first ? '' : ','}${allowedType.string}"/>

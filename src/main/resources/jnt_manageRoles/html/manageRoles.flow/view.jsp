@@ -3,6 +3,7 @@
 <%@ taglib prefix="user" uri="http://www.jahia.org/tags/user" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
+<%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 
 <h2>
     ${currentNode.properties['jcr:title'].string}
@@ -67,7 +68,7 @@
 
                             <td>
                                 <button style="margin-bottom:0;" class="btn btn-danger btn-small"
-                                        onclick="revokeRole('${principalKey}','${entry.key.name}')">
+                                        onclick="revokeRole('${functions:escapeJavaScript(principalKey)}','${entry.key.name}')">
                                     <i class="icon-remove icon-white"></i>
                                 </button>
                             </td>

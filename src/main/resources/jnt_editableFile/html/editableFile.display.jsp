@@ -32,8 +32,7 @@
                     </fmt:message>
                 </div>
             </c:if>
-            <div class="alert  alert-error hide" id="alertReload">
-                <fmt:message key="jnt_editableFile.must.reload"/>
+            <div class="alert alert-error hide" id="alertError">
             </div>
             <div class="well">
                 <c:set var="isResourceBundle" value="${jcr:isNodeType(currentNode, 'jnt:resourceBundleFile')}"/>
@@ -75,18 +74,21 @@
 </div>
 
 <script type="text/javascript">
+
     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("sourceCode"),{mode:"${mode}",lineNumbers:true, matchBrackets:true, readOnly:'${jcr:isNodeType(currentNode, 'jnt:resourceBundleFile') or locked?"nocursor":""}'});
     myCodeMirror.setSize("100%","100%");
-    <c:if test="${saveEnabled}">
-    var doEditTest = true;
 
+    <c:if test="${saveEnabled}">
+
+    var doEditTest = true;
 
     myCodeMirror.on("beforeChange", function() {
         if (doEditTest && $('#saveButton').prop('disabled')) {
             $.get("<c:url value="${url.base}${currentNode.path}.lockEditableFile.do?type=editSource&lastModifiedLoaded=${lastModidiedLoaded}"/>",null,function(data,status,jqXHR) {
                 if (data.error != undefined) {
                     myCodeMirror.setOption("readOnly","nocursor");
-                    $("#alertReload").show();
+                    $("#alertError").html(data.error);
+                    $("#alertError").show();
                 } else {
                     $('#saveButton').prop('disabled', false);
                 }
@@ -94,7 +96,6 @@
             doEditTest = false;
         }
     });
-
 
     function saveSourceCode() {
         disabled = $('#saveButton').prop('disabled');
@@ -117,17 +118,19 @@
                     if (textStatus == 'error') {
                         error = $.parseJSON(jqXHR.responseText)['error']
                     }
-                    $("#alertReload").html(error);
-                    $("#alertReload").show();
+                    $("#alertError").html(error);
+                    $("#alertError").show();
                     $('#saveButton').prop('disabled', false);
                 },
                 dataType: 'json'
             });
         }
     }
+
     $(window).blur(function() {
         saveSourceCode();
     });
+
     $(window).bind('keydown', function(event) {
         if (event.ctrlKey || event.metaKey) {
             switch (String.fromCharCode(event.which).toLowerCase()) {
@@ -138,5 +141,7 @@
             }
         }
     });
+
     </c:if>
+
 </script>

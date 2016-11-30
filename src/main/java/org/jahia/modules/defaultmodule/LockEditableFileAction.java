@@ -43,37 +43,38 @@
  */
 package org.jahia.modules.defaultmodule;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
-import org.jahia.bin.Action;
+import org.jahia.api.Constants;
 import org.jahia.bin.ActionResult;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
+import org.jahia.utils.i18n.Messages;
 import org.json.JSONObject;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-
 
 /**
  * Check the last modified date and lock if the file has not been changed
  */
 public class LockEditableFileAction extends LockAction {
 
+    @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
         String lastModifiedLoaded = req.getParameter("lastModifiedLoaded");
         Map<String,String> res = new HashMap<String,String>();
-        if (!resource.getNode().hasProperty("jcr:lastModified") || StringUtils.equals(lastModifiedLoaded, String.valueOf(resource.getNode().getProperty("jcr:lastModified").getValue().getDate().getTimeInMillis()))) {
-            return  super.doExecute(req,renderContext,resource,session,parameters,urlResolver) ;
+        if (!resource.getNode().hasProperty(Constants.JCR_LASTMODIFIED) || StringUtils.equals(lastModifiedLoaded, String.valueOf(resource.getNode().getProperty(Constants.JCR_LASTMODIFIED).getValue().getDate().getTimeInMillis()))) {
+            return super.doExecute(req, renderContext, resource, session, parameters, urlResolver) ;
         } else {
-            res.put("error", "fileModified");
+            res.put("error", Messages.get(resource.getNode().getResolveSite().getTemplatePackage(), "jnt_editableFile.must.reload", renderContext.getUILocale()));
             return new ActionResult(HttpServletResponse.SC_OK, null, new JSONObject(res));
         }
     }
-
 }

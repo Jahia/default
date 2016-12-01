@@ -110,7 +110,8 @@
 
         <jcr:filter var="currentList" list="${moduleMap.currentList}" types="${allowedTypes}"/>
         <c:set value="${currentList}" target="${moduleMap}" property="currentList"/>
-        <c:set target="${moduleMap}" property="end" value="${fn:length(moduleMap.currentList)}" />
+        <c:set var="isEndSet" value="${!empty moduleMap.end and moduleMap.end > 0}"/>
+        <c:set target="${moduleMap}" property="end" value="${isEndSet?moduleMap.end:(fn:length(moduleMap.currentList))}" />
         <c:set target="${moduleMap}" property="listTotalSize" value="${moduleMap.end}" />
     </c:if>
 </c:if>

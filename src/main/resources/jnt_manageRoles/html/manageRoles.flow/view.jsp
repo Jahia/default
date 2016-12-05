@@ -20,7 +20,7 @@
     function revokeRole(principal,role) {
         if(confirm('<fmt:message key="default.manageRoles.revokeRole.confirm" />')) {
             $('#role').val(role);
-            $('#principal').val(principal);
+            $('#principal').val(encodeURIComponent(principal));
             $('#event').attr('name','_eventId_revokeRole');
             $('#roleForm').submit();
         }
@@ -68,7 +68,7 @@
 
                             <td>
                                 <button style="margin-bottom:0;" class="btn btn-danger btn-small"
-                                        onclick="revokeRole('${functions:escapeJavaScript(principalKey)}','${entry.key.name}')">
+                                        onclick="revokeRole('${fn:escapeXml(functions:escapeJavaScript(principalKey))}','${entry.key.name}')">
                                     <i class="icon-remove icon-white"></i>
                                 </button>
                             </td>

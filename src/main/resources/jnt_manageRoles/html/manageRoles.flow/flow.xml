@@ -24,7 +24,7 @@
 
         <transition on="revokeRole" to="theEnd">
             <evaluate expression="flowHandler.setRole(requestParameters.role)" />
-            <evaluate expression="flowHandler.revokeRole(requestParameters.principal, messageContext)" />
+            <evaluate expression="flowHandler.revokeRole(T(org.jahia.utils.WebUtils).urlDecode(requestParameters.principal), messageContext)" />
         </transition>
 
 
@@ -47,8 +47,8 @@
             <evaluate expression="'groups'" result="flowHandler.searchType"/>
         </transition>
         <transition on="save" to="theEnd" validate="false">
-            <evaluate expression="flowHandler.revokeRole(requestParameters.removedMembers, messageContext)" />
-            <evaluate expression="flowHandler.grantRole(requestParameters.addedMembers, messageContext)"/>
+            <evaluate expression="flowHandler.revokeRole(flowHandler.urlDecode(requestParameters.removedMembers), messageContext)" />
+            <evaluate expression="flowHandler.grantRole(flowHandler.urlDecode(requestParameters.addedMembers), messageContext)"/>
         </transition>
 
     </view-state>

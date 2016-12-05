@@ -48,7 +48,7 @@
         $(".selectedMember").change(function(event) {
             v = $(this).val();
 
-            name = '${prefix}' + $(this).attr('value');
+            name = encodeURIComponent('${prefix}' + $(this).attr('value'));
             if ($(this).is(':checked')) {
                 if (removedMembers.indexOf(name) > -1) {
                     removedMembers.splice(removedMembers.indexOf(name),1)
@@ -197,7 +197,7 @@
             <c:otherwise>
                 <c:forEach items="${principals}" var="principal" end="${memberDisplayLimit - 1}" varStatus="loopStatus">
                     <tr>
-                        <td><input class="selectedMember" type="checkbox" name="selectedMembers" value="${principal.name}" ${functions:contains(members, principal) ? 'checked="checked"' : ''}/> </td>
+                        <td><input class="selectedMember" type="checkbox" name="selectedMembers" value="${fn:escapeXml(principal.name)}" ${functions:contains(members, principal) ? 'checked="checked"' : ''}/> </td>
                         <td>
                                 ${fn:escapeXml(user:displayName(principal))}
                         </td>

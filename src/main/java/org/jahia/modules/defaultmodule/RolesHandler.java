@@ -51,6 +51,7 @@ import org.jahia.services.render.RenderContext;
 import org.jahia.services.usermanager.JahiaGroupManagerService;
 import org.jahia.services.usermanager.JahiaUserManagerService;
 import org.jahia.services.usermanager.SearchCriteria;
+import org.jahia.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -312,4 +313,23 @@ public class RolesHandler implements Serializable {
         return searchType;
     }
 
+    /**
+     * Decodes the provided parameter values.
+     * 
+     * @param params
+     *            the values to be decoded
+     * @return the array of decoded values
+     */
+    public String[] urlDecode(String[] params) {
+        if (params == null || params.length == 0) {
+            return params;
+        }
+
+        String[] decoded = new String[params.length];
+        for (int i = 0; i < params.length; i++) {
+            decoded[i] = WebUtils.urlDecode(params[i]);
+        }
+
+        return decoded;
+    }
 }

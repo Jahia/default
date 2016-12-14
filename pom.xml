@@ -49,11 +49,11 @@
     <parent>
         <groupId>org.jahia.modules</groupId>
         <artifactId>jahia-modules</artifactId>
-        <version>7.2.0.0-SNAPSHOT</version>
+        <version>7.2.0.0</version>
 		<relativePath />
     </parent>
     <artifactId>default</artifactId>
-	<version>7.2.0-SNAPSHOT</version>
+	<version>7.2.0</version>
     <packaging>bundle</packaging>
     <name>Default Jahia Templates</name>
     <description>These are the custom templates for running on a Jahia server.</description>
@@ -61,7 +61,7 @@
         <connection>scm:git:git@github.com:Jahia/default.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/default.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/default.git</url>
-      <tag>HEAD</tag>
+      <tag>7_2_0</tag>
   </scm>
 
     <properties>

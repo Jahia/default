@@ -23,7 +23,7 @@
  - j:layoutID (string) nofulltext
 
 
-[jnt:navMenuText] > jnt:content, mix:title, jmix:navMenuItem
+[jnt:navMenuText] > jnt:content, mix:title, jmix:navMenuItem, jmix:visibleInPagesTree
  orderable
  + * (jmix:navMenuItem)
 

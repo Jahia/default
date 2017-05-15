@@ -40,8 +40,10 @@
                         </div>
                     </c:if>
                     <c:if test="${jcr:hasPermission(subchild,'jcr:removeNode')}">
+                        <c:set var="targetNodeJcrPath" value="${targetNode.path}"/>
                         <c:url var="urlNodePath" value="${url.base}${currentNode.path}.html.ajax">
-                            <c:param name="targetNodePath" value="${targetNode.path}"/>
+                            <c:param name="targetNodePath" value="${targetNodeJcrPath}"/>
+                            <c:param name="mainResource" value="${targetNodeJcrPath}.html"/>
                         </c:url>
                         <form action="<c:url value='${url.base}${subchild.path}'/>" method="post"
                               id="jahia-wiki-item-delete-${subchild.UUID}">

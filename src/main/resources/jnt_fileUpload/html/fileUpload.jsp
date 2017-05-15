@@ -34,15 +34,17 @@ $(document).ready(function() {
     <c:set var="targetNode" value="${currentNode.properties.target.node}"/>
 </c:if>
 <c:if test="${jcr:isAllowedChildNodeType(targetNode, 'jnt:file')}">
+	<c:set var="targetNodeJcrPath" value="${targetNode.path}"/>
     <template:tokenizedForm  allowsMultipleSubmits="true" >
-    <form class="file_upload" id="file_upload${currentNode.identifier}" action="<c:url value='${url.base}${targetNode.path}'/>" method="POST" enctype="multipart/form-data"  accept="application/json">
+    <form class="file_upload" id="file_upload${currentNode.identifier}" action="<c:url value='${url.base}${targetNodeJcrPath}'/>" method="POST" enctype="multipart/form-data"  accept="application/json">
         <div id="file_upload_container">
             <input type="file" name="file" multiple>
             <button><fmt:message key="label.upload"/></button>
             <div id="drop-box-file-upload-${currentNode.identifier}"><fmt:message key="label.dropHere"/></div>
         </div>
         <c:url var="targetNodePath" value="${url.base}${linked.path}.html.ajax">
-            <c:param name="targetNodePath" value="${targetNode.path}"/>
+            <c:param name="targetNodePath" value="${targetNodeJcrPath}"/>
+            <c:param name="mainResource" value="${targetNodeJcrPath}.html"/>
         </c:url>
 
     </form>

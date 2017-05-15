@@ -52,8 +52,10 @@
                                     </c:otherwise>
                                 </c:choose>
                                 <script type="text/javascript">
+                                	<c:set var="targetNodeJcrPath" value="${targetNode.path}"/>
                                     <c:url var="urlPath" value="${url.base}${currentNode.path}.html.ajax">
-                                    <c:param name="targetNodePath" value="${targetNode.path}"/>
+                                        <c:param name="targetNodePath" value="${targetNodeJcrPath}"/>
+                                    	<c:param name="mainResource" value="${targetNodeJcrPath}.html"/>
                                     </c:url>
                                     $(document).ready(function() {
                                         // bind 'myForm' and provide a simple callback function

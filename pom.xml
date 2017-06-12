@@ -50,10 +50,10 @@
         <groupId>org.jahia.modules</groupId>
         <artifactId>jahia-modules</artifactId>
         <version>7.2.1.0-SNAPSHOT</version>
-		<relativePath />
+        <relativePath />
     </parent>
     <artifactId>default</artifactId>
-	<version>7.2.2-SNAPSHOT</version>
+    <version>7.2.2-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Default Jahia Templates</name>
     <description>These are the custom templates for running on a Jahia server.</description>
@@ -66,7 +66,7 @@
 
     <properties>
         <jahia-depends>assets</jahia-depends>
-		<jahia-depends-skip-require-capability>assets</jahia-depends-skip-require-capability>
+        <jahia-depends-skip-require-capability>assets</jahia-depends-skip-require-capability>
         <export-package>org.jahia.modules.osgi</export-package>
         <jahia-module-type>system</jahia-module-type>
     </properties>

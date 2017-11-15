@@ -93,24 +93,24 @@
 <div class="page-header">
     <h2>Role: ${role}</h2>
 </div>
-            
-<div>
-    <form action="${flowExecutionUrl}" method="post" style="display: inline;">
-        <div>
-            <button class="btn btn-default btn-sm btn-primary" type="submit" name="_eventId_rolesList">
-                <fmt:message key="default.manageRoles.backToRoles"/>
-            </button>
-            <button class="btn btn-default ${displayUsers} btn-sm btn-primary" type="submit" name="_eventId_users">
-                <fmt:message key="label.users"/>
-            </button>
-            <button class="btn btn-default ${displayGroups} btn-sm btn-primary" type="submit" name="_eventId_groups">
-                <fmt:message key="label.groups"/>
-            </button>
-        </div>
-    </form>
-</div>
 
 <div class="panel panel-default">
+    <div class="panel-heading">
+        <form action="${flowExecutionUrl}" method="post" style="display: inline;">
+            <div>
+                <button class="btn btn-default btn-sm btn-primary" type="submit" name="_eventId_rolesList">
+                    <fmt:message key="default.manageRoles.backToRoles"/>
+                </button>
+                <button class="btn btn-default ${displayUsers} btn-sm btn-primary" type="submit" name="_eventId_users">
+                    <fmt:message key="label.users"/>
+                </button>
+                <button class="btn btn-default ${displayGroups} btn-sm btn-primary" type="submit" name="_eventId_groups">
+                    <fmt:message key="label.groups"/>
+                </button>
+            </div>
+        </form>
+    </div>
+
     <div class="panel-body">
         <form class="form-inline " action="${flowExecutionUrl}" id="searchForm" method="post">
             <input type="hidden" id="searchIn" name="searchIn" value="allProps"/>

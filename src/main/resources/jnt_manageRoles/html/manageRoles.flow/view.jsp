@@ -5,10 +5,6 @@
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 
-<h2>
-    ${currentNode.properties['jcr:title'].string}
-</h2>
-
 <script type="text/javascript">
 
     function grantRole(role) {

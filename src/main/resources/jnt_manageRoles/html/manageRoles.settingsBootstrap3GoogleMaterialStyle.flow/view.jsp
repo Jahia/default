@@ -37,7 +37,6 @@
     <c:forEach items="${roles}" var="entry" >
 
         <div class="panel panel-default">
-            <fieldset>
                 <div class="panel-heading">
                     ${entry.key.displayableName}
                 </div>
@@ -46,6 +45,7 @@
                     <table class="table table-bordered table-striped table-hover">
                         <thead>
                         <th width="3%">#</th>
+                        <th width="16px">&nbsp;</th>
                         <th width="25%"><fmt:message key="label.name"/></th>
                         <th><fmt:message key="label.properties"/></th>
                         <th width="15%"><fmt:message key="label.actions"/></th>
@@ -58,6 +58,9 @@
                             <tr>
                                 <td>
                                         ${loopStatus.count}
+                                </td>
+                                <td>
+                                    <img src="<c:url value='/modules/assets/css/img/${principalIcon}.png'/>" alt="${principalType}"/>
                                 </td>
                                 <td>
                                         ${fn:escapeXml(user:displayName(member))}
@@ -81,7 +84,6 @@
                         </button>
                     </span>
                 </div>
-            </fieldset>
 
         </div>
     </c:forEach>

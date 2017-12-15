@@ -98,13 +98,13 @@
     <div class="panel-heading">
         <form action="${flowExecutionUrl}" method="post" style="display: inline;">
             <div>
-                <button class="btn btn-default btn-sm btn-primary" type="submit" name="_eventId_rolesList">
+                <button class="btn btn-default btn-primary" type="submit" name="_eventId_rolesList">
                     <fmt:message key="default.manageRoles.backToRoles"/>
                 </button>
-                <button class="btn btn-default ${displayUsers} btn-sm btn-primary" type="submit" name="_eventId_users">
+                <button class="btn btn-default ${displayUsers} btn-primary" type="submit" name="_eventId_users">
                     <fmt:message key="label.users"/>
                 </button>
-                <button class="btn btn-default ${displayGroups} btn-sm btn-primary" type="submit" name="_eventId_groups">
+                <button class="btn btn-default ${displayGroups} btn-primary" type="submit" name="_eventId_groups">
                     <fmt:message key="label.groups"/>
                 </button>
             </div>

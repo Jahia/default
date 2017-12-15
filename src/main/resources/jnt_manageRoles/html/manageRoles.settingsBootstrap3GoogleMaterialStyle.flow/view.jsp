@@ -53,14 +53,14 @@
                         <tbody>
                         <c:forEach items="${entry.value}" var="member" varStatus="loopStatus">
                             <c:set var="principalType" value="${jcr:isNodeType(member,'jnt:user')?'u':'g'}"/>
-                            <c:set var="principalIcon" value="${principalType == 'u' ? 'icon-user-small' : 'icon-group-small'}"/>
+                            <c:set var="principalIcon" value="${principalType == 'u' ? 'person' : 'people'}"/>
                             <c:set var="principalKey" value="${principalType}:${member.name}"/>
                             <tr>
                                 <td>
                                         ${loopStatus.count}
                                 </td>
                                 <td>
-                                    <img src="<c:url value='/modules/assets/css/img/${principalIcon}.png'/>" alt="${principalType}"/>
+                                    <i class="material-icons" style="vertical-align:middle">${principalIcon}</i>
                                 </td>
                                 <td>
                                         ${fn:escapeXml(user:displayName(member))}
@@ -79,7 +79,7 @@
                         </tbody>
                     </table>
                     <span class="input-group-btn">
-                        <button class="btn btn-sm btn-primary" onclick="grantRole('${entry.key.name}')">
+                        <button class="btn btn-primary" onclick="grantRole('${entry.key.name}')">
                             <fmt:message key='label.members' />
                         </button>
                     </span>

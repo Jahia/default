@@ -1,3 +1,4 @@
+<%@ page import="org.jahia.osgi.BundleUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
@@ -15,6 +16,10 @@
 <c:set var="nodeTypes" value="${functions:default(currentResource.moduleParams.nodeTypes, param.nodeTypes)}"/>
 <json:array name="${currentResource.moduleParams.arrayName}">
 	<c:forEach items="${not empty nodeTypes ? jcr:getChildrenOfType(currentNode, nodeTypes) : currentNode.nodes}" var="child">
-	    <template:module node="${child}" templateType="json" editable="false" view="treeItem"/>
+		<c:catch>
+			<template:module node="${child}" templateType="json" editable="false" view="treeItem">
+				<template:param name="forcePermissionFilterCheck" value="true"/>
+			</template:module>
+		</c:catch>
 	</c:forEach>
 </json:array>

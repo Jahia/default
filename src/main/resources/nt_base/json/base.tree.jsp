@@ -1,4 +1,3 @@
-<%@ page import="org.jahia.osgi.BundleUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>

@@ -19,6 +19,11 @@
     </c:if>
     <img src="${url}" alt="${fn:escapeXml(not empty title.string ? title.string : currentNode.name)}" <c:out value="${height} ${width}" escapeXml="false"/> />
 </c:if>
-<c:if test="${empty node and renderContext.editMode}">
-    <fmt:message key="label.missingReference"/>
+<c:if test="${empty node}">
+    <c:if test="${not empty reference}">
+        <jahia:addCacheDependency path="${reference.string}" />
+    </c:if>
+    <c:if test="${renderContext.editMode}">
+        <fmt:message key="label.missingReference"/>
+    </c:if>
 </c:if>

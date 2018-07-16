@@ -36,7 +36,7 @@
 <c:if test="${not empty boundComponent}">
     <a name="addComments"></a>
 
-    <template:tokenizedForm>
+    <template:tokenizedForm disableXSSFiltering="true">
         <form action="<c:url value='${url.base}${boundComponent.path}.addComment.do'/>" method="post" id="newCommentForm">
             <input type="hidden" name="jcrNodeType" value="jnt:post"/>
             <input type="hidden" name="jcrRedirectTo" value="<c:url value='${url.base}${renderContext.mainResource.node.path}'/>"/>

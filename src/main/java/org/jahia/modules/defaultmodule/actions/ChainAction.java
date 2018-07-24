@@ -43,6 +43,7 @@
  */
 package org.jahia.modules.defaultmodule.actions;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.jahia.bin.*;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.render.RenderContext;
@@ -52,7 +53,7 @@ import org.jahia.services.render.URLResolverFactory;
 import org.jahia.services.templates.JahiaTemplateManagerService;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.jcr.AccessDeniedException;
+import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -93,24 +94,22 @@ public class ChainAction extends Action implements InitializingBean {
                                   Resource resource, JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver)
             throws Exception {
         List<String> chainOfactions = parameters.get(CHAIN_OF_ACTION);
-        if (chainOfactions != null) {
+        if (chainOfactions != null && StringUtils.isNotEmpty(chainOfactions.get(0))) {
             String[] actions = chainOfactions.get(0).split(",");
             Map<String, Action> actionsMap = templateService.getActions();
             ActionResult result = null;
             String path = null;
             for (String actionToDo : actions) {
                 if (DefaultPostAction.ACTION_NAME.equals(actionToDo)) {
+                    checkRequirements(defaultPostAction, renderContext, urlResolver, session);
                     String s = urlResolver.getUrlPathInfo().replace(".chain.do", "/*");
                     URLResolver resolver = urlResolverFactory.createURLResolver(s,req.getServerName(), req);
                     resolver.setSiteKey(urlResolver.getSiteKey());
                     result = defaultPostAction.doExecute(req, renderContext, resource, session, parameters, resolver);
                 } else {
                     Action action = actionsMap.get(actionToDo);
-                    if (action.getRequiredPermission() == null || resource.getNode().hasPermission(action.getRequiredPermission())) {
-                        result = action.doExecute(req, renderContext, resource, session, parameters, urlResolver);
-                    } else {
-                        throw new AccessDeniedException();
-                    }
+                    checkRequirements(action, renderContext, urlResolver, session);
+                    result = action.doExecute(req, renderContext, resource, session, parameters, urlResolver);
                     if (actionToDo.equals("redirect") && result != null && result.getUrl() != null) {
                     	path = result.getUrl();
                     }                    
@@ -122,6 +121,15 @@ public class ChainAction extends Action implements InitializingBean {
             return result;
         }
         return ActionResult.BAD_REQUEST;
+    }
+
+    private void checkRequirements(Action action, RenderContext renderContext, URLResolver urlResolver,
+            JCRSessionWrapper session) throws RepositoryException {
+        // check that the action is not executed as SystemAction
+        if (!session.isSystem()) {
+            // not a system action -> check all the requirements
+            Render.checkActionRequirements(action, renderContext, urlResolver);
+        }
     }
 
     /**

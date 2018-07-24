@@ -40,6 +40,7 @@
                 <property name="loggingService" ref="loggingService"/>
             </bean>
         </property>
+        <property name="requireAuthenticatedUser" value="${jahia.chainAction.requireAuthenticatedUser:false}"/>
     </bean>
     
     <bean class="org.apache.camel.spring.CamelBeanPostProcessor">

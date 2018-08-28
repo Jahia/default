@@ -8,6 +8,10 @@
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
 <c:if test="${renderContext.editMode}">
-    <p>no render set for node : ${currentNode.name}</p>
-    <p>for types : ${fn:escapeXml(currentNode.nodeTypes)}</p>
+    <p>
+    <fmt:message key="message.noRenderSetForNode">
+        <fmt:param value="${fn:escapeXml(currentNode.name)}"/>
+        <fmt:param value="${fn:escapeXml(currentNode.nodeTypes)}"/>
+    </fmt:message>
+    </p>
 </c:if>

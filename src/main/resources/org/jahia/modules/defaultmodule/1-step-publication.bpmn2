@@ -218,7 +218,7 @@
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18" language="http://www.java.com/java">return publicationOutcome.equals(&quot;accept&quot;);
             </bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:sequenceFlow id="SequenceFlow_31" drools:priority="1" name="reject" sourceRef="ExclusiveGateway_1" targetRef="Task_14">
+    <bpmn2:sequenceFlow id="SequenceFlow_31" drools:priority="2" name="reject" sourceRef="ExclusiveGateway_1" targetRef="Task_14">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19" language="http://www.java.com/java">return publicationOutcome.equals(&quot;reject&quot;);
             </bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>

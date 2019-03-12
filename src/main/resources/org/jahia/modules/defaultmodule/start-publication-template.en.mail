@@ -20,7 +20,27 @@ html: Hello,
     <ul>
         #foreach( $node in $nodes )
             #if( $velocityCount <= 10)
-                <li>#if( $node.getDisplayableName().length() > 100) ${node.getDisplayableName().substring(0, 100)}... #{else} $node.getDisplayableName() #end (${node.getPath()})</li>
+                ##Format display name if it is greater than 100 characters
+                #define( $displayName )
+                    #if( $node.getDisplayableName().length() > 100) ${node.getDisplayableName().substring(0, 100)}...
+                    #{else} $node.getDisplayableName()
+                    #end
+                #end
+                ##Determine the "open in" link title
+                #if ( $site.getSiteKey() == "systemsite" )
+                    #define( $openIn ) Open in Content and Media Manager #end
+                #else
+                    #define( $openIn )
+                        #define( $fileCheck) $site.getSiteKey()/file/ #end
+                        #define( $contentCheck) $site.getSiteKey()/contents/ #end
+                        #if( $node.getPath().indexOf($fileCheck) || $node.getPath().indexOf($contentCheck))
+                            Open in Content and Media Manager
+                        #else
+                            Open in Edit Mode
+                        #end
+                    #end
+                #end
+                <li>${displayName} (${JCRContentUtils.getDisplayLabel($node.getPrimaryNodeType(), $locale, $node.getPrimaryNodeType())}) <a href="${node.getPath()}">$openIn</a></li>
             #end
         #end
     </ul>

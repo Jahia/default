@@ -38,12 +38,16 @@ html: Hello,
                             Open in Content and Media Manager
                         #else
                             Open in Edit Mode
+                            #set( $displayableNode = $JCRContentUtils.findDisplayableNode($node, $renderContext))
+                            #define( $previewLink ) - <a href="${previewPrefix}${displayableNode.getPath()}.html">Preview</a> #end
                         #end
                     #end
                 #end
-                <li>${displayName} (${JCRContentUtils.getDisplayLabel($node.getPrimaryNodeType(), $locale, $node.getPrimaryNodeType())}) <a href="${node.getPath()}">$openIn</a></li>
+                #set( $displayableLabel = ${JCRContentUtils.getDisplayLabel($node.getPrimaryNodeType(), $locale, $node.getPrimaryNodeType())} )
+                <li>${displayName} ($displayableLabel) <a href="${node.getPath()}">$openIn</a>$previewLink</li>
             #end
         #end
+        #if ($nodes.size() > 10) <li>...</li> #end
     </ul>
     <br>
 </div>

@@ -17,34 +17,48 @@ html: Hello,
     A publication workflow with one validation step has been started on ${date.format("short","short",$submissionDate,$locale)} by ${currentUser.getName()}, on the following items :
 </div>
 
-#set( $fileCheck = "/$site.getSiteKey()/file/" )
+#set( $fileCheck = "/$site.getSiteKey()/files/" )
 #set( $contentCheck = "/$site.getSiteKey()/contents/" )
+#set( $replace = "/sites/$site.getSiteKey()")
 <div>
     <ul>
         #foreach( $node in $nodes )
             #if( $velocityCount <= 10)
                 ##Format display name if it is greater than 100 characters
                 #define( $displayName )
-                    #if( $node.getDisplayableName().length() > 100) ${node.getDisplayableName().substring(0, 100)}...
-                    #{else} $node.getDisplayableName()
+                    #if( $node.getDisplayableName().length() > 100)
+                        ${node.getDisplayableName().substring(0, 100)}...
+                    #{else}
+                        $node.getDisplayableName()
                     #end
                 #end
-                ##Determine the "open in" link title
-                #if ( $site.getSiteKey() == "systemsite" )
-                    #define( $openIn ) Open in Content and Media Manager #end
+                ##Determine the "open in" link (Open in Edit Mode OR Open in Content Media Manager)
+                #if ( $site.getSiteKey() == "systemsite" || $node.getPath().indexOf($fileCheck) != -1 || $node.getPath().indexOf($contentCheck) != -1 )
+                    #define( $openIn )
+                        ##Determine which route will be used
+                        #if ( $node.getPath().indexOf($fileCheck) != -1 )
+                            #set( $prefix = "$cmmPrefix/browse-files")
+                        #{else}
+                            #set( $prefix = "$cmmPrefix/browse")
+                        #end
+                        ##We need to use the folder path when opening CMM. Check if this node is a folder,
+                        ##otherwise get the parent node which will be a folder.
+                        #if( $JCRContentUtils.isNodeType($node, "jnt:folder") )
+                            #set( $contentNodePath = "$prefix$node.getPath().replace($replace, '')" )
+                        #{else}
+                            #set( $contentNodePath = "$prefix$node.getParent().getPath().replace($replace, '')" )
+                        #end
+                        <a href="$contentNodePath">Open in Content and Media Manager</a>
+                    #end
                 #else
                     #define( $openIn )
-                        #if( $node.getPath().indexOf($fileCheck) != -1 || $node.getPath().indexOf($contentCheck) != -1)
-                            Open in Content and Media Manager
-                        #else
-                            Open in Edit Mode
-                            #set( $displayableNode = $JCRContentUtils.findDisplayableNode($node, $renderContext))
-                            #define( $previewLink ) - <a href="${previewPrefix}${displayableNode.getPath()}.html">Preview</a> #end
-                        #end
+                        #set( $displayableNode = $JCRContentUtils.findDisplayableNode($node, $renderContext))
+                        #define( $previewLink ) - <a href="${previewPrefix}${displayableNode.getPath()}.html">Preview</a> #end
+                        <a href="${editPrefix}${displayableNode.getPath()}.html">Open in Edit Mode</a>
                     #end
                 #end
                 #set( $displayableLabel = ${JCRContentUtils.getDisplayLabel($node.getPrimaryNodeType(), $locale, $node.getPrimaryNodeType())} )
-                <li>${displayName} ($displayableLabel) <a href="${node.getPath()}">$openIn</a>$previewLink</li>
+                <li>${displayName} (${displayableLabel}) ${openIn} #if( $previewLink ) $previewLink #end</li>
             #end
         #end
         #if ($nodes.size() > 10) <li>...</li> #end

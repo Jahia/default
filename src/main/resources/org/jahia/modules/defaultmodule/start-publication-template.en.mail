@@ -41,8 +41,10 @@ html: Hello,
                         #{else}
                             #set( $prefix = "$cmmPrefix/browse")
                         #end
-                        ##We need to use the folder path when opening CMM. Check if this node is a folder,
-                        ##otherwise get the parent node which will be a folder.
+                        #**
+                            We need to use the folder path when opening CMM. Check if this node is a folder,
+                            otherwise get the parent node which will be a folder.
+                        *#
                         #if( $JCRContentUtils.isNodeType($node, "jnt:folder") )
                             #set( $contentNodePath = "$prefix$node.getPath().replace($replace, '')" )
                         #{else}

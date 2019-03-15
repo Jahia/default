@@ -1,6 +1,6 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
 to-users: assignableFor(review)
-subject: Publication workflow by ${currentUser.getName()}
+subject: Publication request by ${PrincipalViewHelper.getFullName($currentUser)} for $site.getDisplayableName()
 text: Hello,
 
 A publication workflow with one validation step has been started on ${date.format("short","short",$submissionDate,$locale)} by ${currentUser.getName()}, on the following items :

@@ -14,7 +14,7 @@ html: Hello,
 <br>
 <br>
 <div>
-    ${PrincipalViewHelper.getFullName($currentUser)} has requested the publication of $publicationCount items for $site.getDisplayableName() ($site.getServerName()) on
+    ${PrincipalViewHelper.getFullName($currentUser)} has requested the publication of $publicationCount item(s) for $site.getDisplayableName() ($site.getServerName()) on
     ${date.format("short","short",$submissionDate,$locale)}:
 </div>
 

@@ -34,37 +34,44 @@ html: Hello,
                             $entry.key
                             <ul>
                                 #foreach( $nodeInfo in $entry.value )
-                                    #set( $node = $nodeInfo.get("node") )
-                                ##Determine the "open in" link (Open in Edit Mode OR Open in Content Media Manager)
-                                    #if ( $site.getSiteKey() == "systemsite" || $node.getPath().indexOf($fileCheck) != -1 || $node.getPath().indexOf($contentCheck) != -1 )
-                                        #define( $openIn )
-                                        ##Determine which route will be used
-                                            #if ( $node.getPath().indexOf($fileCheck) != -1 )
-                                                #set( $prefix = "$cmmPrefix/browse-files")
-                                            #{else}
-                                                #set( $prefix = "$cmmPrefix/browse")
-                                            #end
-                                        #**
-                                         We need to use the folder path when opening CMM. Check if this node is a folder,
-                                         otherwise get the parent node which will be a folder.
-                                         *#
-                                            #if( $node.isNodeType("nt:folder") )
-                                                #set( $contentNodePath = "$prefix$node.getPath().replace($replace, '')" )
-                                            #{else}
-                                                #set( $contentNodePath = "$prefix$node.getParent().getPath().replace($replace, '')" )
-                                            #end
-                                            <a href="$contentNodePath">Open in Content and Media Manager</a>
-                                        #end
+                                    ##If the node status is DELETED use alternate rendering, as we do not have access to the node
+                                    #if( $nodeInfo.get("status") == 11 )
+                                        <li>
+                                            ${nodeInfo.get("displayableName")} (${nodeInfo.get("type")}) - (${nodeInfo.get("path")})
+                                        </li>
                                     #else
-                                        #define( $openIn )
-                                            #set( $displayablePath = $nodeInfo.get("displayablePath") )
-                                            #define( $previewLink ) - <a href="${previewPrefix}${displayablePath}.html">Preview</a> #end
-                                            <a href="${editPrefix}${displayablePath}.html">Open in Edit Mode</a>
+                                        #set( $node = $nodeInfo.get("node") )
+                                        ##Determine the "open in" link (Open in Edit Mode OR Open in Content Media Manager)
+                                        #if ( $site.getSiteKey() == "systemsite" || $node.getPath().indexOf($fileCheck) != -1 || $node.getPath().indexOf($contentCheck) != -1 )
+                                            #define( $openIn )
+                                            ##Determine which route will be used
+                                                #if ( $node.getPath().indexOf($fileCheck) != -1 )
+                                                    #set( $prefix = "$cmmPrefix/browse-files")
+                                                #{else}
+                                                    #set( $prefix = "$cmmPrefix/browse")
+                                                #end
+                                            #**
+                                             We need to use the folder path when opening CMM. Check if this node is a folder,
+                                             otherwise get the parent node which will be a folder.
+                                             *#
+                                                #if( $node.isNodeType("nt:folder") )
+                                                    #set( $contentNodePath = "$prefix$node.getPath().replace($replace, '')" )
+                                                #{else}
+                                                    #set( $contentNodePath = "$prefix$node.getParent().getPath().replace($replace, '')" )
+                                                #end
+                                                <a href="$contentNodePath">Open in Content and Media Manager</a>
+                                            #end
+                                        #else
+                                            #define( $openIn )
+                                                #set( $displayablePath = $nodeInfo.get("displayablePath") )
+                                                #define( $previewLink ) - <a href="${previewPrefix}${displayablePath}.html">Preview</a> #end
+                                                <a href="${editPrefix}${displayablePath}.html">Open in Edit Mode</a>
+                                            #end
                                         #end
+                                        <li>
+                                            ${nodeInfo.get("displayableName")} (${nodeInfo.get("type")}) ${openIn} #if( $previewLink ) $previewLink #end
+                                        </li>
                                     #end
-                                    <li>
-                                        ${nodeInfo.get("displayableName")} (${nodeInfo.get("type")}) ${openIn} #if( $previewLink ) $previewLink #end
-                                    </li>
                                 #end
                             </ul>
                         </li>

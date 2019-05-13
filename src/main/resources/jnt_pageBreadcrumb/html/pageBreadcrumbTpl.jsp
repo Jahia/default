@@ -13,10 +13,10 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <c:set var="pageNodes" value="${jcr:getParentsOfType(currentNode, 'jnt:page')}"/>
-<jcr:nodeProperty node="${currentNode}" name="displayHome" var="displayHome"/>
-<jcr:nodeProperty node="${currentNode}" name="displayCurrentPage" var="displayCurrentPage"/>
-<jcr:nodeProperty node="${currentNode}" name="displayLinkOnCurrentPage" var="displayLinkOnCurrentPage"/>
-<jcr:nodeProperty node="${currentNode}" name="displayOnFirstLevel" var="displayOnFirstLevel"/>
+<c:set var="displayHome" value="${functions:default(currentNode.properties['displayHome'].boolean, true)}"/>
+<c:set var="displayCurrentPage" value="${functions:default(currentNode.properties['displayCurrentPage'].boolean, true)}"/>
+<c:set var="displayLinkOnCurrentPage" value="${functions:default(currentNode.properties['displayLinkOnCurrentPage'].boolean, false)}"/>
+<c:set var="displayOnFirstLevel" value="${functions:default(currentNode.properties['displayOnFirstLevel'].boolean, false)}"/>
 <c:if test="${empty pageNodes}">
     <c:choose>
         <c:when test="${jcr:isNodeType(renderContext.mainResource.node, 'jnt:page')}">
@@ -27,17 +27,17 @@
         </c:otherwise>
     </c:choose>
 </c:if>
-<c:if test="${displayOnFirstLevel.boolean || fn:length(pageNodes) > 1}">
+<c:if test="${displayOnFirstLevel || fn:length(pageNodes) > 1}">
     <ul class="breadcrumb">
         <c:forEach items="${functions:reverse(pageNodes)}"
                    var="pageNode" varStatus="status">
             <c:set var="displayPage" value="true"/>
             <c:choose>
-                <c:when test="${status.first && !displayHome.boolean}">
+                <c:when test="${status.first && !displayHome}">
                     <c:set var="displayPage" value="false"/>
                 </c:when>
                 <c:when
-                        test="${status.last && !displayCurrentPage.boolean}">
+                        test="${status.last && !displayCurrentPage}">
                     <c:set var="displayPage" value="false"/>
                 </c:when>
             </c:choose>
@@ -49,7 +49,7 @@
                                 <c:out value="${pageNode.properties['jcr:title'].string}" />
                             </a>
                         </c:when>
-                        <c:when test="${renderContext.mainResource.node.path ne pageNode.path || displayLinkOnCurrentPage.boolean}">
+                        <c:when test="${renderContext.mainResource.node.path ne pageNode.path || displayLinkOnCurrentPage}">
                             <a href="<c:url value='${url.base}${pageNode.path}.html'/>">
                                 <c:out value="${pageNode.properties['jcr:title'].string}" />
                             </a>
@@ -64,7 +64,7 @@
         <c:if test="${not jcr:isNodeType(renderContext.mainResource.node, 'jnt:page')}">
             <c:set var="pageNode" value="${renderContext.mainResource.node}"/>
             <li>
-                <c:if test="${displayLinkOnCurrentPage.boolean}">
+                <c:if test="${displayLinkOnCurrentPage}">
                     <a href="<c:url value='${url.base}${pageNode.path}.html'/>">
                 </c:if>
                     <c:choose>
@@ -75,7 +75,7 @@
                             <c:out value="${functions:abbreviate(renderContext.mainResource.node.displayableName,15,30,'...')}" />
                         </c:otherwise>
                     </c:choose>
-                <c:if test="${displayLinkOnCurrentPage.boolean}">
+                <c:if test="${displayLinkOnCurrentPage}">
                     </a>
                 </c:if>
             </li>

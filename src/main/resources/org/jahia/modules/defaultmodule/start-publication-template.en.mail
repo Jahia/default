@@ -92,10 +92,10 @@ html:
                                         <tbody>
                                         #set($cpt = 0)
                                         #foreach ($entry in $publications.entrySet())
-                                            #set($cpt = $velocityCount)
                                             #if ($entry.value.size() > 0)
                                                 #foreach ($nodeInfo in $entry.value)
-                                                    #if($velocityCount + $cpt < 6)
+                                                    #set($cpt = $cpt + 1)
+                                                    #if($cpt < 5)
                                                         <tr>
                                                             <td style="line-height: 48px; border-top: 1px solid rgb(224, 224, 224); width: 100%; padding: 8px; background-color: rgb(246, 250, 252);">
                                                                 <table width="70%" cellpadding="0" cellspacing="0" border="0" align="left" valign="top" style="table-layout: fixed;">
@@ -138,8 +138,9 @@ html:
                                         #end
                                         </tbody>
                                     </table>
+                                #if( $publicationCount > 4)
                                     #set($rest = $publicationCount - 4)
-                                    #if ($rest > 0)
+                                        #if ($rest > 0)
                                         <table width="100%" cellpadding="0" cellspacing="0" border="0" align="left" valign="top">
                                             <tbody>
                                                 <tr>
@@ -149,6 +150,7 @@ html:
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        #end
                                     #end
                                 </td>
                             </tr>

@@ -81,7 +81,8 @@ html:
                                 </td>
                             </tr>
                             <tr>
-                                <td><span style="font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif; font-size: 18px;font-weight: normal; line-height: 32px; color: rgb(55, 60, 66); text-align: center; margin-bottom: 8px;margin-top: 8px;">$workflowTitle</span></td>
+                                <td><span style="font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif;
+                                font-size: 18px;font-weight: normal; line-height: 32px; color: rgb(55, 60, 66); text-align: center; margin-bottom: 8px;margin-top: 8px;">$locale - Publication en une étape demandée par ${PrincipalViewHelper.getFullName($currentUser)} le ${date.format("short","short",$submissionDate,$locale)} - $publicationCount élément(s) concerné(s)</span></td>
                             </tr>
                             <tr>
                                 <td align="left">
@@ -94,10 +95,10 @@ html:
                                         <tbody>
                                         #set($cpt = 0)
                                         #foreach ($entry in $publications.entrySet())
-                                        #set($cpt = $velocityCount)
                                         #if ($entry.value.size() > 0)
                                         #foreach ($nodeInfo in $entry.value)
-                                        #if($velocityCount + $cpt < 5)
+                                        #set($cpt = $cpt + 1)
+                                        #if($cpt < 5)
                                         <tr>
                                             <td style="line-height: 48px; border-top: 1px solid rgb(224, 224, 224); width: 100%; padding: 8px; background-color: rgb(246, 250, 252);">
                                                 <table width="70%" cellpadding="0" cellspacing="0" border="0" align="left" valign="top" style="table-layout: fixed;">
@@ -140,6 +141,7 @@ html:
                             #end
                             </tbody>
                         </table>
+                        #if( $publicationCount > 4)
                         #set($rest = $publicationCount - 4)
                         #if ($rest > 0)
                         <table width="100%" cellpadding="0" cellspacing="0" border="0" align="left" valign="top">
@@ -151,6 +153,7 @@ html:
                             </tr>
                             </tbody>
                         </table>
+                        #end
                         #end
                     </td>
                 </tr>

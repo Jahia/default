@@ -126,8 +126,14 @@ html:
                                                     #foreach ($nodeInfo in $entry.value)
                                                         #set($cpt = $cpt + 1)
                                                         #if($cpt < 5)
+                                                            #if($cpt%2 == 0)
+                                                                #define ( $bgColor ) rgb(246, 250, 252) #end
+                                                            #else
+                                                                #define ( $bgColor ) rgb(255, 255, 255) #end
+                                                            #end
                                                         <tr>
-                                                            <td style="line-height: 48px; border-top: 1px solid rgb(224, 224, 224); width: 100%; padding: 8px; background-color: rgb(246, 250, 252);">
+                                                            <td style="line-height: 48px; border-top: 1px solid rgb(224, 224, 224);
+                                                                    width: 100%; padding: 8px; background-color: $bgColor;">
                                                                 <table width="70%" cellpadding="0" cellspacing="0"
                                                                        border="0" align="left" valign="top"
                                                                        style="table-layout: fixed;">
@@ -152,21 +158,24 @@ html:
                                                                        style="table-layout: fixed;">
                                                                     #if( $nodeInfo.get("status") == 12 )
                                                                         #define( $operation ) Deleted #end
+                                                                        #define ( $color ) rgb(224, 24, 45) #end
                                                                     #end
                                                                     #if( $nodeInfo.get("status") == 3 )
                                                                         #define( $operation ) Modified #end
+                                                                        #define ( $color ) rgb(235, 187, 18) #end
                                                                     #end
                                                                     #if( $nodeInfo.get("status") == 4 )
                                                                         #define( $operation ) New #end
+                                                                        #define ( $color ) rgb(14, 169, 130) #end
                                                                     #end
                                                                     #if( $nodeInfo.get("status") == 5 )
-                                                                        #define( $operation ) Previously
-                                                                            unpublished #end
+                                                                        #define( $operation ) Unpublished #end
+                                                                        #define ( $color ) rgb(82, 92, 98) #end
                                                                     #end
                                                                     <tbody>
                                                                     <tr>
                                                                         <td style="line-height: 24px; text-align: right;">
-                                                                            <span style="font-family: sans-serif; font-size: 14px; line-height: 14px; color: rgb(14, 169, 130);">$operation</span>
+                                                                            <span style="font-family: sans-serif; font-size: 14px;line-height: 14px; color: $color;">$operation</span>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>

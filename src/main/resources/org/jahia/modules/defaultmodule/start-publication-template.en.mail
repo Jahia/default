@@ -16,10 +16,7 @@ html:
     <meta charset="UTF-8">
     <title>Webpack App</title>
     <style>
-    @import url('https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap');
-    span {
-        font-family: 'Nunito Sans', cursive !important;
-    }
+        @import url('https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap');
     </style>
 </head>
 
@@ -47,8 +44,6 @@ html:
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
                                             <tr>
                                                 <td>
                                                     <table width="350px" cellpadding="0" cellspacing="0" border="0" align="left" valign="top">
@@ -80,6 +75,8 @@ html:
                                                     </table>
                                                 </td>
                                             </tr>
+                                        </tbody>
+                                    </table>
                                 </td>
                             </tr>
                             <tr>

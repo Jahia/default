@@ -81,7 +81,7 @@ html:
                                                                                       xmlns="http://www.w3.org/2000/svg"><path
                                                     d="M9.29167 0.166672H1.70833C1.10708 0.166672 0.625 0.654172 0.625 1.25001V7.75C0.625 8.34584 1.10708 8.83334 1.70833 8.83334H3.875V7.75H1.70833V2.33334H9.29167V7.75H7.125V8.83334H9.29167C9.8875 8.83334 10.375 8.34584 10.375 7.75V1.25001C10.375 0.654172 9.89292 0.166672 9.29167 0.166672V0.166672ZM5.5 3.41667L3.33333 5.58334H4.95833V8.83334H6.04167V5.58334H7.66667L5.5 3.41667V3.41667Z"
                                                     fill="white"></path></svg></span><a
-                                                    href="${editPrefix}/sites/$site.getSiteKey()/home.html"
+                                                    href="${editPrefix}/sites/$site.getSiteKey()/${site.getHome().getName()}.html"
                                                     style="color: rgb(255, 255, 255); text-decoration: none;">Ouvrir Jahia</a></td>
                                         </tr>
                                         </tbody>

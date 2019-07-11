@@ -1,6 +1,6 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
 to-users: assignableFor(review)
-subject: Publication workflow by ${currentUser.getName()}
+subject: Publication request by ${currentUser.getName()} for ${site.getDisplayableName()}
 text:Hello,
 
 A publication workflow with one validation step has been started on ${date.format("short",
@@ -106,7 +106,7 @@ html:
                             <tr>
                                 <td align="left">
                                     <p style="color: rgb(130, 136, 146); font-size: 14px; font-family: 'Nunito Sans', Helvetica, Arial, sans-serif;">$publicationCount
-                                        Item(s) involved</p>
+                                        Item(s) concerned</p>
                                 </td>
                             </tr>
                             <tr>

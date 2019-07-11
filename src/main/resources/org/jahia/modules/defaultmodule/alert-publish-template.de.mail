@@ -1,5 +1,5 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Ihre angeforderte Veröffentlichung wurde bestätigt von ${currentUser.getName()}
+subject: Veröffentlichung bestätigt von ${currentUser.getName()} für $site.getDisplayableName()
 text: Hallo,
 
 Ihre angeforderte Veröffentlichung wurde bestätigt am ${date.format(

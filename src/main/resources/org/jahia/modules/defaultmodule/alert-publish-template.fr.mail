@@ -1,5 +1,5 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Votre demande de publication a été validée par ${currentUser.getName()}
+subject: Publication validée par ${currentUser.getName()} pour $site.getDisplayableName()
 text: Bonjour,
 
 Votre demande de publication a été validée le ${date.format(

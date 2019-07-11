@@ -104,11 +104,6 @@ html:
                                 </td>
                             </tr>
                             <tr>
-                                <td><span
-                                        style="font-family: 'Nunito Sans', Helvetica, Arial, sans-serif; font-size: 18px;font-weight: normal; line-height: 32px; color: rgb(55, 60, 66); text-align: center; margin-bottom: 8px;margin-top: 8px;">$workflowTitle</span>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td align="left">
                                     <p style="color: rgb(130, 136, 146); font-size: 14px; font-family: 'Nunito Sans', Helvetica, Arial, sans-serif;">$publicationCount
                                         Item(s) concerned</p>

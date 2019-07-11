@@ -1,5 +1,5 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Publication workflow rejected by ${currentUser.getName()}
+subject:  Publication rejected by ${currentUser.getName()} for $site.getDisplayableName()
 text: Hi,
 
 The publication of the following items has been rejected on ${date.format(

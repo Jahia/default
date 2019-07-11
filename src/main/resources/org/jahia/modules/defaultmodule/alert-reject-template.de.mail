@@ -1,5 +1,5 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Veröffentlichungsworkflow abgewiesen von ${currentUser.getName()}
+subject: Veröffentlichung abgelehnt von ${currentUser.getName()} für $site.getDisplayableName()
 text: Hi,
 
 Ein Veröffentlichungsworkflow mit einem Validierungsschritten wurde am ${date.format(

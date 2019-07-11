@@ -1,5 +1,5 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Publication refusée par ${currentUser.getName()}
+subject: Publication rejetée par ${currentUser.getName()} pour $site.getDisplayableName()
 text: Bonjour,
 
 La publication des éléments suivants a été refusée le ${date.format("short","short",$submissionDate,$locale)} par ${currentUser.getName()}

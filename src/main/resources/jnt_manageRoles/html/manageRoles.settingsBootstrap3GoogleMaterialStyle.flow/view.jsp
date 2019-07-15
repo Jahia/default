@@ -37,53 +37,57 @@
     <c:forEach items="${roles}" var="entry" >
 
         <div class="panel panel-default">
-                <div class="panel-heading">
-                    ${entry.key.displayableName}
-                </div>
-                
-                <div class="panel-body">
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead>
-                        <th width="3%">#</th>
-                        <th width="16px">&nbsp;</th>
-                        <th width="25%"><fmt:message key="label.name"/></th>
-                        <th><fmt:message key="label.properties"/></th>
-                        <th width="15%"><fmt:message key="label.actions"/></th>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${entry.value}" var="member" varStatus="loopStatus">
-                            <c:set var="principalType" value="${jcr:isNodeType(member,'jnt:user')?'u':'g'}"/>
-                            <c:set var="principalIcon" value="${principalType == 'u' ? 'person' : 'people'}"/>
-                            <c:set var="principalKey" value="${principalType}:${member.name}"/>
-                            <tr>
-                                <td>
-                                        ${loopStatus.count}
-                                </td>
-                                <td>
-                                    <i class="material-icons" style="vertical-align:middle">${principalIcon}</i>
-                                </td>
-                                <td>
-                                        ${fn:escapeXml(user:displayName(member))}
-                                </td>
-                                <td>
-                                        ${fn:escapeXml(user:fullName(member))}
-                                </td>
-    
-                                <td>
-                                    <a class="btn btn-fab btn-fab-xs btn-danger" title="<fmt:message key='label.delete'/>" href="#delete" onclick="revokeRole('${fn:escapeXml(functions:escapeJavaScript(principalKey))}','${entry.key.name}')">
-                                        <i class="material-icons">delete</i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" onclick="grantRole('${entry.key.name}')">
-                            <fmt:message key='label.members' />
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>${entry.key.displayableName}</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-primary btn-raised pull-right" onclick="grantRole('${entry.key.name}')">
+                            <fmt:message key='label.edit' />
                         </button>
-                    </span>
+                    </div>
                 </div>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <th width="3%">#</th>
+                    <th width="16px">&nbsp;</th>
+                    <th width="25%"><fmt:message key="label.username"/></th>
+                    <th><fmt:message key="label.name"/></th>
+                    <th width="15%"><fmt:message key="label.actions"/></th>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${entry.value}" var="member" varStatus="loopStatus">
+                        <c:set var="principalType" value="${jcr:isNodeType(member,'jnt:user')?'u':'g'}"/>
+                        <c:set var="principalIcon" value="${principalType == 'u' ? 'person' : 'people'}"/>
+                        <c:set var="principalKey" value="${principalType}:${member.name}"/>
+                        <tr>
+                            <td>
+                                    ${loopStatus.count}
+                            </td>
+                            <td>
+                                <i class="material-icons" style="vertical-align:middle">${principalIcon}</i>
+                            </td>
+                            <td>
+                                    ${fn:escapeXml(user:displayName(member))}
+                            </td>
+                            <td>
+                                    ${fn:escapeXml(user:fullName(member))}
+                            </td>
+
+                            <td>
+                                <a class="btn btn-fab btn-fab-xs btn-danger" title="<fmt:message key='label.delete'/>" href="#delete" onclick="revokeRole('${fn:escapeXml(functions:escapeJavaScript(principalKey))}','${entry.key.name}')">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     </c:forEach>

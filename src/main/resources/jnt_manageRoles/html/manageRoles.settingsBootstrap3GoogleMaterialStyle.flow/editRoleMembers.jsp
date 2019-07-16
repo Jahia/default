@@ -97,39 +97,15 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-md-6">
-                <h4>
-                    <form action="${flowExecutionUrl}" method="post" style="display: inline;">
-                        <button class="btn btn-default btn-fab btn-fab-mini" type="submit" name="_eventId_rolesList"
-                                data-placement="top" data-container="body"
-                                data-toggle="tooltip" data-title="<fmt:message key='default.manageRoles.backToRoles'/>">
-                            <i class="material-icons">arrow_back</i>
-                        </button>
-                    </form>
-                    <c:choose>
-                        <c:when test="${flowHandler.searchType eq 'users'}">
-                            Select users
-                        </c:when>
-                        <c:otherwise>
-                            Select groups
-                        </c:otherwise>
-                    </c:choose>
-                </h4>
+                <form action="${flowExecutionUrl}" method="post" style="display: inline;">
+                    <button class="btn btn-default btn-fab btn-fab-mini" type="submit" name="_eventId_rolesList"
+                            data-placement="top" data-container="body"
+                            data-toggle="tooltip" data-title="<fmt:message key='default.manageRoles.backToRoles'/>">
+                        <i class="material-icons">arrow_back</i>
+                    </button>
+                </form>
             </div>
             <div class="col-md-6 text-right">
-                <form action="${flowExecutionUrl}" method="post" style="display: inline;">
-                    <c:choose>
-                        <c:when test="${flowHandler.searchType eq 'users'}">
-                            <button class="btn btn-default ${displayGroups}" type="submit" name="_eventId_groups">
-                                <fmt:message key="label.groups"/>
-                            </button>
-                        </c:when>
-                        <c:otherwise>
-                            <button class="btn btn-default ${displayUsers}" type="submit" name="_eventId_users">
-                                <fmt:message key="label.users"/>
-                            </button>
-                        </c:otherwise>
-                    </c:choose>
-                </form>
                 <form action="${flowExecutionUrl}" method="post" id="saveForm" style="display: inline;">
                     <input id="addedMembers" type="hidden" name="addedMembers"/>
                     <input id="removedMembers" type="hidden" name="removedMembers"/>
@@ -145,12 +121,40 @@
     </div>
 
     <div class="panel-body">
+        <form id="switchToSelectUsersForm" action="${flowExecutionUrl}"
+              method="post" style="display: none">
+            <input type="hidden" name="_eventId_users" value="on"/>
+        </form>
+
+        <form id="switchToSelectGroupsForm" action="${flowExecutionUrl}"
+              method="post" style="display: none">
+            <input type="hidden" name="_eventId_groups" value="on"/>
+        </form>
+
+        <ul class="nav nav-tabs">
+            <li role="presentation" <c:if test="${flowHandler.searchType eq 'users'}"> class="active" </c:if> >
+                <a href="#" aria-controls="selectUsers"
+                   onclick="$('#switchToSelectUsersForm').submit();return false;"
+                   role="tab" data-toggle="tab">
+                    <fmt:message key="label.users"/>
+                </a>
+            </li>
+            <li role="presentation" <c:if test="${flowHandler.searchType eq 'groups'}"> class="active" </c:if> >
+                <a href="#selectGroups" aria-controls="selectGroups"
+                   onclick="$('#switchToSelectGroupsForm').submit();return false;"
+                   role="tab">
+                    <fmt:message key="label.groups"/>
+                </a>
+            </li>
+        </ul>
+        <br />
+
         <c:choose>
             <c:when test="${flowHandler.searchType eq 'users'}">
-                <p>Add/Remove users as members of your group.</p>
+                <p><fmt:message key="default.message.addRemoveUsers"/></p>
             </c:when>
             <c:otherwise>
-                <p>Add/Remove groups as subgroups of your group.</p>
+                <p><fmt:message key="default.message.addRemoveGroups"/></p>
             </c:otherwise>
         </c:choose>
 

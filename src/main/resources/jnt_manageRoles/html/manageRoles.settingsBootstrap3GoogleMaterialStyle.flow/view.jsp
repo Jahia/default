@@ -43,7 +43,8 @@
                         <h4>${entry.key.displayableName}</h4>
                     </div>
                     <div class="col-md-6">
-                        <button class="btn btn-primary btn-raised pull-right" onclick="grantRole('${entry.key.name}')">
+                        <button class="btn btn-primary btn-raised pull-right" data-sel-role="grantRole-${entry.key.name}"
+                                onclick="grantRole('${entry.key.name}')">
                             <fmt:message key='label.edit' />
                         </button>
                     </div>
@@ -51,7 +52,7 @@
             </div>
 
             <div class="panel-body">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" data-sel-role="${entry.key.name}-users">
                     <thead>
                     <th width="3%">#</th>
                     <th width="16px">&nbsp;</th>

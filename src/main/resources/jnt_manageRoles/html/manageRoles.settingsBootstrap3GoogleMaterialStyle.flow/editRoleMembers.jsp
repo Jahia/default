@@ -42,52 +42,51 @@
 </c:if>
 
 <script type="text/javascript">
-    var addedMembers = []
-    var removedMembers = []
+    editRoleMembers = {
+        addedMembers: [],
+        removedMembers: [],
+        submitChanges: function () {
+            workInProgress('${i18nWaiting}');
+            $("#addedMembers").val(editRoleMembers.addedMembers);
+            $("#removedMembers").val(editRoleMembers.removedMembers);
+            $("#saveForm").submit();
+        }
+    };
+
     $(document).ready(function() {
         $(".selectedMember").change(function(event) {
-            v = $(this).val();
-
-            name = encodeURIComponent('${prefix}' + $(this).attr('value'));
+            var name = encodeURIComponent('${prefix}' + $(this).attr('value'));
             if ($(this).is(':checked')) {
-                if (removedMembers.indexOf(name) > -1) {
-                    removedMembers.splice(removedMembers.indexOf(name),1)
+                if (editRoleMembers.removedMembers.indexOf(name) > -1) {
+                    editRoleMembers.removedMembers.splice(editRoleMembers.removedMembers.indexOf(name),1);
                 } else {
-                    addedMembers[addedMembers.length] = name
+                    editRoleMembers.addedMembers[editRoleMembers.addedMembers.length] = name;
                 }
             } else {
-                if (addedMembers.indexOf(name) > -1) {
-                    addedMembers.splice(addedMembers.indexOf(name),1)
+                if (editRoleMembers.addedMembers.indexOf(name) > -1) {
+                    editRoleMembers.addedMembers.splice(editRoleMembers.addedMembers.indexOf(name),1);
                 } else {
-                    removedMembers[removedMembers.length] = name
+                    editRoleMembers.removedMembers[editRoleMembers.removedMembers.length] = name;
                 }
             }
 
-            if (addedMembers.length == 0 && removedMembers.length == 0) {
-                $('#saveButton').attr('disabled', 'disabled')
+            if (editRoleMembers.addedMembers.length === 0 && editRoleMembers.removedMembers.length === 0) {
+                $('#saveButton').attr('disabled', 'disabled');
             } else {
-                $('#saveButton').removeAttr("disabled")
+                $('#saveButton').removeAttr('disabled');
             }
-//            if ($(this).is(':checked') && $('#removedMembers'))})
-        })
+        });
 
         $('#cbSelectedAllMembers').click(function() {
             var state=this.checked;
             $.each($(':checkbox[name="selectedMembers"]'), function() {
                 if (this.checked != state) {
                     this.checked = state;
-                    $(this).change()
+                    $(this).change();
                 }
             });
         });
-
-        $("#saveForm").submit(function() {
-            workInProgress('${i18nWaiting}');
-            $("#addedMembers").val(addedMembers)
-            $("#removedMembers").val(removedMembers)
-        })
     })
-
 </script>
 
 <div class="page-header">
@@ -96,27 +95,72 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <form action="${flowExecutionUrl}" method="post" style="display: inline;">
-            <div>
-                <button class="btn btn-default btn-primary" type="submit" name="_eventId_rolesList">
-                    <fmt:message key="default.manageRoles.backToRoles"/>
-                </button>
-                <button class="btn btn-default ${displayUsers} btn-primary" type="submit" name="_eventId_users">
-                    <fmt:message key="label.users"/>
-                </button>
-                <button class="btn btn-default ${displayGroups} btn-primary" type="submit" name="_eventId_groups">
-                    <fmt:message key="label.groups"/>
-                </button>
+        <div class="row">
+            <div class="col-md-6">
+                <form action="${flowExecutionUrl}" method="post" style="display: inline;">
+                    <button class="btn btn-default btn-fab btn-fab-mini" type="submit" name="_eventId_rolesList"
+                            data-placement="top" data-container="body"
+                            data-toggle="tooltip" data-title="<fmt:message key='default.manageRoles.backToRoles'/>">
+                        <i class="material-icons">arrow_back</i>
+                    </button>
+                </form>
             </div>
-        </form>
+            <div class="col-md-6 text-right">
+                <form action="${flowExecutionUrl}" method="post" id="saveForm" style="display: inline;">
+                    <input id="addedMembers" type="hidden" name="addedMembers"/>
+                    <input id="removedMembers" type="hidden" name="removedMembers"/>
+                    <input id="eventId" type="hidden" name="_eventId_save" value="on"/>
+                    <button class="btn btn-raised btn-primary" type="button" id="saveButton"
+                            onclick="editRoleMembers.submitChanges()" disabled="disabled">
+                        <fmt:message key="label.save"/>
+                    </button>
+                </form>
+
+            </div>
+        </div>
     </div>
 
     <div class="panel-body">
+        <form id="switchToSelectUsersForm" action="${flowExecutionUrl}"
+              method="post" style="display: none">
+            <input type="hidden" name="_eventId_users" value="on"/>
+        </form>
+
+        <form id="switchToSelectGroupsForm" action="${flowExecutionUrl}"
+              method="post" style="display: none">
+            <input type="hidden" name="_eventId_groups" value="on"/>
+        </form>
+
+        <ul class="nav nav-tabs">
+            <li role="presentation" <c:if test="${flowHandler.searchType eq 'users'}"> class="active" </c:if> >
+                <a href="#" aria-controls="selectUsers" data-sel-role="switchToUsersView"
+                   onclick="$('#switchToSelectUsersForm').submit();return false;"
+                   role="tab" data-toggle="tab">
+                    <fmt:message key="label.users"/>
+                </a>
+            </li>
+            <li role="presentation" <c:if test="${flowHandler.searchType eq 'groups'}"> class="active" </c:if> >
+                <a href="#selectGroups" aria-controls="selectGroups" data-sel-role="switchToGroupsView"
+                   onclick="$('#switchToSelectGroupsForm').submit();return false;"
+                   role="tab">
+                    <fmt:message key="label.groups"/>
+                </a>
+            </li>
+        </ul>
+        <br />
+
+        <c:choose>
+            <c:when test="${flowHandler.searchType eq 'users'}">
+                <p><fmt:message key="default.message.addRemoveUsers"/></p>
+            </c:when>
+            <c:otherwise>
+                <p><fmt:message key="default.message.addRemoveGroups"/></p>
+            </c:otherwise>
+        </c:choose>
+
         <form class="form-inline " action="${flowExecutionUrl}" id="searchForm" method="post">
             <input type="hidden" id="searchIn" name="searchIn" value="allProps"/>
             <fieldset>
-                <h4><fmt:message key="label.search"/></h4>
-    
                 <div class="form-group label-floating">
                     <label class="control-label" for="searchString">
                         <fmt:message key="label.search"/>
@@ -158,16 +202,6 @@
             </fieldset>
         </form>
 
-        <form action="${flowExecutionUrl}" method="post" id="saveForm">
-            <input id="addedMembers" type="hidden" name="addedMembers"/>
-            <input id="removedMembers" type="hidden" name="removedMembers"/>
-            <button class="btn btn-primary" type="submit" name="_eventId_save" id="saveButton" disabled="disabled">
-                <i class="icon-ok icon-white"></i>
-                &nbsp;<fmt:message key="label.save"/>
-            </button>
-        
-        </form>
-
         <c:set var="principalsCount" value="${fn:length(principals)}"/>
         <c:set var="principalsFound" value="${principalsCount > 0}"/>
     
@@ -191,7 +225,7 @@
                         </label>
                     </div>
                 </th>
-                <th><fmt:message key="label.name"/></th>
+                <th><fmt:message key="label.username"/></th>
                 <c:if test="${multipleProvidersAvailable}">
                     <th width="10%"><fmt:message key="column.provider.label"/></th>
                 </c:if>
@@ -231,7 +265,3 @@
         </table>
     </div>
 </div>
-
-
-
-

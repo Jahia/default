@@ -61,8 +61,8 @@
         <connection>scm:git:git@github.com:Jahia/default.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/default.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/default.git</url>
-      <tag>7_3_x</tag>
-  </scm>
+        <tag>7_3_2</tag>
+    </scm>
 
     <properties>
         <jahia-depends>assets</jahia-depends>

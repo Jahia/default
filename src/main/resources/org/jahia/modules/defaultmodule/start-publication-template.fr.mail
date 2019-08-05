@@ -1,6 +1,6 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
 to-users: assignableFor(review)
-subject: Demande de publication par ${currentUser.getName()} pour ${site.getDisplayableName()}
+subject: Demande de publication par ${PrincipalViewHelper.getFullName($currentUser)} pour ${site.getDisplayableName()}
 
 text:Bonjour,
 

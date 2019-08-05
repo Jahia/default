@@ -1,9 +1,9 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Veröffentlichung abgelehnt von ${currentUser.getName()} für $site.getDisplayableName()
+subject: Veröffentlichung abgelehnt von ${PrincipalViewHelper.getFullName($currentUser)} für $site.getDisplayableName()
 text: Hi,
 
 Ein Veröffentlichungsworkflow mit einem Validierungsschritten wurde am ${date.format(
-    "short","short",$submissionDate,$locale)} zurückgewiesen von ${currentUser.getName()} :
+    "short","short",$submissionDate,$locale)} zurückgewiesen von ${PrincipalViewHelper.getFullName($currentUser)} :
 #foreach( $node in $nodes )
     #if( $velocityCount <= 10)
     - ${node.getDisplayableName()}

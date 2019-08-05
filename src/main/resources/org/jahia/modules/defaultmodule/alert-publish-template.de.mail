@@ -1,9 +1,9 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject: Veröffentlichung bestätigt von ${currentUser.getName()} für $site.getDisplayableName()
+subject: Veröffentlichung bestätigt von ${PrincipalViewHelper.getFullName($currentUser)} für $site.getDisplayableName()
 text: Hallo,
 
 Ihre angeforderte Veröffentlichung wurde bestätigt am ${date.format(
-    "short","short",$submissionDate,$locale)} by ${currentUser.getName()} :
+    "short","short",$submissionDate,$locale)} by ${PrincipalViewHelper.getFullName($currentUser)} :
 #foreach( $node in $nodes )
     #if( $velocityCount <= 10)
     - ${node.getDisplayableName()}

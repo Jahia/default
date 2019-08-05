@@ -1,9 +1,9 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
-subject:  Publication rejected by ${currentUser.getName()} for $site.getDisplayableName()
+subject:  Publication rejected by ${PrincipalViewHelper.getFullName($currentUser)} for $site.getDisplayableName()
 text: Hi,
 
 The publication of the following items has been rejected on ${date.format(
-    "short","short",$submissionDate,$locale)} by ${currentUser.getName()} :
+    "short","short",$submissionDate,$locale)} by ${PrincipalViewHelper.getFullName($currentUser)} :
 #foreach( $node in $nodes )
     #if( $velocityCount <= 10)
     - ${node.getDisplayableName()}

@@ -1,6 +1,6 @@
 to: #if ($userNotificationEmail) $userNotificationEmail #end
 to-users: assignableFor(review)
-subject: Veröffentlichung angefordert von ${currentUser.getName()} für ${site.getDisplayableName()}
+subject: Veröffentlichung angefordert von ${PrincipalViewHelper.getFullName($currentUser)} für ${site.getDisplayableName()}
 
 text:Hallo,
 Ein Veröffentlichungsworkflow mit einem Validierungsschritten wurde am ${date.format("short","short",$submissionDate,$locale)}

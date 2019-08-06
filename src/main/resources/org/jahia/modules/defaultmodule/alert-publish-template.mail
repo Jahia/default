@@ -164,7 +164,7 @@ html:
                                                                     <tr>
                                                                         <td style="line-height: 24px; text-align: right;"><span
                                                                                 style="font-family: sans-serif; font-size: 14px;
-                                                                                line-height: 14px; color: rgb(14, 169, 130);">$operation</span>
+                                                                                line-height: 14px; color: $color;">$operation</span>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>

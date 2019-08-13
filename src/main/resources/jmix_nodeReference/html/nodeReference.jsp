@@ -4,7 +4,6 @@
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <%@ taglib prefix="jahia" uri="http://www.jahia.org/tags/templateLib" %>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
-<c:catch var="exception">
 <jcr:nodeProperty node="${currentNode}" name="j:node" var="reference"/>
 <c:set var="node" value="${reference.node}"/>
 <c:choose>
@@ -23,5 +22,3 @@
         </c:if>
     </c:otherwise>
 </c:choose>
-</c:catch>
-<c:if test="${!empty exception}">${exception.message}</c:if>

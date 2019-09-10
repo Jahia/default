@@ -156,7 +156,7 @@ html:
                                                                         #define ( $color ) rgb(14, 169, 130) #end
                                                                     #end
                                                                     #if( $nodeInfo.get("status") == 5 )
-                                                                        #define( $operation ) Dépublié #end
+                                                                        #define( $operation ) Précédemment Dépublié #end
                                                                         #define ( $color ) rgb(82, 92, 98) #end
                                                                     #end
                                                                     <tbody>

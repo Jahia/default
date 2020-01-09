@@ -19,12 +19,12 @@
         <div class="span12">
             <c:choose>
                 <c:when test="${fn:length(currentNode.properties.sourceCode.string) gt renderContext.settings.maxStudioFileDisplaySize}">
-                <div class="well">
-                    <h3><fmt:message key="jnt_editableFile.sizeLimit" /></h3>
-                    <button class="btn btn-primary" id="downloadButton">
-                        <fmt:message key="jnt_editableFile.download" />
-                    </button>
-                </div>
+                    <div class="well">
+                        <h3><fmt:message key="jnt_editableFile.sizeLimit" /></h3>
+                        <button class="btn btn-primary" id="downloadButton">
+                            <fmt:message key="jnt_editableFile.download" />
+                        </button>
+                    </div>
                     <script>
                         $("#downloadButton").click(function() {
                             var path = "${currentNode.path}";

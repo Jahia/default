@@ -35,7 +35,7 @@
             <template:module node="${subchild}" view="${moduleMap.subNodesView}" editable="${moduleMap.editable && !resourceReadOnly}"/>
             <c:set var="isEmpty" value="false"/>
         </c:forEach>
-        <c:if test="${not omitFormatting}"><div class="clear"></div></c:if>
+        <c:if test="${fn:toLowerCase(omitFormatting) eq 'false'}"><div class="clear"></div></c:if>
         <c:if test="${not empty moduleMap.emptyListMessage and (renderContext.editMode or moduleMap.forceEmptyListMessageDisplay) and isEmpty}">
             ${moduleMap.emptyListMessage}
         </c:if>

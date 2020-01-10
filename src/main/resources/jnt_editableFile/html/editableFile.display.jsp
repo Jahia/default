@@ -28,14 +28,9 @@
                     <script>
                         $("#downloadButton").click(function() {
                             var path = "${currentNode.path}";
-                            var sources = "/sources";
-                            var modules = "/modules";
-                            var fileName = encodeURI(path.substring(path.indexOf(sources) + sources.length));
-                            var providerPath = encodeURI(modules + path.substring(path.indexOf(modules) + modules.length, path.indexOf(fileName)));
-
                             var link = document.createElement("a");
                             link.download = name;
-                            link.href = "/modules/filesource?filepath=" + fileName + "&providerpath=" + providerPath;
+                            link.href = "${url.context}/files/default" + path;
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);

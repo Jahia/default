@@ -4,38 +4,31 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
-
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="script" type="org.jahia.services.render.scripting.Script"--%>
 <%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
+
 <template:addResources type="javascript" resources="jquery.js, codemirror.jahia.min.js"/>
 <template:addResources type="css" resources="01web.css,codemirror/codemirror.css"/>
 <template:addResources type="css" resources="admin-bootstrap.css"/>
 <template:addResources type="javascript" resources="admin-bootstrap.js"/>
+<template:addResources type="javascript" resources="editableFile.display.js"/>
+
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12">
             <c:choose>
-                <c:when test="${fn:length(currentNode.properties.sourceCode.string) gt renderContext.settings.maxStudioFileDisplaySize}">
+                <c:when test="${fn:length(currentNode.properties.sourceCode.string) gt renderContext.settings.studioMaxDisplayableFileSize}">
                     <div class="well">
                         <h3><fmt:message key="jnt_editableFile.sizeLimit" /></h3>
-                        <button class="btn btn-primary" id="downloadButton">
+                        <c:url value="/files/default${currentNode.path}" var="downloadLink" />
+                        <button type="button" class="btn btn-primary"
+                                onclick="editableFileDisplay.downloadFile('${functions:escapeJavaScript(downloadLink)}')">
                             <fmt:message key="jnt_editableFile.download" />
                         </button>
                     </div>
-                    <script>
-                        $("#downloadButton").click(function() {
-                            var path = "${currentNode.path}";
-                            var link = document.createElement("a");
-                            link.download = name;
-                            link.href = "${url.context}/files/default" + path;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                        })
-                    </script>
                 </c:when>
                 <c:otherwise>
                     <c:url var="postURL" value="${url.base}${currentNode.path}"/>

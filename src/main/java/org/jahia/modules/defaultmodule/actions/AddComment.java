@@ -46,7 +46,6 @@ package org.jahia.modules.defaultmodule.actions;
 import org.jahia.bin.Action;
 import org.jahia.services.content.*;
 import org.jahia.bin.ActionResult;
-import org.jahia.bin.Render;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
@@ -65,16 +64,21 @@ public class AddComment extends Action {
 
     @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource, JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
-        JCRSessionWrapper jcrSessionWrapper = resource.getNode().getSession();
         JCRNodeWrapper node = resource.getNode();
-        if(!node.isNodeType("jmix:comments")) {
-            node.checkout();
+        if (!node.isNodeType("jmix:comments")) {
             node.addMixin("jmix:comments");
-            jcrSessionWrapper.save();
+            session.save();
         }
-        String path = node.getPath() + "/comments";
-        JCRNodeWrapper newNode = createNode(req, parameters, jcrSessionWrapper.getNode(path), "jnt:post","", false);
-        jcrSessionWrapper.save();
-        return new ActionResult(HttpServletResponse.SC_OK, newNode.getPath(), Render.serializeNodeToJSON(newNode));
+
+        final JCRNodeWrapper[] newNode = {null};
+        JCRTemplate.getInstance().doExecuteWithSystemSessionAsUser(session.getUser(), org.jahia.api.Constants.LIVE_WORKSPACE, null, jcrSessionWrapper -> {
+            String path = node.getPath() + "/comments";
+            newNode[0] = createNode(req, parameters, jcrSessionWrapper.getNode(path), "jnt:post", "", false);
+            jcrSessionWrapper.save();
+
+            return null;
+        });
+
+        return new ActionResult(HttpServletResponse.SC_OK, newNode[0].getPath());
     }
 }

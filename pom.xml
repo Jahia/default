@@ -74,6 +74,7 @@
         <jahia-depends-skip-require-capability>assets</jahia-depends-skip-require-capability>
         <export-package>org.jahia.modules.osgi</export-package>
         <jahia-module-type>system</jahia-module-type>
+        <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
         <jahia-module-signature>MC0CFQCOgBTZkKFP7PeJbnzJ2RSoAntETgIUJ3a8NFRxSeaH0R2FKsULRg0z5r4=</jahia-module-signature>
     </properties>
 

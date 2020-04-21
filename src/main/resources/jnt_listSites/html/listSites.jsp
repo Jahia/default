@@ -84,7 +84,7 @@
             </c:otherwise>
         </c:choose>
         <c:choose>
-            <c:when test="${not empty node and (jcr:hasPermission(node,'editModeAccess') || jcr:hasPermission(node,'contributeModeAccess'))}">
+            <c:when test="${not empty node and (jcr:hasPermission(node,'jContentAccess') || jcr:hasPermission(node,'contributeModeAccess'))}">
                     <c:set var="baseLive" value="${url.baseLive}"/>
                     <c:set var="basePreview" value="${url.basePreview}"/>
                     <c:set var="baseContribute" value="${url.baseContribute}"/>
@@ -114,7 +114,7 @@
                                value="${fn:substring(url.baseEdit,-1,fn:length(url.baseEdit)-localeLength)}${node.defaultLanguage}"/>
                     </c:if>
                     <c:set var="remotelyPublished" value="${jcr:isNodeType(node,'jmix:remotelyPublished')}"/>
-                    <c:if test="${currentNode.properties.edit.boolean && jcr:hasPermission(node,'editModeAccess') && !renderContext.settings.readOnlyMode && !renderContext.settings.distantPublicationServerMode && not remotelyPublished}">
+                    <c:if test="${currentNode.properties.edit.boolean && jcr:hasPermission(node,'jContentAccess') && !renderContext.settings.readOnlyMode && !renderContext.settings.distantPublicationServerMode && not remotelyPublished}">
                         <img src="<c:url value='/icons/editMode.png'/>" width="16" height="16" alt=" "
                              role="presentation" style="position:relative; top: 4px; margin-right:2px; "/><a
                             href="<c:url value='${baseEdit}${node.path}${page}.html'/>"><fmt:message
@@ -188,13 +188,13 @@
                     </c:if>
             </c:when>
             <c:otherwise>
-                <c:set var="editModeAccessNode"
-                       value="${jcr:getFirstAllowedNodeForPermission('editModeAccess', node, 'jnt:page')}"/>
+                <c:set var="jContentAccessNode"
+                       value="${jcr:getFirstAllowedNodeForPermission('jContentAccess', node, 'jnt:page')}"/>
                 <c:set var="contributeModeAccessNode"
                        value="${jcr:getFirstAllowedNodeForPermission('contributeModeAccess', node, 'jnt:page')}"/>
                 <c:set var="previewModeAccessNode"
                        value="${jcr:getFirstAllowedNodeForPermission('jcr:read_default', node, 'jnt:page')}"/>
-                <c:if test="${node.home.properties['j:published'].boolean or not empty editModeAccessNode or not empty contributeModeAccessNode or not empty previewModeAccessNode}">
+                <c:if test="${node.home.properties['j:published'].boolean or not empty jContentAccessNode or not empty contributeModeAccessNode or not empty previewModeAccessNode}">
                         <c:set var="baseLive" value="${url.baseLive}"/>
                         <c:set var="basePreview" value="${url.basePreview}"/>
                         <c:set var="baseContribute" value="${url.baseContribute}"/>
@@ -211,10 +211,10 @@
                                    value="${fn:substring(url.baseEdit,-1,fn:length(url.baseEdit)-localeLength)}${node.defaultLanguage}"/>
                         </c:if>
 
-                        <c:if test="${not empty editModeAccessNode && currentNode.properties.contribute.boolean && !renderContext.settings.readOnlyMode && !renderContext.settings.distantPublicationServerMode}">
+                        <c:if test="${not empty jContentAccessNode && currentNode.properties.contribute.boolean && !renderContext.settings.readOnlyMode && !renderContext.settings.distantPublicationServerMode}">
                             <img src="<c:url value='/icons/editMode.png'/>" width="16" height="16" alt=" "
                                  role="presentation" style="position:relative; top: 4px; margin-right:2px; "><a
-                                href="<c:url value='${baseEdit}${editModeAccessNode.path}.html'/>"><fmt:message
+                                href="<c:url value='${baseEdit}${jContentAccessNode.path}.html'/>"><fmt:message
                                 key="label.editMode"/></a>
                         </c:if>
 

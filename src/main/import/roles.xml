@@ -13,7 +13,6 @@
                      j:privilegedAccess="true"
             />
     </editor>
-    <contributor jcr:primaryType="jnt:role" j:permissionNames="publication-start"/>
     <translator jcr:primaryType="jnt:role" j:permissionNames="publication-start"/>
 
 </roles>

@@ -17,20 +17,6 @@
         </div>
     </c:if>
     <c:if test="${currentResource.workspace ne 'live'}">
-        <c:if test="${gotoType eq 'document'}">
-            <c:set var="conf" value="filemanager"/>
-            <c:set var="requiredPermission" value="fileManager"/>
-            <c:set var="label" value="label.filemanager"/>
-            <c:set var="icon" value="treepanel-files-manager-1616"/>
-            <c:set var="multisite" value="true"/>
-        </c:if>
-        <c:if test="${gotoType eq 'content'}">
-            <c:set var="conf" value="editorialcontentmanager"/>
-            <c:set var="requiredPermission" value="editorialContentManager"/>
-            <c:set var="label" value="label.contentmanager"/>
-            <c:set var="icon" value="treepanel-content-manager-1616"/>
-            <c:set var="multisite" value="true"/>
-        </c:if>
         <c:if test="${gotoType eq 'unitedContent'}">
             <c:set var="conf" value="repositoryexplorer"/>
             <c:set var="requiredPermission" value="repositoryExplorer"/>

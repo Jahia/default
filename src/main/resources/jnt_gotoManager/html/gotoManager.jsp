@@ -3,7 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
-<c:set var="gotoType" value="${currentNode.propertiesAsString.type}"/>
 <c:if test="${!renderContext.settings.readOnlyMode and !renderContext.settings.distantPublicationServerMode}">
 <c:if test="${gotoType != 'roles' || renderContext.enterpriseEdition}">
 <template:addResources type="css" resources="gotomanager.css"/>
@@ -17,12 +16,10 @@
         </div>
     </c:if>
     <c:if test="${currentResource.workspace ne 'live'}">
-        <c:if test="${gotoType eq 'unitedContent'}">
-            <c:set var="conf" value="repositoryexplorer"/>
-            <c:set var="requiredPermission" value="repositoryExplorer"/>
-            <c:set var="label" value="label.repositoryexplorer"/>
-            <c:set var="icon" value="repositoryExplorer"/>
-        </c:if>
+        <c:set var="conf" value="repositoryexplorer"/>
+        <c:set var="requiredPermission" value="repositoryExplorer"/>
+        <c:set var="label" value="label.repositoryexplorer"/>
+        <c:set var="icon" value="repositoryExplorer"/>
         <c:if test="${multisite}">
             <jcr:sql var="result" sql="select * from [jnt:virtualsite] as site where ischildnode(site,'/sites')"/>
             <ul class="gotomanager">

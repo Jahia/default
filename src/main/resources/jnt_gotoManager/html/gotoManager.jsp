@@ -3,9 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
-<c:set var="gotoType" value="${currentNode.propertiesAsString.type}"/>
 <c:if test="${!renderContext.settings.readOnlyMode and !renderContext.settings.distantPublicationServerMode}">
-<c:if test="${gotoType != 'roles' || renderContext.enterpriseEdition}">
 <template:addResources type="css" resources="gotomanager.css"/>
     <c:if test="${currentResource.workspace eq 'live'}">
         <template:addResources type="javascript" resources="jquery.min.js"/>
@@ -17,26 +15,10 @@
         </div>
     </c:if>
     <c:if test="${currentResource.workspace ne 'live'}">
-        <c:if test="${gotoType eq 'document'}">
-            <c:set var="conf" value="filemanager"/>
-            <c:set var="requiredPermission" value="fileManager"/>
-            <c:set var="label" value="label.filemanager"/>
-            <c:set var="icon" value="treepanel-files-manager-1616"/>
-            <c:set var="multisite" value="true"/>
-        </c:if>
-        <c:if test="${gotoType eq 'content'}">
-            <c:set var="conf" value="editorialcontentmanager"/>
-            <c:set var="requiredPermission" value="editorialContentManager"/>
-            <c:set var="label" value="label.contentmanager"/>
-            <c:set var="icon" value="treepanel-content-manager-1616"/>
-            <c:set var="multisite" value="true"/>
-        </c:if>
-        <c:if test="${gotoType eq 'unitedContent'}">
-            <c:set var="conf" value="repositoryexplorer"/>
-            <c:set var="requiredPermission" value="repositoryExplorer"/>
-            <c:set var="label" value="label.repositoryexplorer"/>
-            <c:set var="icon" value="repositoryExplorer"/>
-        </c:if>
+        <c:set var="conf" value="repositoryexplorer"/>
+        <c:set var="requiredPermission" value="repositoryExplorer"/>
+        <c:set var="label" value="label.repositoryexplorer"/>
+        <c:set var="icon" value="repositoryExplorer"/>
         <c:if test="${multisite}">
             <jcr:sql var="result" sql="select * from [jnt:virtualsite] as site where ischildnode(site,'/sites')"/>
             <ul class="gotomanager">
@@ -72,5 +54,4 @@
         </a>
         </c:if>
     </c:if>
-</c:if>
 </c:if>

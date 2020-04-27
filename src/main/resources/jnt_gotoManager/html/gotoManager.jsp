@@ -4,7 +4,6 @@
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <c:if test="${!renderContext.settings.readOnlyMode and !renderContext.settings.distantPublicationServerMode}">
-<c:if test="${renderContext.enterpriseEdition}">
 <template:addResources type="css" resources="gotomanager.css"/>
     <c:if test="${currentResource.workspace eq 'live'}">
         <template:addResources type="javascript" resources="jquery.min.js"/>
@@ -20,7 +19,6 @@
         <c:set var="requiredPermission" value="repositoryExplorer"/>
         <c:set var="label" value="label.repositoryexplorer"/>
         <c:set var="icon" value="repositoryExplorer"/>
-    </c:if>
         <c:if test="${multisite}">
             <jcr:sql var="result" sql="select * from [jnt:virtualsite] as site where ischildnode(site,'/sites')"/>
             <ul class="gotomanager">
@@ -56,5 +54,4 @@
         </a>
         </c:if>
     </c:if>
-</c:if>
 </c:if>

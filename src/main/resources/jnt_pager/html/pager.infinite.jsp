@@ -99,7 +99,7 @@
                 $(document).ready(function() {
                     var docLoading = false;
                     $(window).scroll(function() {
-                        if(!docLoading && $(window).scrollTop() + $(window).height() == $(document).height()) {
+                        if(!docLoading && $(window).scrollTop() + $(window).height() + 1 >= $(document).height()) {
                             docLoading = true;
                             $('.pagerLoading').css('display','block');
                             $('\#${modeDispatcherId}').load('${ajaxUrl}');

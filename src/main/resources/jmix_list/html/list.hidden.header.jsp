@@ -60,19 +60,21 @@
     </c:choose>
 
     <query:definition var="listQuery" qom="${moduleMap.listQuery}">
-        <c:forEach items="${activeFacetsVars[activeFacetMapVarName]}" var="facet">
-            <c:set var="escapedFacetKey" value="${jcr:escapeIllegalJcrChars(facet.key)}"/>
-            <c:forEach items="${facet.value}" var="facetValue">
-                <c:if test="${not fn:endsWith(resultName, '-withFacetFilter')}">
-                    <c:set var="resultName" value="${resultName}-withFacetFilter"/>
-                </c:if>
-                <query:fullTextSearch propertyName="rep:filter(${escapedFacetKey})" searchExpression="${facetValue.value}"/>
+        <c:if test="${not empty activeFacetsVars}">
+            <c:forEach items="${activeFacetsVars[activeFacetMapVarName]}" var="facet">
+                <c:set var="escapedFacetKey" value="${jcr:escapeIllegalJcrChars(facet.key)}"/>
+                <c:forEach items="${facet.value}" var="facetValue">
+                    <c:if test="${not fn:endsWith(resultName, '-withFacetFilter')}">
+                        <c:set var="resultName" value="${resultName}-withFacetFilter"/>
+                    </c:if>
+                    <query:fullTextSearch propertyName="rep:filter(${escapedFacetKey})" searchExpression="${facetValue.value}"/>
+                </c:forEach>
             </c:forEach>
-        </c:forEach>
+        </c:if>
     </query:definition>
     
     <c:choose>
-        <c:when test='${queryMap[resultName] eq null}'>
+        <c:when test='${(queryMap eq null) or (queryMap[resultName] eq null)}'>
             <jcr:jqom var="result" qomBeanName="listQuery"/>
             <c:if test='${queryMap == null}'>
                 <jsp:useBean id="queryMap" class="java.util.HashMap" scope="request"/>

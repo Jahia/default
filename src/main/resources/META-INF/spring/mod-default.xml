@@ -9,27 +9,39 @@
 
     <bean class="org.jahia.modules.defaultmodule.MoveAction">
         <property name="contentManager" ref="ContentManagerHelper"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
-    <bean class="org.jahia.modules.defaultmodule.LockAction"/>
+    <bean class="org.jahia.modules.defaultmodule.LockAction">
+        <property name="requiredMethods" value="POST"/>
+    </bean>
 
-    <bean class="org.jahia.modules.defaultmodule.LockEditableFileAction"/>
+    <bean class="org.jahia.modules.defaultmodule.LockEditableFileAction">
+        <property name="requiredMethods" value="POST"/>
+    </bean>
 
-    <bean class="org.jahia.modules.defaultmodule.UnlockAction"/>
+    <bean class="org.jahia.modules.defaultmodule.UnlockAction">
+        <property name="requiredMethods" value="POST"/>
+    </bean>
 
     <bean class="org.jahia.modules.defaultmodule.StartWorkflowAction">
         <property name="workflowService" ref="workflowService"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
+
     <bean class="org.jahia.modules.defaultmodule.StartPublicationWorkflowAction">
         <property name="publicationService" ref="jcrPublicationService"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.ExecuteTaskAction">
         <property name="workflowService" ref="workflowService"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.CommentTaskAction">
         <property name="workflowService" ref="workflowService"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.ChainAction">
@@ -41,26 +53,31 @@
             </bean>
         </property>
         <property name="requireAuthenticatedUser" value="${jahia.chainAction.requireAuthenticatedUser:false}"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
-    
+
     <bean class="org.apache.camel.spring.CamelBeanPostProcessor">
     	<property name="camelContext" ref="jahiaNotificationContext"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.MultipleDeleteAction">
         <property name="name" value="deleteNodes"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.MultipleCopyAction">
         <property name="name" value="copy"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.MultipleCutAction">
         <property name="name" value="cut"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.MultiplePasteAction">
         <property name="name" value="paste"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.CheckClipboardAction">
@@ -70,33 +87,39 @@
 
     <bean class="org.jahia.modules.defaultmodule.actions.CleanClipboardAction">
         <property name="name" value="emptyclipboard"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.MultiplePublishAction">
         <property name="name" value="publishNodes"/>
         <property name="workflowService" ref="workflowService"/>
         <property name="publicationHelper" ref="PublicationHelper"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.AddComment" >
         <property name="name" value="addComment"/>
         <property name="requiredPermission" value="addComment" />
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.CreateBoardAction" >
         <property name="name" value="createBoard"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.PublishAction">
         <property name="publicationService" ref="jcrPublicationService"/>
         <property name="requiredPermission" value="publish"/>
         <property name="requiredWorkspace" value="default"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.AutoPublicationAction">
         <property name="publicationService" ref="jcrPublicationService"/>
         <property name="requiredPermission" value="publish"/>
         <property name="requiredWorkspace" value="default"/>
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.AddMemberToGroupAction">
@@ -104,6 +127,7 @@
         <property name="jahiaGroupManagerService" ref="JahiaGroupManagerService"/>
         <property name="jahiaUserManagerService" ref="JahiaUserManagerService"/>
         <property name="requiredPermission" value="addMemberToGroup" />
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.AddPrincipalsInRolesAction">
@@ -111,24 +135,30 @@
         <property name="jahiaGroupManagerService" ref="JahiaGroupManagerService"/>
         <property name="jahiaUserManagerService" ref="JahiaUserManagerService"/>
         <property name="requiredPermission" value="addPrincipalsInRoles" />
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.admin.AdminEditSiteAction">
         <property name="sitesService" ref="JahiaSitesService"/>
         <property name="requiredPermission" value="adminVirtualSites" />
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.admin.AdminDeleteSiteAction">
         <property name="sitesService" ref="JahiaSitesService"/>
         <property name="requiredPermission" value="adminVirtualSites" />
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.admin.AdminCreateSiteAction">
         <property name="sitesService" ref="JahiaSitesService"/>
         <property name="requiredPermission" value="adminVirtualSites" />
+        <property name="requiredMethods" value="POST"/>
     </bean>
 
-    <bean class="org.jahia.modules.defaultmodule.actions.AddMemberToAcl" />
+    <bean class="org.jahia.modules.defaultmodule.actions.AddMemberToAcl" >
+        <property name="requiredMethods" value="POST"/>
+    </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.GetWorkflowTasksAction">
         <property name="name" value="getWorkflowTasks"/>

@@ -71,7 +71,9 @@ import java.util.Map;
 /**
  * Action to create A board (site settings or server settings, ....)
  * @author achaabni
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class CreateBoardAction extends Action {
 
     @Override

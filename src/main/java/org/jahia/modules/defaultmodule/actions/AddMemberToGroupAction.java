@@ -61,10 +61,9 @@ import java.util.Map;
 
 /**
  * Render action for adding specified principal to a group.
- * @author loom
- * Date: 17.02.11
- * Time: 09:26
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class AddMemberToGroupAction extends Action {
 
     private transient static Logger logger = org.slf4j.LoggerFactory.getLogger(AddMemberToGroupAction.class);

@@ -62,14 +62,16 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Check the last modified date and lock if the file has not been changed
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class LockEditableFileAction extends LockAction {
 
     @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
         String lastModifiedLoaded = req.getParameter("lastModifiedLoaded");
-        Map<String,String> res = new HashMap<String,String>();
+        Map<String,String> res = new HashMap<>();
         if (!resource.getNode().hasProperty(Constants.JCR_LASTMODIFIED) || StringUtils.equals(lastModifiedLoaded, String.valueOf(resource.getNode().getProperty(Constants.JCR_LASTMODIFIED).getValue().getDate().getTimeInMillis()))) {
             return super.doExecute(req, renderContext, resource, session, parameters, urlResolver) ;
         } else {

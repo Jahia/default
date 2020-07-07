@@ -65,6 +65,7 @@
 
     <bean class="org.jahia.modules.defaultmodule.actions.CheckClipboardAction">
         <property name="name" value="checkclipboard"/>
+        <property name="requiredMethods" value="GET,POST"/>
     </bean>
 
     <bean class="org.jahia.modules.defaultmodule.actions.CleanClipboardAction">
@@ -132,6 +133,7 @@
     <bean class="org.jahia.modules.defaultmodule.actions.GetWorkflowTasksAction">
         <property name="name" value="getWorkflowTasks"/>
         <property name="workflowService" ref="workflowService"/>
+        <property name="requiredMethods" value="GET,POST"/>
     </bean>
 
     <bean id="WorkspaceSwitchFilter" class="org.jahia.modules.defaultmodule.WorkspaceSwitchFilter">

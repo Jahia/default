@@ -50,7 +50,9 @@ import java.util.Locale;
 
 /**
  * Abstract action for admin tasks
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public abstract class AdminAction extends Action {
 
     public String getMessage(Locale locale, String key) {

@@ -63,7 +63,9 @@ import java.util.Map;
 /**
  * An advanced action that will add the specified principals to the specified roles for the resource specified in the
  * URL. Of course proper permissions must be given to execute this action.
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class AddPrincipalsInRolesAction extends Action {
 
     private transient static Logger logger = org.slf4j.LoggerFactory.getLogger(AddPrincipalsInRolesAction.class);

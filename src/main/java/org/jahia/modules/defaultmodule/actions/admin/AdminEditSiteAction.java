@@ -65,7 +65,9 @@ import java.util.Map;
 
 /**
  * Edit site properties
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class AdminEditSiteAction extends AdminSiteAction {
     private static Logger logger = LoggerFactory.getLogger(AdminEditSiteAction.class);
 

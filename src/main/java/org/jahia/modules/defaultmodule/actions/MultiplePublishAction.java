@@ -63,10 +63,9 @@ import java.text.DateFormat;
 import java.util.*;
 
 /**
- * @author rincevent
- * @since JAHIA 6.5
- *        Created : 24 nov. 2010
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class MultiplePublishAction extends Action {
     private WorkflowService workflowService;
     private PublicationHelper publicationHelper;

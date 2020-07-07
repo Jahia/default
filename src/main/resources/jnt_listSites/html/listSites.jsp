@@ -160,7 +160,7 @@
                     <c:if test="${currentNode.properties.editproperties.boolean && jcr:hasPermission(node,'adminVirtualSites')}">
                         <div style="display:none">
                             <div id="editSiteDiv${node.identifier}" class="popupSize">
-                                <form class="editSiteForm ajaxForm" id="editSiteForm${node.identifier}" action="<c:url value='${url.base}${node.path}.adminEditSite.do'/>" >
+                                <form class="editSiteForm ajaxForm" id="editSiteForm${node.identifier}" action="<c:url value='${url.base}${node.path}.adminEditSite.do'/>" method="post" >
 
                                     <fieldset>
                                         <legend><fmt:message key="label.manageSite.siteProperties"/></legend>
@@ -258,7 +258,7 @@
 </div>
 
 <c:if test="${currentNode.properties.delete.boolean && jcr:hasPermission(root,'adminVirtualSites')}">
-    <form class="deleteSiteForm ajaxForm" id="deleteSiteForm" action="<c:url value='${url.base}/sites.adminDeleteSite.do'/>" >
+    <form class="deleteSiteForm ajaxForm" id="deleteSiteForm" action="<c:url value='${url.base}/sites.adminDeleteSite.do'/>" method="post" >
     </form>
 </c:if>
 <c:if test="${currentNode.properties.export.boolean && jcr:hasPermission(root,'adminVirtualSites')}">

@@ -57,12 +57,12 @@ import java.util.Map;
 
 
 /**
- * @author david
- * Date: Feb 11, 2010
- * Time: 6:09:21 PM
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class UnlockAction extends Action {
 
+    @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
         String type = req.getParameter("type");

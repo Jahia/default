@@ -61,9 +61,10 @@ import java.util.Map;
 
 /**
  * Adds the specified member to the ACL.
- * 
- * @author Thomas Draier
+ *
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class AddMemberToAcl extends Action {
 
     @Override

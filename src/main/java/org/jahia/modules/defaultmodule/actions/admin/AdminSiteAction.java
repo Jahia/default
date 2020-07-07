@@ -58,7 +58,9 @@ import java.util.Map;
 
 /**
  * Base class for site admin action
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public abstract class AdminSiteAction extends AdminAction {
 
     protected JahiaSitesService sitesService;

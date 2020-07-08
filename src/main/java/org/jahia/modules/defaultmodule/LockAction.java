@@ -64,10 +64,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author david
- * Date: Feb 11, 2010
- * Time: 6:09:21 PM
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class LockAction extends Action {
 
     private static final Logger logger = LoggerFactory.getLogger(LockAction.class);
@@ -76,7 +75,7 @@ public class LockAction extends Action {
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
         String type = req.getParameter("type");
-        Map<String,String> res = new HashMap<String,String>();
+        Map<String,String> res = new HashMap<>();
         try {
             // avoid to lock multiple times the same lock
             if (resource.getNode().hasProperty("j:lockTypes")) {

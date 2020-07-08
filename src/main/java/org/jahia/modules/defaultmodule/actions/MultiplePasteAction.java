@@ -60,12 +60,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
- *
- * @author : rincevent
- * @since JAHIA 6.5
- *        Created : 24 nov. 2010
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class MultiplePasteAction extends Action {
     private transient static Logger logger = Logger.getLogger(MultiplePasteAction.class);
 

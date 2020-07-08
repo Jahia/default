@@ -60,10 +60,9 @@ import java.util.Map;
 /**
  * Action item for handling the deletion of multiple elements.
  *
- * @author rincevent
- * @since JAHIA 6.5
- * Created : 24 nov. 2010
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class MultipleDeleteAction extends Action {
     private transient static Logger logger = Logger.getLogger(MultipleDeleteAction.class);
 

@@ -57,10 +57,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * @author toto
- * Date: Mar 18, 2010
- * Time: 12:16:14 PM
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class StartPublicationWorkflowAction extends StartWorkflowAction {
     private JCRPublicationService publicationService;
 
@@ -68,6 +67,7 @@ public class StartPublicationWorkflowAction extends StartWorkflowAction {
         this.publicationService = publicationService;
     }
 
+    @Override
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
         String process = parameters.get("process").get(0);
@@ -76,7 +76,7 @@ public class StartPublicationWorkflowAction extends StartWorkflowAction {
 
         String formNodeType = workflowService.getWorkflowRegistration(workflowDefinitionKey).getForms().get("start");
         Map<String, Object> map = WorkflowVariable.getVariablesMap(parameters, formNodeType, Arrays.asList("process"));
-        final LinkedHashSet<String> languages = new LinkedHashSet<String>();
+        final LinkedHashSet<String> languages = new LinkedHashSet<>();
         languages.add(resource.getLocale().toString());
         final List<PublicationInfo> infoList = publicationService.getPublicationInfo(resource.getNode().getIdentifier(),
                                                                                      languages, true, true, false,

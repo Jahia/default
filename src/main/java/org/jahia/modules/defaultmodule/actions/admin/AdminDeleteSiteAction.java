@@ -56,7 +56,9 @@ import java.util.Map;
 
 /**
  * Delete a site.
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class AdminDeleteSiteAction extends AdminSiteAction {
 
     @Override

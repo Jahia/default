@@ -43,12 +43,6 @@
  */
 package org.jahia.modules.defaultmodule;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.jahia.bin.Action;
 import org.jahia.bin.ActionResult;
@@ -60,12 +54,17 @@ import org.jahia.services.workflow.WorkflowService;
 import org.jahia.services.workflow.WorkflowVariable;
 import org.slf4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
- * @author toto
- * Date: Mar 18, 2010
- * Time: 12:16:14 PM
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class StartWorkflowAction extends Action {
+    public static final String PROCESS = "process";
     protected WorkflowService workflowService;
     
     private static Logger logger = org.slf4j.LoggerFactory.getLogger(StartWorkflowAction.class);
@@ -77,18 +76,18 @@ public class StartWorkflowAction extends Action {
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
     	
-    	if (parameters.get("process") == null) {
+    	if (parameters.get(PROCESS) == null) {
     		logger.error("Missing parameter: \"process\" with value <workflow provider>:<workflow key>");
     		return ActionResult.BAD_REQUEST;
     	}
     	
-        String process = parameters.get("process").get(0);
+        String process = parameters.get(PROCESS).get(0);
         String workflowDefinitionKey = StringUtils.substringAfter(process, ":");
         String providerKey = StringUtils.substringBefore(process, ":");
 
         String formNodeType = workflowService.getWorkflowRegistration(workflowDefinitionKey).getForms().get("start");
-        Map<String, Object> map = WorkflowVariable.getVariablesMap(parameters, formNodeType, Arrays.asList("process"));
-        workflowService.startProcess(Arrays.asList(resource.getNode().getIdentifier()), session, workflowDefinitionKey, providerKey, map, null);
+        Map<String, Object> map = WorkflowVariable.getVariablesMap(parameters, formNodeType, Collections.singletonList(PROCESS));
+        workflowService.startProcess(Collections.singletonList(resource.getNode().getIdentifier()), session, workflowDefinitionKey, providerKey, map, null);
         return ActionResult.OK_JSON;
     }
 

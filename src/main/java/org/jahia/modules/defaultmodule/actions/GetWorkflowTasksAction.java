@@ -72,7 +72,9 @@ import java.util.Map;
  * Retrieves the workflow task location.
  *
  * @author Thomas Draier
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class GetWorkflowTasksAction extends Action {
 
     private WorkflowService workflowService;

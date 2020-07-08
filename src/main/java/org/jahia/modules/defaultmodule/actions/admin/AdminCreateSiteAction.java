@@ -65,7 +65,9 @@ import java.util.*;
 
 /**
  * Creates a site.
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class AdminCreateSiteAction extends AdminAction {
     private static Logger logger = LoggerFactory.getLogger(AdminCreateSiteAction.class);
 

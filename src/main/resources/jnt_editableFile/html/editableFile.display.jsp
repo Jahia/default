@@ -93,7 +93,7 @@
 
                         myCodeMirror.on("beforeChange", function() {
                             if (doEditTest && $('#saveButton').prop('disabled')) {
-                                $.get("<c:url value="${url.base}${currentNode.path}.lockEditableFile.do?type=editSource&lastModifiedLoaded=${lastModidiedLoaded}"/>",null,function(data,status,jqXHR) {
+                                $.post("<c:url value="${url.base}${currentNode.path}.lockEditableFile.do?type=editSource&lastModifiedLoaded=${lastModidiedLoaded}"/>",null,function(data,status,jqXHR) {
                                     if (data.error != undefined) {
                                         myCodeMirror.setOption("readOnly","nocursor");
                                         $("#alertError").html(data.error);

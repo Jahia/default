@@ -63,9 +63,9 @@ import java.util.*;
 /**
  * Render action for publishing content from default to live workspace.
  * @author loom
- * Date: 10.02.11
- * Time: 09:12
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class PublishAction extends Action {
 
     private JCRPublicationService publicationService;

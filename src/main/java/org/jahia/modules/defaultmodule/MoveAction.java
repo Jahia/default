@@ -56,12 +56,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-
 /**
- * @author david
- * Date: Feb 11, 2010
- * Time: 6:09:21 PM
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class MoveAction extends Action {
     private ContentManagerHelper contentManager;
 

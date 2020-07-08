@@ -63,9 +63,11 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Allows enabling/disabling the auto-publication on the node.
- * 
+ *
  * @author Sergiy Shyrkov
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class AutoPublicationAction extends Action {
 
     private static final Logger logger = LoggerFactory.getLogger(AutoPublicationAction.class);

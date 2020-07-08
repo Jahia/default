@@ -59,10 +59,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author toto
- * Date: Mar 18, 2010
- * Time: 12:16:22 PM
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class ExecuteTaskAction extends Action {
     private WorkflowService workflowService;
 

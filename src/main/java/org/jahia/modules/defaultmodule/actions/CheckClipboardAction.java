@@ -61,12 +61,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
- *
- * @author : rincevent
- * @since JAHIA 6.5
- *        Created : 24 nov. 2010
+ * @deprecated Sample action, will be removed
  */
+@Deprecated
 public class CheckClipboardAction extends Action {
     public static final String UUIDS = "uuids[]";
 

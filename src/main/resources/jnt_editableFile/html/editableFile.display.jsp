@@ -109,6 +109,7 @@
                         function saveSourceCode() {
                             disabled = $('#saveButton').prop('disabled');
                             if (!disabled) {
+                                $('#saveButton').prop('disabled', true);
                                 var data = {"sourceCode" : myCodeMirror.getValue(),
                                     "form-token" : document.forms['sourceForm'].elements['form-token'].value,
                                     "jcrMethodToCall":"put"};
@@ -117,7 +118,7 @@
                                     url: '${postURL}',
                                     data: data,
                                     success: function() {
-                                        $.get("<c:url value="${url.base}${currentNode.path}.unlock.do?type=editSource"/>",null,function() {
+                                        $.post("<c:url value="${url.base}${currentNode.path}.unlock.do?type=editSource"/>",null,function() {
                                             location.reload();
                                         });
                                     },

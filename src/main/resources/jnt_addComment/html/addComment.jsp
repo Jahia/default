@@ -16,21 +16,6 @@
 <%--@elvariable id="acl" type="java.lang.String"--%>
 <template:addResources type="css" resources="commentable.css"/>
 <template:addResources type="javascript" resources="jquery.min.js,jquery.validate.js"/>
-<template:addResources type="inlinejavascript">
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#newCommentForm").validate({
-                rules: {
-                    'jcr:title': "required",
-                    <c:if test="${not renderContext.loggedIn}">
-                    pseudo: "required",
-                    captcha: "required"
-                    </c:if>
-                }
-            });
-        });
-    </script>
-</template:addResources>
 <c:set var="boundComponent"
        value="${uiComponents:getBindedComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
 <c:if test="${not empty boundComponent}">
@@ -94,4 +79,17 @@
             </div>
         </form>
     </template:tokenizedForm>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#newCommentForm").validate({
+                rules: {
+                    'jcr:title': "required",
+                    <c:if test="${not renderContext.loggedIn}">
+                    pseudo: "required",
+                    captcha: "required"
+                    </c:if>
+                }
+            });
+        });
+    </script>
 </c:if>

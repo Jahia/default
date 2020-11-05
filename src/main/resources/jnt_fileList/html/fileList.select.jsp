@@ -14,6 +14,18 @@
 <c:if test="${!empty currentNode.properties.folder}">
     <c:set var="targetNodePath" value="${currentNode.properties.folder.node.path}"/>
 </c:if>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var awi = document.getElementsByClassName("blogItemDeleteButton");
+        for (var i = 0; i < awi.length; i++) {
+            awi[i].addEventListener("click", function(e) {
+                CKEDITOR.instances.editContent.insertHtml(e.currentTarget.getAttribute("data-html"));
+                return false;
+            });
+        }
+    });
+</script>
 <div id="fileList${currentNode.identifier}">
     <template:addResources type="css" resources="fileList.css"/>
     <jcr:node var="targetNode" path="${targetNodePath}"/>
@@ -45,10 +57,10 @@
                                 <button><fmt:message key="label.delete"/></button>
                                 <c:choose>
                                     <c:when test="${isImage}">
-                                        <button onclick="CKEDITOR.instances.editContent.insertHtml('<img src=\'${subchild.url}\'/>'); return false;"><fmt:message key="label.add" /></button>
+                                        <button class="blogItemDeleteButton" data-html="<img src=\'${subchild.url}\'/>"><fmt:message key="label.add" /></button>
                                     </c:when>
                                     <c:otherwise>
-                                        <button onclick="CKEDITOR.instances.editContent.insertHtml('<a href=\'${subchild.url}\' title=\'${title}\'>${title}</a>'); return false;"><fmt:message key="label.add" /></button>
+                                        <button class="blogItemDeleteButton" data-html="<a href=\'${subchild.url}\' title=\'${title}\'>${title}</a>"><fmt:message key="label.add" /></button>
                                     </c:otherwise>
                                 </c:choose>
                                 <script type="text/javascript">

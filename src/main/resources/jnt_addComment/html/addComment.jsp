@@ -73,7 +73,7 @@
                                tabindex="3"  ${disabled}/>
 
                         <input type="submit" value="<fmt:message key='label.submit'/>" class="button"
-                               tabindex="4"  ${disabled} onclick=""/>
+                               tabindex="4"  ${disabled}/>
                     </p>
                 </fieldset>
             </div>

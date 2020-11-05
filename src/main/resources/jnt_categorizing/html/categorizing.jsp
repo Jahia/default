@@ -51,7 +51,10 @@
 
                     var catDiv = $('<div></div>').attr('id','category'+catToAddUuid).attr('style','display:inline');
                     var catDisplay = jQuery('<span class="categorizeditem">' + $("#category").val() + '</span>');
-                    var catLinkDelete = $('<a></a>').attr('onclick','deleteCategory(\''+ catToAddUuid +'\')').attr('class','delete').attr('href','#');
+                    var catLinkDelete = $('<a></a>').attr('class','delete').attr('href','#');
+                    catLinkDelete.click(function() {
+                        deleteCategory(catToAddUuid);
+                    });
 
                     catContainer.append(catDiv);
                     catDiv.append(separator);
@@ -64,6 +67,15 @@
                 return false;
             }
         }
+
+        $(document).ready(function() {
+            var button = document.getElementById("categorySubmit");
+            if (button) {
+                button.addEventListener(function () {
+                    addCategory('${boundComponent.identifier}', '${separator}')
+                });
+            }
+        });
     </script>
     <c:if test="${renderContext.user.name != 'guest'}">
         <label><fmt:message key="label.add.categories"/></label>
@@ -74,7 +86,7 @@
                                        nodeTypes="jnt:category" selectableNodeTypes="jnt:category" displayIncludeChildren="false"
                                        root="${jcr:getSystemSitePath()}/categories" label="${categoryLabel}" displayFieldId="category" onSelect="function(uuid, path, title) {$('#categorytoadd').val(uuid);$('#category').val(title);$('#categorySubmit').show();return false;}"/>
         <input type="submit" title="<fmt:message key='add'/>" value="<fmt:message key='add'/>" class="button"
-               onclick="addCategory('${boundComponent.identifier}', '${separator}')" id="categorySubmit" style="display:none;">
+               id="categorySubmit" style="display:none;">
     </c:if>
 </c:if>
 

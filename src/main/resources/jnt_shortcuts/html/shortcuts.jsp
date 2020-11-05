@@ -17,6 +17,11 @@
         }).mouseout(function() {
             $(this).children('ul').hide();
         });
+
+        document.getElementById("print").addEventListener("click", function() {
+            window.print();
+            return false;
+        });
     });
 </script>
 <div id="shortcuts">
@@ -51,8 +56,7 @@
             </c:if>
 --%>
         </c:if>
-        <li><a href="#"
-               onclick="javascript:window.print();return false">
+        <li><a href="#" id="print">
             <fmt:message key="print"/></a>
         </li>
         <li>

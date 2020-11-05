@@ -17,6 +17,22 @@
     function insertImgSyntax(content) {
         document.formWiki.wikiContent.value += content;
     }
+
+    $(document).ready(function() {
+        var awi = document.getElementsByClassName("addInWiki");
+        for (var i = 0; i < awi.length; i++) {
+            awi[i].addEventListener("click", function(e) {
+                return false;
+            });
+            awi[i].addEventListener("mousedown", function(e) {
+                return false;
+            });
+            awi[i].addEventListener("dblclick", function(e) {
+                var val = e.currentTarget.getAttribute("data-syntax");
+                insertImgSyntax("\n" + val);
+            });
+        }
+    });
 </script>
 <div id="fileList${currentNode.identifier}">
     <template:addResources type="css" resources="fileList.css"/>
@@ -27,14 +43,14 @@
             <c:if test="${jcr:isNodeType(subchild, 'jnt:file')}">
                 <li>
                     <c:if test="${fn:startsWith(subchild.fileContent.contentType,'image/')}">
-                        <div onclick="return false;" ondblclick="insertImgSyntax('\n [[image:${subchild.url}||width=${subchild.properties["j:width"].string} height=${subchild.properties["j:height"].string}]]')">
-                            <img name="" width="100" src="${subchild.url}" alt="${fn:escapeXml(subchild.name)}" onmousedown="return false;" />
+                        <div class="addInWiki" data-syntax="[[image:${subchild.url}||width=${subchild.properties["j:width"].string} height=${subchild.properties["j:height"].string}]]">
+                            <img name="" width="100" src="${subchild.url}" alt="${fn:escapeXml(subchild.name)}" />
                                 ${fn:escapeXml(not empty title.string ? title.string : subchild.name)}
                         </div>
                     </c:if>
                     <c:if test="${!fn:startsWith(subchild.fileContent.contentType,'image/')}">
-                        <div onclick="return false;" ondblclick="insertImgSyntax('\n[[${fn:escapeXml(not empty title.string ? title.string : subchild.name)}>>${subchild.url}]]')">
-                            <a href="${subchild.url}" title="${fn:escapeXml(subchild.name)}" onmousedown="return false;" >
+                        <div class="addInWiki" data-syntax="[[${fn:escapeXml(not empty title.string ? title.string : subchild.name)}>>${subchild.url}]]">
+                            <a href="${subchild.url}" title="${fn:escapeXml(subchild.name)}" >
                                     ${fn:escapeXml(not empty title.string ? title.string : subchild.name)}
                             </a>
                         </div>

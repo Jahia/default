@@ -24,10 +24,26 @@
                     <div class="well">
                         <h3><fmt:message key="jnt_editableFile.sizeLimit" /></h3>
                         <c:url value="/files/default${currentNode.path}" var="downloadLink" />
-                        <button type="button" class="btn btn-primary"
-                                onclick="editableFileDisplay.downloadFile('${functions:escapeJavaScript(downloadLink)}')">
+                        <button type="button" class="btn btn-primary" id="fileDownload">
                             <fmt:message key="jnt_editableFile.download" />
                         </button>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                var button = document.getElementById("fileDownload");
+                                if (button) {
+                                    button.addEventListener("click", function () {
+                                        editableFileDisplay.downloadFile('${functions:escapeJavaScript(downloadLink)}');
+                                    });
+                                }
+
+                                button = document.getElementById("saveButton");
+                                if (button) {
+                                    button.addEventListener("click", function () {
+                                        saveSourceCode();
+                                    });
+                                }
+                            });
+                        </script>
                     </div>
                 </c:when>
                 <c:otherwise>
@@ -80,7 +96,7 @@
                         </c:choose>
                         <c:set var="saveEnabled" value="${not locked and not isResourceBundle}"/>
                         <c:if test="${saveEnabled}">
-                            <button class="btn btn-primary" name="save" id="saveButton" onclick="saveSourceCode();" disabled><fmt:message key="label.save"/></button>
+                            <button class="btn btn-primary" name="save" id="saveButton" disabled><fmt:message key="label.save"/></button>
                         </c:if>
                     </div>
                     <script type="text/javascript">

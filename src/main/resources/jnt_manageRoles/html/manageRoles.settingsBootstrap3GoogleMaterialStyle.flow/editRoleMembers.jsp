@@ -86,6 +86,43 @@
                 }
             });
         });
+
+        var sb = document.getElementById("saveButton");
+        if (sb) {
+            sb.addEventListener("click", function() {
+                editRoleMembers.submitChanges();
+            })
+        }
+
+        var stu = document.getElementById("switchToUsersView");
+        if (stu) {
+            stu.addEventListener("click", function() {
+                $('#switchToSelectUsersForm').submit();
+                return false;
+            })
+        }
+
+        var stg = document.getElementById("switchToGroupsView");
+        if (stg) {
+            stg.addEventListener("click", function() {
+                $('#switchToSelectGroupsForm').submit();
+                return false;
+            })
+        }
+
+        var er = document.getElementById("everywhereRadio");
+        if (er) {
+            er.addEventListener("click", function() {
+                $('.provCheck').attr('disabled',true);
+            })
+        }
+
+        var pr = document.getElementById("providersRadio");
+        if (pr) {
+            pr.addEventListener("click", function() {
+                $('.provCheck').removeAttr('disabled');
+            })
+        }
     })
 </script>
 
@@ -110,8 +147,7 @@
                     <input id="addedMembers" type="hidden" name="addedMembers"/>
                     <input id="removedMembers" type="hidden" name="removedMembers"/>
                     <input id="eventId" type="hidden" name="_eventId_save" value="on"/>
-                    <button class="btn btn-raised btn-primary" type="button" id="saveButton"
-                            onclick="editRoleMembers.submitChanges()" disabled="disabled">
+                    <button class="btn btn-raised btn-primary" type="button" id="saveButton" disabled="disabled">
                         <fmt:message key="label.save"/>
                     </button>
                 </form>
@@ -133,16 +169,12 @@
 
         <ul class="nav nav-tabs">
             <li role="presentation" <c:if test="${flowHandler.searchType eq 'users'}"> class="active" </c:if> >
-                <a href="#" aria-controls="selectUsers" data-sel-role="switchToUsersView"
-                   onclick="$('#switchToSelectUsersForm').submit();return false;"
-                   role="tab" data-toggle="tab">
+                <a href="#" aria-controls="selectUsers" id="switchToUsersView" data-sel-role="switchToUsersView" role="tab" data-toggle="tab">
                     <fmt:message key="label.users"/>
                 </a>
             </li>
             <li role="presentation" <c:if test="${flowHandler.searchType eq 'groups'}"> class="active" </c:if> >
-                <a href="#selectGroups" aria-controls="selectGroups" data-sel-role="switchToGroupsView"
-                   onclick="$('#switchToSelectGroupsForm').submit();return false;"
-                   role="tab">
+                <a href="#selectGroups" aria-controls="selectGroups" id="switchToGroupsView" data-sel-role="switchToGroupsView" role="tab">
                     <fmt:message key="label.groups"/>
                 </a>
             </li>
@@ -176,21 +208,19 @@
                         </span>
                     </div>
                 </div>
-                
+
                 <c:if test="${multipleProvidersAvailable}">
                     <br/>
                     <label for="storedOn"><span class="badge badge-info"><fmt:message
                             key="label.on"/></span></label>
-                    <input type="radio" name="storedOn" value="everywhere"
-                        ${empty memberSearchCriteria.storedOn || memberSearchCriteria.storedOn == 'everywhere' ? ' checked="checked" ' : ''}
-                           onclick="$('.provCheck').attr('disabled',true);">&nbsp;<fmt:message
+                    <input type="radio" name="storedOn" value="everywhere" id="everywhereRadio"
+                        ${empty memberSearchCriteria.storedOn || memberSearchCriteria.storedOn == 'everywhere' ? ' checked="checked" ' : ''}>&nbsp;<fmt:message
                         key="label.everyWhere"/>
-    
-                    <input type="radio" name="storedOn" value="providers"
-                        ${memberSearchCriteria.storedOn == 'providers' ? 'checked="checked"' : ''}
-                           onclick="$('.provCheck').removeAttr('disabled');"/>&nbsp;<fmt:message
+
+                    <input type="radio" name="storedOn" value="providers" id="providersRadio"
+                        ${memberSearchCriteria.storedOn == 'providers' ? 'checked="checked"' : ''}/>&nbsp;<fmt:message
                         key="label.providers"/>
-    
+
                     <c:forEach items="${providers}" var="curProvider">
                         <input type="checkbox" class="provCheck" name="providers" value="${curProvider.key}"
                             ${memberSearchCriteria.storedOn != 'providers' ? 'disabled="disabled"' : ''}
@@ -204,7 +234,7 @@
 
         <c:set var="principalsCount" value="${fn:length(principals)}"/>
         <c:set var="principalsFound" value="${principalsCount > 0}"/>
-    
+
         <c:if test="${principalsCount > memberDisplayLimit}">
             <div class="alert alert-info">
                 <fmt:message key="default.manageRoles.${flowHandler.searchType}.found">
@@ -213,14 +243,14 @@
                 </fmt:message>
             </div>
         </c:if>
-    
+
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <tr>
                 <th width="2%">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="selectedAllMembers" 
+                            <input type="checkbox" name="selectedAllMembers"
                                    id="cbSelectedAllMembers"/>
                         </label>
                     </div>
@@ -245,7 +275,7 @@
                                 <div class="checkbox">
                                     <label>
                                         <input class="selectedMember"
-                                               type="checkbox" name="selectedMembers" 
+                                               type="checkbox" name="selectedMembers"
                                                value="${fn:escapeXml(principal.name)}" ${functions:contains(members, principal) ? 'checked="checked"' : ''}/>
                                     </label>
                                 </div>

@@ -71,7 +71,7 @@
         $(document).ready(function() {
             var button = document.getElementById("categorySubmit");
             if (button) {
-                button.addEventListener(function () {
+                button.addEventListener("click", function () {
                     addCategory('${boundComponent.identifier}', '${separator}')
                 });
             }

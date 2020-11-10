@@ -21,6 +21,23 @@
             $('#roleForm').submit();
         }
     }
+
+    $(document).ready(function() {
+        var grants = document.getElementsByClassName("grantRoleButton");
+        for (var i = 0; i < grants.length; i++) {
+            grants[i].addEventListener("click", function(e) {
+                grantRole(e.currentTarget.id);
+            });
+        }
+
+        var revokes = document.getElementsByClassName("revokeRoleButton");
+        for (var i = 0; i < revokes.length; i++) {
+            revokes[i].addEventListener("click", function(e) {
+                var split = e.currentTarget.id.split("_");
+                revokeRole(split[0], split[1]);
+            });
+        }
+    });
 </script>
 
 <h2><fmt:message key="default.manageRoles"/></h2>
@@ -63,8 +80,8 @@
                             </td>
 
                             <td>
-                                <button style="margin-bottom:0;" class="btn btn-danger btn-small"
-                                        onclick="revokeRole('${fn:escapeXml(functions:escapeJavaScript(principalKey))}','${entry.key.name}')">
+                                <button style="margin-bottom:0;" class="btn btn-danger btn-small revokeRoleButton"
+                                        id="${fn:escapeXml(functions:escapeJavaScript(principalKey))}_${entry.key.name}">
                                     <i class="icon-remove icon-white"></i>
                                 </button>
                             </td>
@@ -72,7 +89,7 @@
                     </c:forEach>
                     </tbody>
                 </table>
-                <button class="btn btn-primary" onclick="grantRole('${entry.key.name}')">
+                <button class="btn btn-primary grantRoleButton" id="${entry.key.name}">
                     <i class="icon-plus icon-white"></i>
                     <fmt:message key="label.members"/>
                 </button>

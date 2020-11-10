@@ -45,9 +45,22 @@
         </c:if>
         <div>
             <fmt:message key="label.noTitle" var="i18nNoTitle"/>
-            <input type="submit" class="button"
-                   value="${currentNode.properties['buttonLabel'].string}" tabindex="28"
-                   onclick='if (document.${formid}.elements["jcr:title"].value == "") { alert("${functions:escapeJavaScript(i18nNoTitle)}"); return false; } else { return true; }' ${disabled}/>
+            <input type="submit" class="button" id="${currentNode.identifier}_submitButton" value="${currentNode.properties['buttonLabel'].string}" tabindex="28" ${disabled}/>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    var button = document.getElementById("${currentNode.identifier}_submitButton");
+                    if (button) {
+                        button.addEventListener("click", function () {
+                            if (document.${formid}.elements["jcr:title"].value === "") {
+                                alert("${functions:escapeJavaScript(i18nNoTitle)}");
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        });
+                    }
+                });
+            </script>
         </div>
     </fieldset>
 </form>

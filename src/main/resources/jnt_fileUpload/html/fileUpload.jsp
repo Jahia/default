@@ -19,15 +19,13 @@
 <template:addResources type="css" resources="jquery.fileupload.css"/>
 <template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,jquery.fileupload-with-ui.min.js"/>
 <fmt:message key="label.dropHere.ie" var="i18nDropHereIE"/>
-<template:addResources type="inlinejavascript">
 <script type="text/javascript">
-$(document).ready(function() {
-	if (jQuery.browser.msie) {
-		$("#drop-box-file-upload-${currentNode.identifier}").empty().append("${functions:escapeJavaScript(i18nDropHereIE)}");
-	}
-});
+    $(document).ready(function() {
+        if (jQuery.browser.msie) {
+            $("#drop-box-file-upload-${currentNode.identifier}").empty().append("${functions:escapeJavaScript(i18nDropHereIE)}");
+        }
+    });
 </script>
-</template:addResources>
 <c:set var="linked" value="${ui:getBindedComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
 <c:set var="targetNode" value="${renderContext.mainResource.node}"/>
 <c:if test="${!empty currentNode.properties.target}">
@@ -50,7 +48,7 @@ $(document).ready(function() {
     </form>
     </template:tokenizedForm>
     <table id="files${currentNode.identifier}" class="table"></table>
-    <script>
+    <script  type="text/javascript">
         /*global $ */
         $(function () {
             $('#file_upload${currentNode.identifier}').fileUploadUI({

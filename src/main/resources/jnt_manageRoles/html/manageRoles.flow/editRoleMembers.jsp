@@ -85,7 +85,21 @@
             workInProgress('${i18nWaiting}');
             $("#addedMembers").val(addedMembers)
             $("#removedMembers").val(removedMembers)
-        })
+        });
+
+        var er = document.getElementById("everywhereRadio");
+        if (er) {
+            er.addEventListener("click", function() {
+                $('.provCheck').attr('disabled',true);
+            })
+        }
+
+        var pr = document.getElementById("providersRadio");
+        if (pr) {
+            pr.addEventListener("click", function() {
+                $('.provCheck').removeAttr('disabled');
+            })
+        }
     })
 
 </script>
@@ -132,14 +146,12 @@
                 <br/>
                 <label for="storedOn"><span class="badge badge-info"><fmt:message
                         key="label.on"/></span></label>
-                <input type="radio" name="storedOn" value="everywhere"
-                    ${empty memberSearchCriteria.storedOn || memberSearchCriteria.storedOn == 'everywhere' ? ' checked="checked" ' : ''}
-                       onclick="$('.provCheck').attr('disabled',true);">&nbsp;<fmt:message
+                <input type="radio" name="storedOn" value="everywhere" id="everywhereRadio"
+                    ${empty memberSearchCriteria.storedOn || memberSearchCriteria.storedOn == 'everywhere' ? ' checked="checked" ' : ''}>&nbsp;<fmt:message
                     key="label.everyWhere"/>
 
-                <input type="radio" name="storedOn" value="providers"
-                    ${memberSearchCriteria.storedOn == 'providers' ? 'checked="checked"' : ''}
-                       onclick="$('.provCheck').removeAttr('disabled');"/>&nbsp;<fmt:message
+                <input type="radio" name="storedOn" value="providers" id="providersRadio"
+                    ${memberSearchCriteria.storedOn == 'providers' ? 'checked="checked"' : ''}/>&nbsp;<fmt:message
                     key="label.providers"/>
 
                 <c:forEach items="${providers}" var="curProvider">

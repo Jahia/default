@@ -8,6 +8,7 @@
 <%@ taglib prefix="user" uri="http://www.jahia.org/tags/user" %>
 <template:addResources type="css" resources="shortcuts-inline.css"/>
 <template:addResources type="javascript" resources="textsizer.js"/>
+<template:addResources type="javascript" resources="jquery.min.js"/>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="out" type="java.io.PrintWriter"--%>
 <%--@elvariable id="script" type="org.jahia.services.render.scripting.Script"--%>
@@ -18,6 +19,14 @@
 <%--@elvariable id="currentUser" type="org.jahia.services.usermanager.JahiaUser"--%>
 <%--@elvariable id="currentAliasUser" type="org.jahia.services.usermanager.JahiaUser"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
+<script type="text/javascript">
+    $(document).ready(function() {
+        document.getElementById("print").addEventListener("click", function() {
+            window.print();
+            return false;
+        });
+    });
+</script>
 <div class="shortcuts-inline">
     <ul>
         <c:if test="${renderContext.loggedIn}">
@@ -45,8 +54,7 @@
             </c:if>
 --%>
         </c:if>
-        <li class="shortcuts-print"><a href="#"
-                                       onclick="javascript:window.print(); return false">
+        <li class="shortcuts-print"><a href="#" id="print">
             <fmt:message key="print"/></a>
         </li>
         <li class="shortcuts-typoincrease">

@@ -58,6 +58,15 @@
                 return false;
             }
 
+            $(document).ready(function() {
+                var categories = document.getElementsByClassName("deleteCategory");
+                for (var i = 0; i < categories.length; i++) {
+                    categories[i].addEventListener("click", function(e) {
+                        deleteCategory(e.currentTarget.id);
+                    });
+                }
+            });
+
         </script>
         </c:if>
         <jsp:useBean id="filteredCategories" class="java.util.LinkedHashMap"/>
@@ -77,7 +86,7 @@
                                     ${!status.first ? separator : ''}<span
                                     class="categorizeditem">${fn:escapeXml(category.value)}</span>
                                 <c:if test="${not nodeLocked}">
-                                <a class="delete" onclick="deleteCategory('${category.key}')" href="#"></a>
+                                <a class="delete deleteCategory" id="${category.key}"  href="#"></a>
                                 </c:if>
                             </div>
                         </c:forEach>

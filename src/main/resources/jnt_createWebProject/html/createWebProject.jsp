@@ -76,8 +76,17 @@
 
         <div>
             <input type="button" class="button" id="createSite_button"
-                   value="${currentNode.properties['buttonLabel'].string}" tabindex="28"
-                   onclick="createSite()" ${disabled}/>
+                   value="${currentNode.properties['buttonLabel'].string}" tabindex="28" ${disabled}/>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    var button = document.getElementById("createSite_button");
+                    if (button) {
+                        button.addEventListener("click", function () {
+                            createSite();
+                        });
+                    }
+                });
+            </script>
         </div>
     </fieldset>
 </form>

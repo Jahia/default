@@ -28,6 +28,8 @@
 <template:include view="hidden.header"/>
 
 <c:set var="currentLocale">${currentResource.locale}</c:set>
+<c:url var="stagingExportUrl" value="${renderContext.request.contextPath}/cms/export/default/sites_staging_export_${now}.zip"/>
+<c:url var="exportUrl" value="${renderContext.request.contextPath}/cms/export/default/sites_export_${now}.zip"/>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -42,26 +44,52 @@
         });
         $(".checkAll").click(function () {
             $(".sitecheckbox").each(function (index) {
-                if ($(".checkAll").attr("checked") == "checked") {
+                if ($(".checkAll").attr("checked") === "checked") {
                     $(this).attr("checked","checked");
                 } else {
                     $(this).removeAttr("checked");
                 }
             });
         });
+
+        var db = document.getElementById("deleteSiteButton");
+        if (db) {
+            db.addEventListener("click", function () {
+                deleteSite();
+            });
+        }
+
+        var esb = document.getElementById("exportStagingButton");
+        if (esb) {
+            esb.addEventListener("click", function () {
+                exportSite('${stagingExportUrl}',false);
+            });
+        }
+
+        var elb = document.getElementById("exportLiveButton");
+        if (elb) {
+            elb.addEventListener("click", function () {
+                exportSite('${exportUrl}',true);
+            });
+        }
+
+        var eps = document.getElementsByClassName("editProps");
+        for (var i = 0; i < eps.length; i++) {
+            eps[i].addEventListener("click", function(e) {
+                editProperties(e.currentTarget.id.replace("editProps_", ""));
+            });
+        }
     });
 </script>
 
 <jcr:node var="root" path="/"/>
 <c:if test="${moduleMap.end > 0 and moduleMap.end > moduleMap.begin}">
     <c:if test="${currentNode.properties.delete.boolean && jcr:hasPermission(root,'adminVirtualSites')}">
-        <button class="deleteSiteButton" id="deleteSiteButton" onclick="deleteSite()"><fmt:message key="label.manageSite.deleteSite"/></button>
+        <button class="deleteSiteButton" id="deleteSiteButton"><fmt:message key="label.manageSite.deleteSite"/></button>
     </c:if>
     <c:if test="${currentNode.properties.export.boolean && jcr:hasPermission(root,'adminVirtualSites')}">
-        <c:url var="stagingExportUrl" value="${renderContext.request.contextPath}/cms/export/default/sites_staging_export_${now}.zip"/>
-        <button class="exportStagingButton" id="exportStagingButton" onclick="exportSite('${stagingExportUrl}',false)"><fmt:message key="label.manageSite.exportStaging"/></button>
-        <c:url var="exportUrl" value="${renderContext.request.contextPath}/cms/export/default/sites_export_${now}.zip"/>
-        <button class="exportLiveButton" id="exportLiveButton" onclick="exportSite('${exportUrl}',true)"><fmt:message key="label.manageSite.exportLive"/></button>
+        <button class="exportStagingButton" id="exportStagingButton"><fmt:message key="label.manageSite.exportStaging"/></button>
+        <button class="exportLiveButton" id="exportLiveButton"><fmt:message key="label.manageSite.exportLive"/></button>
     </c:if>
 </c:if>
 
@@ -182,7 +210,7 @@
                                         </p>
                                     </fieldset>
                                 </form>
-                                <button site="${node.identifier}" onclick="editProperties('${node.identifier}')"><fmt:message key="label.manageSite.submitChanges"/></button>
+                                <button site="${node.identifier}" class="editProps" id="editProps_${node.identifier}"><fmt:message key="label.manageSite.submitChanges"/></button>
                             </div>
                         </div>
                     </c:if>

@@ -21,6 +21,23 @@
             $('#roleForm').submit();
         }
     }
+
+    $(document).ready(function() {
+        var grants = document.getElementsByClassName("grantRoleButton");
+        for (var i = 0; i < grants.length; i++) {
+            grants[i].addEventListener("click", function(e) {
+                grantRole(e.currentTarget.id);
+            });
+        }
+
+        var revokes = document.getElementsByClassName("revokeRoleButton");
+        for (var i = 0; i < revokes.length; i++) {
+            revokes[i].addEventListener("click", function(e) {
+                var split = e.currentTarget.id.split("_");
+                revokeRole(split[0], split[1]);
+            });
+        }
+    });
 </script>
 
 <div class="page-header">
@@ -43,8 +60,8 @@
                         <h4>${entry.key.displayableName}</h4>
                     </div>
                     <div class="col-md-6">
-                        <button class="btn btn-primary btn-raised pull-right" data-sel-role="grantRole-${entry.key.name}"
-                                onclick="grantRole('${entry.key.name}')">
+                        <button class="btn btn-primary btn-raised pull-right grantRoleButton" data-sel-role="grantRole-${entry.key.name}"
+                                id="${entry.key.name}">
                             <fmt:message key='label.edit' />
                         </button>
                     </div>
@@ -80,7 +97,7 @@
                             </td>
 
                             <td>
-                                <a class="btn btn-fab btn-fab-xs btn-danger" title="<fmt:message key='label.delete'/>" href="#delete" onclick="revokeRole('${fn:escapeXml(functions:escapeJavaScript(principalKey))}','${entry.key.name}')">
+                                <a class="btn btn-fab btn-fab-xs btn-danger revokeRoleButton" title="<fmt:message key='label.delete'/>" href="#delete" id="${fn:escapeXml(functions:escapeJavaScript(principalKey))}_${entry.key.name}">
                                     <i class="material-icons">delete</i>
                                 </a>
                             </td>

@@ -20,8 +20,8 @@
         var awi = document.getElementsByClassName("blogItemDeleteButton");
         for (var i = 0; i < awi.length; i++) {
             awi[i].addEventListener("click", function(e) {
+                e.preventDefault();
                 CKEDITOR.instances.editContent.insertHtml(e.currentTarget.getAttribute("data-html"));
-                return false;
             });
         }
     });
@@ -57,10 +57,10 @@
                                 <button><fmt:message key="label.delete"/></button>
                                 <c:choose>
                                     <c:when test="${isImage}">
-                                        <button class="blogItemDeleteButton" data-html="<img src=\'${subchild.url}\'/>"><fmt:message key="label.add" /></button>
+                                        <button class="blogItemDeleteButton" data-html="<img src=${subchild.url}/>"><fmt:message key="label.add" /></button>
                                     </c:when>
                                     <c:otherwise>
-                                        <button class="blogItemDeleteButton" data-html="<a href=\'${subchild.url}\' title=\'${title}\'>${title}</a>"><fmt:message key="label.add" /></button>
+                                        <button class="blogItemDeleteButton" data-html="<a href=${subchild.url} title=\'${title}\'>${title}</a>"><fmt:message key="label.add" /></button>
                                     </c:otherwise>
                                 </c:choose>
                                 <script type="text/javascript">

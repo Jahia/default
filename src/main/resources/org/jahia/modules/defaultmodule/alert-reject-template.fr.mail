@@ -97,6 +97,15 @@ html:
                             </tr>
                             <tr>
                                 <td align="left">
+                                    <p style="color: rgb(130, 136, 146); font-size: 14px; font-family: 'Nunito Sans', Helvetica, Arial, sans-serif;">
+                                        <strong style="color: rgb(82, 92, 98); font-weight: 600; font-size: 14px; font-family: 'Nunito Sans', Helvetica, Arial, sans-serif;">
+                                            $workflowTitle
+                                        </strong>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
                                     <p style="color: rgb(130, 136, 146); font-size: 14px; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif;">
                                         $publicationCount élément(s) concerné(s)</p>
                                 </td>

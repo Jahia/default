@@ -152,7 +152,6 @@
 
 [jnt:commentsList] > jnt:content, jmix:bindedComponent, jmix:socialComponent
 
-[jnt:addComment] > jnt:content, jmix:bindedComponent, jmix:socialComponent
 
 [jnt:gotoStudio] > jnt:content, mix:title, jmix:siteComponent, jmix:studioOnly
 
@@ -208,7 +207,6 @@
 [jnt:fileUpload] > jnt:content, jmix:siteComponent, jmix:bindedComponent, jmix:studioOnly
  - target (weakreference)
 
-[jnt:categorizing] > jnt:content, mix:title, jmix:socialComponent, jmix:bindedComponent
 
 [jnt:displayCategories] > jnt:content, mix:title, jmix:socialComponent, jmix:bindedComponent
 
@@ -226,16 +224,6 @@
  - workspace (string, choicelist) < 'default', 'live'
  + * (jmix:droppableContent) = jmix:droppableContent
 
-[jnt:createWebProject] > jnt:content, mix:title, jmix:siteComponent, jmix:studioOnly
- - useServerName (boolean)
- - useDescription (boolean)
- - useTemplatesSet (boolean)
- - mixLanguage (boolean)
- - allowsUnlistedLanguages (boolean)
- - forceLanguage (string)
- - class (string) indexed=no
- - defaultTemplatesSet (weakreference, choicelist[nodes='/modules;jnt:virtualsite'])
- - buttonLabel (string) internationalized nofulltext
 
 [jnt:openInPopup] > jnt:content, jmix:siteComponent, jmix:studioOnly
  + * (jmix:droppableContent) = jmix:droppableContent

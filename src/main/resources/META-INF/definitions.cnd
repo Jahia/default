@@ -133,7 +133,8 @@
 [jnt:addContent] > jnt:content, mix:title, jmix:siteComponent, jmix:bindedComponent, jmix:studioOnly, jmix:hiddenType
  - j:type (string, choicelist[nodetypes='jmix:editorialContent',resourceBundle]) multiple indexed=no
 
-[jnt:introduction] > jnt:bigText, jmix:structuredContent, jmix:editorialContent
+// Deprecated
+[jnt:introduction] > jnt:bigText, jmix:structuredContent, jmix:editorialContent, jmix:hiddenType
 
 [jnt:post] > jnt:content, mix:title
  - jcr:title (string)

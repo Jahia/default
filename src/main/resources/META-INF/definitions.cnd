@@ -294,5 +294,6 @@
 
 [jmix:listSizeLimit] mixin
  extends = jnt:contentList
+ itemtype = listOrdering
  - limit (long)
 

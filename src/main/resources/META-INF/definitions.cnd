@@ -55,7 +55,8 @@
  - autoplay (boolean)
  - forceFlashPlayer (boolean)
 
-[jnt:flash] > jnt:content, mix:title, jmix:multimediaContent
+// Deprecated
+[jnt:flash] > jnt:content, mix:title, jmix:multimediaContent, jmix:hiddenType
  - flashSource (weakreference, picker[type='file'])
  - width (string) mandatory analyzer=keyword nofulltext < '^\\d+[%]?$'
  - height (string) mandatory analyzer=keyword nofulltext < '^\\d+[%]?$'

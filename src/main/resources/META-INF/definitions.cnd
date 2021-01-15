@@ -292,3 +292,8 @@
  - j:node (weakreference, picker[type='image']) internationalized < 'jmix:image'
  - j:url (string) internationalized
 
+[jmix:listSizeLimit] mixin
+ extends = jnt:contentList
+ itemtype = listOrdering
+ - limit (long)
+

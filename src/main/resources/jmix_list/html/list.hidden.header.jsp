@@ -72,7 +72,7 @@
             </c:forEach>
         </c:if>
     </query:definition>
-    
+
     <c:choose>
         <c:when test='${(queryMap eq null) or (queryMap[resultName] eq null)}'>
             <jcr:jqom var="result" qomBeanName="listQuery"/>
@@ -84,12 +84,12 @@
         <c:otherwise>
             <c:set var="result" value="${queryMap[resultName]}"/>
         </c:otherwise>
-    </c:choose>    
+    </c:choose>
 
     <%-- pager specific --%>
     <c:set target="${moduleMap}" property="listTotalSize" value="${functions:length(result.nodes)}"/>
     <c:set target="${moduleMap}" property="listApproxSize" value="${result.approxCount}"/>
-    <c:set target="${moduleMap}" property="end" value="${moduleMap.listApproxSize > 0 ? moduleMap.listApproxSize : moduleMap.listTotalSize}"/>        
+    <c:set target="${moduleMap}" property="end" value="${moduleMap.listApproxSize > 0 ? moduleMap.listApproxSize : moduleMap.listTotalSize}"/>
 
     <%-- set result --%>
     <c:set target="${moduleMap}" property="currentList" value="${result.nodes}"/>
@@ -103,6 +103,10 @@
     </c:if>
     <c:if test="${!empty areaResource.properties['j:numberOfItems']}">
         <c:set value="${areaResource.properties['j:numberOfItems'].string -1}" target="${moduleMap}" property="end"/>
+    </c:if>
+    <!-- overrides j:numberOfItems if present on the current node -->
+    <c:if test="${!empty currentNode.properties['limit']}">
+        <c:set value="${currentNode.properties['limit'].string -1}" target="${moduleMap}" property="end"/>
     </c:if>
     <c:if test="${!empty areaResource.properties['j:allowedTypes'] && !jcr:isNodeType(currentNode, 'jmix:skipConstraintCheck')}">
         <c:set var="allowedTypes" value=""/>
@@ -134,7 +138,7 @@
     </c:if>
     <c:set value="${currentList}" target="${moduleMap}" property="currentList"/>
     <c:set target="${moduleMap}" property="end" value="${fn:length(moduleMap.currentList)}" />
-    <c:set target="${moduleMap}" property="listTotalSize" value="${moduleMap.end}" />	
+    <c:set target="${moduleMap}" property="listTotalSize" value="${moduleMap.end}" />
 </c:if>
 
 <c:if test="${empty moduleMap.editable}">

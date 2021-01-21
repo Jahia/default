@@ -104,7 +104,7 @@
     <c:if test="${!empty areaResource.properties['j:numberOfItems']}">
         <c:set value="${areaResource.properties['j:numberOfItems'].string -1}" target="${moduleMap}" property="end"/>
     </c:if>
-    <!-- overrides j:numberOfItems if limit is present on the current node -->
+    <%-- overrides j:numberOfItems if limit is present on the current node --%>
     <c:if test="${jcr:isNodeType(currentNode, 'jmix:listSizeLimit') and !empty currentNode.properties['limit']}">
         <c:set value="${currentNode.properties['limit'].string -1}" target="${moduleMap}" property="end"/>
     </c:if>

@@ -43,14 +43,15 @@
  */
 package org.jahia.modules.defaultmodule.actions;
 
-import org.apache.log4j.Logger;
-import org.jahia.bin.ActionResult;
 import org.jahia.bin.Action;
+import org.jahia.bin.ActionResult;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +65,8 @@ import java.util.Map;
  */
 @Deprecated
 public class MultipleDeleteAction extends Action {
-    private transient static Logger logger = Logger.getLogger(MultipleDeleteAction.class);
+
+    private transient static Logger logger = LoggerFactory.getLogger(MultipleDeleteAction.class);
 
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {

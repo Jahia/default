@@ -43,7 +43,6 @@
  */
 package org.jahia.modules.defaultmodule.actions;
 
-import org.apache.log4j.Logger;
 import org.jahia.bin.Action;
 import org.jahia.bin.ActionResult;
 import org.jahia.services.content.JCRContentUtils;
@@ -53,6 +52,8 @@ import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
 import org.jahia.settings.SettingsBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +65,7 @@ import java.util.Map;
  */
 @Deprecated
 public class MultiplePasteAction extends Action {
-    private transient static Logger logger = Logger.getLogger(MultiplePasteAction.class);
+    private transient static Logger logger = LoggerFactory.getLogger(MultiplePasteAction.class);
 
     @SuppressWarnings("unchecked")
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,

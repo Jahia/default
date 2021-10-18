@@ -55,7 +55,7 @@
     </parent>
 
     <artifactId>default</artifactId>
-    <version>8.4.0</version>
+    <version>8.5.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>Default Jahia Templates</name>
     <description>These are the custom templates for running on a Jahia server.</description>
@@ -64,7 +64,7 @@
         <connection>scm:git:git@github.com:Jahia/default.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/default.git</developerConnection>
         <url>scm:git:git@github.com:Jahia/default.git</url>
-        <tag>8_4_0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>

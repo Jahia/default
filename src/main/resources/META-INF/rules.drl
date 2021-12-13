@@ -30,6 +30,7 @@ rule "Image update"
     when
         A file content has been modified
              - the mimetype matches image/.*
+             - not in operation import
     then
         > long timer = System.currentTimeMillis();
         Add the type jmix:image
@@ -40,4 +41,3 @@ rule "Image update"
         Dispose image
         Log "Image " + node.getPath() + " updated in " + (System.currentTimeMillis() - timer) + " ms"
 end
-

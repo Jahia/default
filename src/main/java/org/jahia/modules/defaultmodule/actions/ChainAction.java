@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- */
 package org.jahia.modules.defaultmodule.actions;
 
 import org.codehaus.plexus.util.StringUtils;
@@ -85,12 +84,12 @@ public class ChainAction extends Action implements InitializingBean {
                     result = action.doExecute(req, renderContext, resource, session, parameters, urlResolver);
                     if (actionToDo.equals("redirect") && result != null && result.getUrl() != null) {
                     	path = result.getUrl();
-                    }                    
+                    }
                 }
             }
             if (path != null) {
             	result.setUrl(path);
-            }            
+            }
             return result;
         }
         return ActionResult.BAD_REQUEST;

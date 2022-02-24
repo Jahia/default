@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- */
 package org.jahia.modules.defaultmodule.actions;
 
 import org.jahia.bin.Action;
@@ -68,7 +67,7 @@ public class CheckClipboardAction extends Action {
                         stringBuilder.append(nodeType);
                     }
                     nodetypes.add(stringBuilder.toString());
-                } catch (RepositoryException e) {                    
+                } catch (RepositoryException e) {
                 }
             }
             json.put("paths",paths);

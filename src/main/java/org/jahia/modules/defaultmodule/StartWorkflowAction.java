@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- */
 package org.jahia.modules.defaultmodule;
 
 import org.apache.commons.lang.StringUtils;
@@ -39,7 +38,7 @@ import java.util.Map;
 public class StartWorkflowAction extends Action {
     public static final String PROCESS = "process";
     protected WorkflowService workflowService;
-    
+
     private static Logger logger = org.slf4j.LoggerFactory.getLogger(StartWorkflowAction.class);
 
     public void setWorkflowService(WorkflowService workflowService) {
@@ -48,12 +47,12 @@ public class StartWorkflowAction extends Action {
 
     public ActionResult doExecute(HttpServletRequest req, RenderContext renderContext, Resource resource,
                                   JCRSessionWrapper session, Map<String, List<String>> parameters, URLResolver urlResolver) throws Exception {
-    	
+
     	if (parameters.get(PROCESS) == null) {
     		logger.error("Missing parameter: \"process\" with value <workflow provider>:<workflow key>");
     		return ActionResult.BAD_REQUEST;
     	}
-    	
+
         String process = parameters.get(PROCESS).get(0);
         String workflowDefinitionKey = StringUtils.substringAfter(process, ":");
         String providerKey = StringUtils.substringBefore(process, ":");

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- */
 package org.jahia.modules.defaultmodule;
 
 import org.apache.commons.lang.StringUtils;
@@ -292,7 +291,7 @@ public class RolesHandler implements Serializable {
 
     /**
      * Decodes the provided parameter values.
-     * 
+     *
      * @param params
      *            the values to be decoded
      * @return the array of decoded values

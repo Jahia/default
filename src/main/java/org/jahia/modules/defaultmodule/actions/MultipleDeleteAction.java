@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- */
 package org.jahia.modules.defaultmodule.actions;
 
 import org.jahia.bin.Action;
@@ -47,7 +46,7 @@ public class MultipleDeleteAction extends Action {
         assert uuids != null && uuids.size()>0;
         String mark = req.getParameter("markForDeletion");
         String comment = req.getParameter("markForDeletionComment");
-        Boolean markForDeletion = mark != null && mark.length() > 0 ? Boolean.valueOf(mark) : null; 
+        Boolean markForDeletion = mark != null && mark.length() > 0 ? Boolean.valueOf(mark) : null;
         try {
             for (String uuid : uuids) {
                 JCRNodeWrapper node = session.getNodeByUUID(uuid);

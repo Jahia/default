@@ -4,7 +4,7 @@
 
 Default
 ======================
-Digital Experience Manager module with base set of templates and rendering views.
+Jahia module with base set of templates and rendering views.
 
 ## Open-Source
 

@@ -54,20 +54,6 @@
                                 test="${not empty sessionScope.formDatas['content']}">${fn:escapeXml(sessionScope.formDatas['content'][0])}</c:if></textarea>
                     </p>
 
-                    <c:if test="${not renderContext.loggedIn}">
-                        <p class="field">
-                            <label class="left" for="captcha"><fmt:message key="label.captcha"/></label>
-                            <template:captcha/>
-                            <c:if test="${not empty sessionScope.formError}">
-                                <label class="error">${fn:escapeXml(sessionScope.formError)}</label>
-                            </c:if>
-                        </p>
-                        <p class="field">
-                            <label class="left" for="captcha"><fmt:message key="label.captcha.enter"/></label>
-                            <input type="text" id="captcha" name="jcrCaptcha"/>
-                        </p>
-                    </c:if>
-
                     <p>
                         <input type="reset" value="<fmt:message key='label.reset'/>" class="button"
                                tabindex="3"  ${disabled}/>
@@ -85,8 +71,7 @@
                 rules: {
                     'jcr:title': "required",
                     <c:if test="${not renderContext.loggedIn}">
-                    pseudo: "required",
-                    captcha: "required"
+                    pseudo: "required"
                     </c:if>
                 }
             });

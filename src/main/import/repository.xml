@@ -7,7 +7,6 @@
                j:title="Default Jahia Templates"
                jcr:primaryType="jnt:module">
 
-                <portlets jcr:primaryType="jnt:portletFolder"/>
                 <files jcr:primaryType="jnt:folder"/>
                 <contents jcr:primaryType="jnt:contentFolder"/>
             <templates jcr:primaryType="jnt:templatesFolder">

@@ -1,0 +1,32 @@
+{
+  "name": "default",
+  "version": "8.7.0-SNAPSHOT",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "yarn webpack",
+    "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
+    "build:analyze": "yarn build --analyze",
+    "build:production": "yarn build --mode=production",
+    "build:production-analyze": "yarn build:production --analyze"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Jahia/default.git"
+  },
+  "author": "Jahia Core Team <core@jahia.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jahia/default/issues"
+  },
+  "homepage": "https://github.com/Jahia/default",
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "jquery": "3.4.x",
+    "jquery-validation": "1.17.x"
+  }
+}

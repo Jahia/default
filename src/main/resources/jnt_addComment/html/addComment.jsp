@@ -15,7 +15,7 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <%--@elvariable id="acl" type="java.lang.String"--%>
 <template:addResources type="css" resources="commentable.css"/>
-<template:addResources type="javascript" resources="jquery.min.js,jquery.validate.js"/>
+<template:addResources type="javascript" resources="apps/default.bundle.js"/>
 <c:set var="boundComponent"
        value="${uiComponents:getBindedComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
 <c:if test="${not empty boundComponent}">
@@ -66,15 +66,8 @@
         </form>
     </template:tokenizedForm>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("#newCommentForm").validate({
-                rules: {
-                    'jcr:title': "required",
-                    <c:if test="${not renderContext.loggedIn}">
-                    pseudo: "required"
-                    </c:if>
-                }
-            });
-        });
+        /* Adding output.library in webpack config lets us 
+         * expose functions and embed jsp values as params */
+        MyLibrary.initComment(${renderContext.loggedIn});
     </script>
 </c:if>

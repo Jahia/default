@@ -1,6 +1,24 @@
-/target/
 /.classpath
 /.project
 /.settings
-*.iml
 .idea
+*.iml
+*.ipr
+target
+src/main/resources/javascript/bundles
+src/main/resources/javascript/apps
+node
+node_modules
+yarn-error.log
+/.externalToolBuilders
+graphql.config.json
+graphql.schema.json
+.env
+
+coverage/
+/storybook-static
+
+# macOS
+.DS_Store
+.yalc
+yalc.lock

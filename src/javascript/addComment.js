@@ -1,8 +1,12 @@
 import $ from 'jquery';
-import 'jquery-validation'
+import 'jquery-validation';
 
-export function initComment(isLoggedIn) {
+(function initAddComment() {
     console.log('getting called from my own script');
+
+    // Retrieve jsp param through DOM element
+    const isLoggedIn = document.getElementById('addComment')?.dataset.loggedIn === 'true';
+    console.log(`isLoggedIn: ${isLoggedIn}`);
 
     const rules = {'jcr:title': 'required'};
     if (!isLoggedIn) {
@@ -13,4 +17,4 @@ export function initComment(isLoggedIn) {
     $(document).ready(() => {
         $("#newCommentForm").validate({rules});
     });
-}
+})();

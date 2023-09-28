@@ -8,12 +8,15 @@ module.exports = (env, argv) => {
     let config = {
         mode: 'development',
         entry: {
-            main: path.resolve(__dirname, 'src/javascript/index')
+            addComment: {
+                import: path.resolve(__dirname, 'src/javascript/addComment'),
+                dependOn: 'shared'
+            },
+            shared: ['jquery', 'jquery-validation']
         },
         output: {
             path: path.resolve(__dirname, appsFolder),
-            filename: `${packageJson.name}.bundle.js`,
-            library: 'MyLibrary'
+            filename: `${packageJson.name}.[name].bundle.js`
         },
         plugins: [
             new ProvidePlugin({

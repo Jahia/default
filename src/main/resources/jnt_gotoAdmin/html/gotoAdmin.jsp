@@ -8,7 +8,6 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <c:if test="${!renderContext.settings.readOnlyMode}">
-    <template:addResources type="javascript" resources="jquery.min.js"/>
     <template:addResources type="css" resources="goto-links.css"/>
     <c:url var="link" value="/cms/admin/default/${renderContext.UILocale.language}/settings.aboutJahia.html"/>
     <c:if test="${!empty currentNode.properties['toAdminComponent']}">

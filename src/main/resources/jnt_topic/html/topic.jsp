@@ -14,12 +14,10 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<template:addResources type="javascript" resources="jquery.min.js,jquery.cuteTime.js"/>
+<template:addResources type="javascript" resources="apps/default.jquery.bundle.js"/>
+<template:addResources type="javascript" resources="vendors/jquery.cuteTime.js"/>
 <script type="text/javascript">
-    function initCuteTime() {
-        $('.timestamp').cuteTime({ refresh: 60000 });
-    }
-    $(document).ready(function () {
+    $(function () {
         $('.timestamp').cuteTime({ refresh: 60000 });
     });
 </script>

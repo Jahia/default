@@ -13,20 +13,14 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<template:addResources type="javascript" resources="jquery.cuteTime.js" var="resourcePath"/>
-<c:if test="${not empty resourcePath}">
-    <c:forTokens items="${resourcePath}" delims="," var="resource" varStatus="i">
-            <script>
-                if ($.fn.cuteTime == undefined) {
-                    $.getScript("${resource}",function(){
-                        $('.timestamp').cuteTime({ refresh: 60000 });
-                    });
-                } else {
-					$('.timestamp').cuteTime({ refresh: 60000 });
-				}
-            </script>
-    </c:forTokens>
-</c:if>
+<template:addResources type="javascript" resources="apps/default.jquery.bundle.js"/>
+<template:addResources type="javascript" resources="vendors/jquery.cuteTime.js"/>
+<script>
+    $(function () {
+        $('.timestamp').cuteTime({refresh: 60000});
+    });
+</script>
+
 <ul class="genericListComment" id="${currentNode.UUID}">
     <c:set target="${moduleMap}" property="commentsList" value="${currentNode.nodes}"/>
     <c:set target="${moduleMap}" property="listTotalSize" value="${fn:length(currentNode.nodes)}"/>

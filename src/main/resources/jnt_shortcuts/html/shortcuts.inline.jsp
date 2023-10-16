@@ -6,9 +6,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <%@ taglib prefix="user" uri="http://www.jahia.org/tags/user" %>
-<template:addResources type="css" resources="shortcuts-inline.css"/>
-<template:addResources type="javascript" resources="textsizer.js"/>
-<template:addResources type="javascript" resources="jquery.min.js"/>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="out" type="java.io.PrintWriter"--%>
 <%--@elvariable id="script" type="org.jahia.services.render.scripting.Script"--%>
@@ -19,14 +16,11 @@
 <%--@elvariable id="currentUser" type="org.jahia.services.usermanager.JahiaUser"--%>
 <%--@elvariable id="currentAliasUser" type="org.jahia.services.usermanager.JahiaUser"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
-<script type="text/javascript">
-    $(document).ready(function() {
-        document.getElementById("print").addEventListener("click", function() {
-            window.print();
-            return false;
-        });
-    });
-</script>
+
+<template:addResources type="css" resources="shortcuts-inline.css"/>
+<template:addResources type="javascript" resources="apps/default.jquery.bundle.js,default.shortcuts.bundle.js"/>
+<script type="text/javascript">shortcutsLib.init()</script>
+
 <div class="shortcuts-inline">
     <ul>
         <c:if test="${renderContext.loggedIn}">
@@ -58,10 +52,10 @@
             <fmt:message key="print"/></a>
         </li>
         <li class="shortcuts-typoincrease">
-            <a href="javascript:ts('body',1)"><fmt:message key="font.up"/></a>
+            <a href="#"><fmt:message key="font.up"/></a>
         </li>
         <li class="shortcuts-typoreduce">
-            <a href="javascript:ts('body',-1)"><fmt:message key="font.down"/></a>
+            <a href="#"><fmt:message key="font.down"/></a>
         </li>
 <%-- <li class="shortcuts-home">
             <a href="<c:url value='${url.base}${renderContext.site.path}/home.html'/>"><fmt:message key="home"/></a>

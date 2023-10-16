@@ -6,24 +6,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
 <%@ taglib prefix="user" uri="http://www.jahia.org/tags/user" %>
-<template:addResources type="javascript" resources="jquery.min.js, textsizer.js"/>
 
-<!-- shortcuts -->
+<template:addResources type="javascript" resources="apps/default.jquery.bundle.js,apps/default.shortcuts.bundle.js"/>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#shortcuts').children('ul').hide();
-        $('#shortcuts').mouseover(function() {
-            $(this).children('ul').show();
-        }).mouseout(function() {
-            $(this).children('ul').hide();
-        });
-
-        document.getElementById("print").addEventListener("click", function() {
-            window.print();
-            return false;
-        });
-    });
+    shortcutsLib.initShortcuts()
 </script>
+
 <div id="shortcuts">
     <h3><a title="Shortcuts" href="#"><fmt:message key="welcome"/></a></h3>
     <ul>
@@ -59,11 +47,11 @@
         <li><a href="#" id="print">
             <fmt:message key="print"/></a>
         </li>
-        <li>
-            <a href="javascript:ts('body',1)"><fmt:message key="font.up"/></a>
+        <li class="shortcuts-typoincrease">
+            <a href="#"><fmt:message key="font.up"/></a>
         </li>
-        <li>
-            <a href="javascript:ts('body',-1)"><fmt:message key="font.down"/></a>
+        <li class="shortcuts-typoreduce">
+            <a href="#"><fmt:message key="font.down"/></a>
         </li>
 <%--<li>
             <a href="<c:url value='${url.base}${renderContext.site.path}/home.html'/>"><fmt:message key="home"/></a>

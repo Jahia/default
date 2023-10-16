@@ -19,25 +19,9 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <c:set var="cookieName" value="org.jahia.channels.activeChannel" />
 <c:if test="${not empty renderContext.channel and (not renderContext.channel.generic or not empty cookie[cookieName])}">
-    <template:addResources type="javascript" resources="jquery.min.js"/>
-    <template:addResources type="javascript" resources="jquery.cookie.js"/>
+    <template:addResources type="javascript" resources="apps/default.toggleMobileDisplay.bundle.js"/>
     <script type="text/javascript">
-    $(document).ready(function() {
-        <c:choose>
-            <c:when test="${empty cookie[cookieName]}">
-                $("a#forceGenericChannel").click(function () {
-                    $.cookie("${cookieName}", "generic");
-                    location.reload(true);
-                });
-            </c:when>
-            <c:otherwise>
-                $("a#useCurrentChannel").click(function () {
-                    $.cookie("${cookieName}", null);
-                    location.reload(true);
-                });
-            </c:otherwise>
-        </c:choose>
-    });
+        toggleMobileDisplayLib.initCookieHandler('${cookieName}', '${empty cookie[cookieName]}');
     </script>
 
     <c:choose>

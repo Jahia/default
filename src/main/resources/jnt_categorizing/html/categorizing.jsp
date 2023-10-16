@@ -17,76 +17,32 @@
 <c:set var="boundComponent"
        value="${uiComponents:getBindedComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
 <c:if test="${not empty boundComponent && !jcr:isLockedAndCannotBeEdited(boundComponent)}">
-    <c:set var="separator" value="${functions:default(currentResource.moduleParams.separator, ' ,')}"/>
-    <template:addResources type="javascript" resources="jquery.min.js"/>
-    <template:addResources type="css" resources="jquery.autocomplete.css"/>
-    <template:addResources type="css" resources="thickbox.css"/>
-    <template:addResources type="javascript" resources="jquery.autocomplete.js"/>
-    <template:addResources type="javascript" resources="jquery.bgiframe.min.js"/>
-    <template:addResources type="javascript" resources="thickbox-compressed.js"/>
-    <jcr:nodeProperty node="${boundComponent}" name="j:defaultCategory" var="assignedCategories"/>
+    <template:addResources type="javascript" resources="apps/default.jquery.bundle.js,apps/default.categories.bundle.js"/>
+
     <c:url var="postUrl" value="${url.base}${boundComponent.path}"/>
-    <script type="text/javascript">
+    <c:set var="uuid" value="${boundComponent.identifier}"/>
 
-        function addCategory(uuid, separator) {
-            var catToAddUuid = $("#categorytoadd").val();
-            $.ajaxSetup({ traditional: true, cache:false });
-            var isAlreadyExist = new Boolean();
-            isAlreadyExist = false;
-            for (i = 0; i < uuids.length; i++) {
-                if (uuids[i] == catToAddUuid) {
-                    isAlreadyExist = true;
-                }
-            }
-            if ($("#categorytoadd").val() != "" && !isAlreadyExist) {
-                uuids.push($("#categorytoadd").val());
-                $.post("${postUrl}", {"j:defaultCategory":uuids,"jcrMethodToCall":"put","jcr:mixinTypes":"jmix:categorized"}, function(result) {
-                    var catContainer = jQuery('#jahia-categories-' + uuid);
-                    if (jQuery(".nocategorizeditem" + uuid).length > 0 && $(".nocategorizeditem" + uuid).is(":visible")) {
-                        jQuery(".nocategorizeditem" + uuid).hide();
-                        separator = '';
-                    }else {
-                        separator = ' ,'
-                    }
-
-                    var catDiv = $('<div></div>').attr('id','category'+catToAddUuid).attr('style','display:inline');
-                    var catDisplay = jQuery('<span class="categorizeditem">' + $("#category").val() + '</span>');
-                    var catLinkDelete = $('<a></a>').attr('class','delete').attr('href','#');
-                    catLinkDelete.click(function() {
-                        deleteCategory(catToAddUuid);
-                    });
-
-                    catContainer.append(catDiv);
-                    catDiv.append(separator);
-                    catDiv.append(catDisplay);
-                    catDiv.append(catLinkDelete);
-                    $("#category").val("");
-                    $('#categorySubmit').hide();
-                }, "json");
-            } else {
-                return false;
-            }
-        }
-
-        $(document).ready(function() {
-            var button = document.getElementById("categorySubmit");
-            if (button) {
-                button.addEventListener("click", function () {
-                    addCategory('${boundComponent.identifier}', '${separator}')
-                });
-            }
-        });
-    </script>
     <c:if test="${renderContext.user.name != 'guest'}">
         <label><fmt:message key="label.add.categories"/></label>
         <input type="hidden" id="categorytoadd"/>
         <input type="text" id="category" disabled="true"/>
         <fmt:message key="label.select.category" var="categoryLabel"/>
-        <uiComponents:treeItemSelector fieldId="categorytoadd"  valueType="identifier"
-                                       nodeTypes="jnt:category" selectableNodeTypes="jnt:category" displayIncludeChildren="false"
-                                       root="${jcr:getSystemSitePath()}/categories" label="${categoryLabel}" displayFieldId="category" onSelect="function(uuid, path, title) {$('#categorytoadd').val(uuid);$('#category').val(title);$('#categorySubmit').show();return false;}"/>
-        <input type="submit" title="<fmt:message key='add'/>" value="<fmt:message key='add'/>" class="button"
-               id="categorySubmit" style="display:none;">
+        <uiComponents:treeItemSelector
+                fieldId="categorytoadd"
+                valueType="identifier"
+                nodeTypes="jnt:category"
+                selectableNodeTypes="jnt:category"
+                displayIncludeChildren="false"
+                root="${jcr:getSystemSitePath()}/categories"
+                label="${categoryLabel}"
+                displayFieldId="category"
+                onSelect="function(uuid, path, title) {$('#categorytoadd').val(uuid);$('#category').val(title);$('#categorySubmit').show();return false;}"/>
+        <input type="submit" id="categorySubmit" class="button" style="display:none;"
+               title="<fmt:message key='add'/>" value="<fmt:message key='add'/>">
     </c:if>
+
+    <script type="text/javascript">
+        categoriesLib.initAdd('${uuid}', '${postUrl}');
+    </script>
 </c:if>
 

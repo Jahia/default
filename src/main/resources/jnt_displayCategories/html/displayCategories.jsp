@@ -18,57 +18,24 @@
 <c:set var="boundComponent"
        value="${uiComponents:getBindedComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
 <c:if test="${not empty boundComponent}">
-    <c:set var="nodeLocked" value="${jcr:isLockedAndCannotBeEdited(boundComponent)}"/>
+    <template:addResources type="javascript" resources="apps/default.jquery.bundle.js,apps/default.categories.bundle.js"/>
     <div class="categorythispage">
         <jcr:nodeProperty node="${boundComponent}" name="j:defaultCategory" var="assignedCategories"/>
-        <c:set var="separator" value="${functions:default(currentResource.moduleParams.separator, ' ,')}"/>
+        <c:set var="uuid" value="${boundComponent.identifier}"/>
+        <c:set var="nodeLocked" value="${jcr:isLockedAndCannotBeEdited(boundComponent)}"/>
         <c:if test="${not nodeLocked}">
-        <c:url var="postUrl" value="${url.base}${boundComponent.path}"/>
-        <script type="text/javascript">
-            var uuidCategories = "${boundComponent.identifier}";
-            var uuids = new Array();
-            <c:forEach items="${assignedCategories}" var="category" varStatus="status">
-            <c:if test="${not empty category.node}">
-            uuids.push("${category.node.identifier}");
-            </c:if>
-            </c:forEach>
-
-            function deleteCategory(uuid) {
-                $.ajaxSetup({traditional: true, cache:false});
-                var newUuids = new Array();
-                for (i = 0; i < uuids.length; i++) {
-                    if (uuids[i] != uuid) {
-                        newUuids.push(uuids[i])
-                    }
-                }
-                uuids = newUuids;
-                if (uuids.length == 0) {
-                    $.post("${postUrl}", {"jcrMethodToCall":"put","jcrRemoveMixin":"jmix:categorized"}, function(result) {
-                        $("#category" + uuid).hide();
-                        if (uuids.length == 0) {
-                            var spanNoYetCat = $('<span><fmt:message key="label.categories.noCategory"/></span>').attr('class', 'nocategorizeditem' + uuidCategories);
-                            $("#jahia-categories-" + uuidCategories).append(spanNoYetCat)
-                        }
-                    }, "json");
-                } else {
-                    $.post("${postUrl}", {"j:defaultCategory":uuids,"jcrMethodToCall":"put","jcr:mixinTypes":"jmix:categorized"}, function(result) {
-                        $("#category" + uuid).hide();
-                    }, "json");
-                }
-                return false;
-            }
-
-            $(document).ready(function() {
-                var categories = document.getElementsByClassName("deleteCategory");
-                for (var i = 0; i < categories.length; i++) {
-                    categories[i].addEventListener("click", function(e) {
-                        deleteCategory(e.currentTarget.id);
-                    });
-                }
-            });
-
-        </script>
+            <c:url var="postUrl" value="${url.base}${boundComponent.path}"/>
+            <script type="text/javascript">
+                var uuids = [];
+                <c:forEach items="${assignedCategories}" var="category">
+                    <c:if test="${not empty category.node}">
+                        uuids.push("${category.node.identifier}");
+                    </c:if>
+                </c:forEach>
+                categoriesLib.initDisplay('${uuid}', uuids, '${postUrl}');
+            </script>
         </c:if>
+
         <jsp:useBean id="filteredCategories" class="java.util.LinkedHashMap"/>
         <c:forEach items="${assignedCategories}" var="category" varStatus="status">
             <c:if test="${not empty category.node}">
@@ -78,22 +45,24 @@
         </c:forEach>
         <div class="categorized">
             <span><fmt:message key="label.categories"/>:</span>
-            <span id="jahia-categories-${boundComponent.identifier}">
+            <span id="jahia-categories-${uuid}">
                 <c:choose>
                     <c:when test="${not empty filteredCategories}">
+                        <c:set var="separator" value="${functions:default(currentResource.moduleParams.separator, ' ,')}"/>
                         <c:forEach items="${filteredCategories}" var="category" varStatus="status">
                             <div id="category${category.key}" style="display:inline">
                                     ${!status.first ? separator : ''}<span
                                     class="categorizeditem">${fn:escapeXml(category.value)}</span>
                                 <c:if test="${not nodeLocked}">
-                                <a class="delete deleteCategory" id="${category.key}"  href="#"></a>
+                                    <a class="delete deleteCategory" id="${category.key}"  href="#"></a>
                                 </c:if>
                             </div>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <span class="nocategorizeditem${boundComponent.identifier}"><fmt:message
-                                key="label.categories.noCategory"/></span>
+                        <span class="nocategorizeditem${uuid}">
+                            <fmt:message key="label.categories.noCategory"/>
+                        </span>
                     </c:otherwise>
                 </c:choose>
             </span>

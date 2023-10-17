@@ -13,6 +13,7 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <c:set var="resourceReadOnly" value="${currentResource.moduleParams.readOnly}"/>
+<template:addResources type="javascript" resources="apps/default.jquery.bundle.js"/>
 <template:include view="hidden.header"/>
 <c:set var="isEmpty" value="true"/>
 <c:choose>
@@ -23,7 +24,6 @@
             </div>
         </c:if>
         <c:if test="${!(renderContext.editModeConfigName eq 'studiomode')}">
-            <template:addResources type="javascript" resources="jquery.min.js"/>
             <div id="liveList${currentNode.identifier}"></div>
             <script type="text/javascript">
                 $('#liveList${currentNode.identifier}').load('<c:url value="${url.baseLive}${currentNode.path}.html.ajax"/>');

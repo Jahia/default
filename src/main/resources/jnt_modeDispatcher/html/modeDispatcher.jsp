@@ -13,7 +13,7 @@
 <%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
-<template:addResources type="javascript" resources="jquery.min.js"/>
+<template:addResources type="javascript" resources="apps/default.jquery.bundle.js"/>
 <div id="item-${currentNode.identifier}">
     <c:if test="${renderContext.editModeConfigName != 'dashboardmode' and renderContext.editMode}">
         Loaded with AJAX call
@@ -25,6 +25,7 @@
         </c:forEach>
         <template:module path="*"/>
     </c:if>
+
     <c:if test="${not renderContext.editMode or renderContext.editModeConfigName eq 'dashboardmode'}">
         <c:choose>
             <c:when test="${renderContext.ajaxRequest}">
@@ -35,21 +36,21 @@
                 <c:remove var="modeDispatcherId" scope="request"/>
             </c:when>
             <c:otherwise>
-                <script type="text/javascript">
-                    <c:if test="${empty currentNode.properties['mode'].string}">
+                <c:if test="${empty currentNode.properties['mode'].string}">
                     <c:url value="${url.base}${currentNode.path}.html.ajax" var="theUrl">
-                    	<c:param name="mainResource" value="${renderContext.mainResource.path}"/>
-                    	<c:param name="includeJavascripts" value="true"/>
+                        <c:param name="mainResource" value="${renderContext.mainResource.path}"/>
+                        <c:param name="includeJavascripts" value="true"/>
                     </c:url>
-                    $('#item-${currentNode.identifier}').load("${functions:escapeJavaScript(theUrl)}");
-                    </c:if>
-                    <c:if test="${not empty currentNode.properties['mode'].string}">
+                </c:if>
+                <c:if test="${not empty currentNode.properties['mode'].string}">
                     <c:url value="/cms/${currentNode.properties['mode'].string}/${currentResource.locale}${currentNode.path}.html.ajax" var="theUrl">
-                    	<c:param name="mainResource" value="${renderContext.mainResource.path}"/>
-                    	<c:param name="includeJavascripts" value="true"/>
+                        <c:param name="mainResource" value="${renderContext.mainResource.path}"/>
+                        <c:param name="includeJavascripts" value="true"/>
                     </c:url>
-                    $('#item-${currentNode.identifier}').load("${functions:escapeJavaScript(theUrl)}");
-                    </c:if>
+                </c:if>
+
+                <script type="text/javascript">
+                    $('#item-${currentNode.identifier}').load('${functions:escapeJavaScript(theUrl)}');
                 </script>
             </c:otherwise>
         </c:choose>

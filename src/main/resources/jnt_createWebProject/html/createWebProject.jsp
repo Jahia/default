@@ -6,13 +6,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="utility" uri="http://www.jahia.org/tags/utilityLib" %>
 
-<template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js"/>
+<template:addResources type="css" resources="pageformcreation.css,create-web-project.css,loading.css"/>
 <template:addResources type="css" resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css"/>
-<template:addResources type="css" resources="pageformcreation.css"/>
-<template:addResources type="css" resources="create-web-project.css"/>
-<template:addResources type="css" resources="loading.css"/>
-<template:addResources type="javascript" resources="managesites.js"/>
-<template:addResources type="javascript" resources="jquery.form.js"/>
+<template:addResources type="javascript" resources="app/default.jquery.bundle.js,app/default.manageSites.bundle.js"/>
 
 <c:set var="nodeType" value="jnt:page" />
 
@@ -90,9 +86,9 @@
         </div>
     </fieldset>
 </form>
-    <div style="display:none;" class="loading">
-        <h1><fmt:message key="label.workInProgressTitle"/></h1>
-    </div>
+<div style="display:none;" class="loading">
+    <h1><fmt:message key="label.workInProgressTitle"/></h1>
+</div>
 </template:tokenizedForm>
 
 <c:if test="${not empty currentNode.properties['class']}">

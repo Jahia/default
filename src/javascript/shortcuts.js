@@ -3,9 +3,9 @@ import {textSizer} from './utils/textsizer';
 export function initShortcuts() {
     $(function () {
         $('#shortcuts').children('ul').hide();
-        $('#shortcuts').mouseover(function() {
+        $('#shortcuts').on('mouseover', function () {
             $(this).children('ul').show();
-        }).mouseout(function() {
+        }).on('mouseout', function () {
             $(this).children('ul').hide();
         });
     });

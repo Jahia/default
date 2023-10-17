@@ -6,6 +6,7 @@
   "scripts": {
     "build": "yarn webpack",
     "webpack": "node --max_old_space_size=2048 ./node_modules/webpack/bin/webpack.js",
+    "watch": "webpack --watch",
     "build:analyze": "yarn build --analyze",
     "build:production": "yarn build --mode=production",
     "build:production-analyze": "yarn build:production --analyze"
@@ -22,11 +23,15 @@
   "homepage": "https://github.com/Jahia/default",
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
+    "glob": "^10.3.10",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "jquery": "3.4.x",
-    "jquery-validation": "1.17.x"
+    "jquery": "3.7.x",
+    "jquery-form": "^4.3.0",
+    "jquery-ui": "^1.13.2",
+    "jquery-validation": "1.17.x",
+    "js-cookie": "^3.0.5"
   }
 }

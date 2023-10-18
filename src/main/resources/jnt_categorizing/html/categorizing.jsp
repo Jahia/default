@@ -19,11 +19,6 @@
 <c:if test="${not empty boundComponent && !jcr:isLockedAndCannotBeEdited(boundComponent)}">
     <c:set var="separator" value="${functions:default(currentResource.moduleParams.separator, ' ,')}"/>
     <template:addResources type="javascript" resources="jquery.min.js"/>
-    <template:addResources type="css" resources="jquery.autocomplete.css"/>
-    <template:addResources type="css" resources="thickbox.css"/>
-    <template:addResources type="javascript" resources="jquery.autocomplete.js"/>
-    <template:addResources type="javascript" resources="jquery.bgiframe.min.js"/>
-    <template:addResources type="javascript" resources="thickbox-compressed.js"/>
     <jcr:nodeProperty node="${boundComponent}" name="j:defaultCategory" var="assignedCategories"/>
     <c:url var="postUrl" value="${url.base}${boundComponent.path}"/>
     <script type="text/javascript">

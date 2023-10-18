@@ -70,7 +70,7 @@
                                     ${loopStatus.count}
                             </td>
                             <td>
-                                <img src="<c:url value='/modules/assets/css/img/${principalIcon}.png'/>" alt="${principalType}"/>
+                                <img src="<c:url value='/modules/default/css/img/${principalIcon}.png'/>" alt="${principalType}"/>
                             </td>
                             <td>
                                     ${fn:escapeXml(user:displayName(member))}

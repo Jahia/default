@@ -20,7 +20,6 @@ and !renderContext.settings.distantPublicationServerMode
 and renderContext.mainResource.node.properties['j:originWS'].string ne 'live'
 and not jcr:isNodeType(renderContext.mainResource.node.resolveSite, 'jmix:remotelyPublished')
 }">
-<template:addResources type="javascript" resources="jquery.min.js"/>
 <template:addResources type="css" resources="goto-links.css"/>
     <c:choose>
         <c:when test="${renderContext.editMode and renderContext.editModeConfigName eq 'editmode' }">

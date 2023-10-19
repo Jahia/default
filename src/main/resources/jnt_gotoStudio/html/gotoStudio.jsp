@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <c:if test="${!renderContext.settings.readOnlyMode and !renderContext.settings.productionMode && !renderContext.settings.distantPublicationServerMode}">
-<template:addResources type="javascript" resources="jquery.min.js"/>
 <template:addResources type="css" resources="goto-links.css"/>
  <img src="${url.context}/icons/studio.png" width="16" height="16" alt=" " role="presentation" style="position:relative; top: 4px; margin-right:2px; " />
  <a href="<c:url value='${url.studio}'/>">

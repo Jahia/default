@@ -113,12 +113,12 @@
                 &nbsp;<fmt:message key="default.manageRoles.backToRoles"/>
             </button>
             <button class="btn ${displayUsers}" type="submit" name="_eventId_users">
-                <img src="<c:url value='/modules/assets/css/img/icon-user-small.png'/>" alt=""/>
+                <img src="<c:url value='/modules/default/css/img/icon-user-small.png'/>" alt=""/>
                 &nbsp;<fmt:message key="label.users"/>
             </button>
 
             <button class="btn ${displayGroups}" type="submit" name="_eventId_groups">
-                <img src="<c:url value='/modules/assets/css/img/icon-group-small.png'/>" alt=""/>
+                <img src="<c:url value='/modules/default/css/img/icon-group-small.png'/>" alt=""/>
                 &nbsp;<fmt:message key="label.groups"/>
             </button>
 

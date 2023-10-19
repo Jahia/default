@@ -15,7 +15,6 @@
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 <%--@elvariable id="acl" type="java.lang.String"--%>
 <template:addResources type="css" resources="commentable.css"/>
-<template:addResources type="javascript" resources="jquery.min.js,jquery.validate.js"/>
 <c:set var="boundComponent"
        value="${uiComponents:getBindedComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
 <c:if test="${not empty boundComponent}">
@@ -35,14 +34,14 @@
                             <label for="comment_pseudo"><fmt:message key="comment.pseudo"/></label>
                             <input value="${sessionScope.formDatas['pseudo'][0]}"
                                    type="text" size="35" name="pseudo" id="comment_pseudo"
-                                   tabindex="1"/>
+                                   tabindex="1" required />
                         </p>
                     </c:if>
                     <p class="field">
                         <label class="left" for="comment-title"><fmt:message key="comment.title"/></label>
                         <input class="" value="${sessionScope.formDatas['jcr:title'][0]}"
                                type="text" size="35" id="comment-title" name="jcr:title"
-                               tabindex="1"/>
+                               tabindex="1" required />
                     </p>
 
                     <p class="field">
@@ -65,16 +64,4 @@
             </div>
         </form>
     </template:tokenizedForm>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#newCommentForm").validate({
-                rules: {
-                    'jcr:title': "required",
-                    <c:if test="${not renderContext.loggedIn}">
-                    pseudo: "required"
-                    </c:if>
-                }
-            });
-        });
-    </script>
 </c:if>

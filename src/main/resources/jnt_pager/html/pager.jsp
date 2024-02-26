@@ -13,6 +13,7 @@
 <%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
+<template:addResources type="javascript" resources="jquery.min.js"/>
 <c:set var="boundComponent"
        value="${uiComponents:getBoundComponent(currentNode, renderContext, 'j:bindedComponent')}"/>
 <c:if test="${not empty boundComponent and jcr:isNodeType(boundComponent, 'jmix:list')}">

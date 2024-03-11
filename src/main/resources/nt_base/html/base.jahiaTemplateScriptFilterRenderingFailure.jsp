@@ -29,9 +29,9 @@
     </template:addResources>
 
     <p>
-        <fmt:message key="renderFailure.errorOccurredInView"/>&nbsp;<strong>${fn:escapeXml(originalViewKey)}</strong>.<br>
-        <fmt:message key="renderFailure.viewPath"/>&nbsp;<strong>${fn:escapeXml(originalViewPath)}</strong>.<br>
-        <fmt:message key="renderFailure.errorSays"/>&nbsp;<strong>${fn:escapeXml(error.message)}</strong>.<br>
+        <fmt:message key="renderFailure.errorOccurredInView"/>&nbsp;<strong>${not empty originalViewKey ? fn:escapeXml(originalViewKey) : ''}</strong>.<br>
+        <fmt:message key="renderFailure.viewPath"/>&nbsp;<strong>${not empty originalViewPath ? fn:escapeXml(originalViewPath) : ''}</strong>.<br>
+        <fmt:message key="renderFailure.errorSays"/>&nbsp;<strong>${not empty error && not empty error.message ? fn:escapeXml(error.message) : ''}</strong>.<br>
         <button onclick="jahiaRenderingFullErrorToggleStackTrace('${currentNode.identifier}')"><fmt:message key="renderFailure.toggleFullError"/></button>
     </p>
     <div class="jahiaRenderingFullErrorStackTrace_${currentNode.identifier}" style="display: none">

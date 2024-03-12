@@ -15,7 +15,7 @@
  */
 package org.jahia.modules.defaultmodule.actions;
 
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jahia.bin.*;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.render.RenderContext;

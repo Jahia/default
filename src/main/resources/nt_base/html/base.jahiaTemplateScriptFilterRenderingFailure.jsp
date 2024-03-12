@@ -29,12 +29,12 @@
     </template:addResources>
 
     <p>
-        <fmt:message key="renderFailure.errorOccurredInView"/>&nbsp;<strong>${not empty originalViewKey ? fn:escapeXml(originalViewKey) : ''}</strong>.<br>
-        <fmt:message key="renderFailure.viewPath"/>&nbsp;<strong>${not empty originalViewPath ? fn:escapeXml(originalViewPath) : ''}</strong>.<br>
-        <fmt:message key="renderFailure.errorSays"/>&nbsp;<strong>${not empty error && not empty error.message ? fn:escapeXml(error.message) : ''}</strong>.<br>
-        <button onclick="jahiaRenderingFullErrorToggleStackTrace('${currentNode.identifier}')"><fmt:message key="renderFailure.toggleFullError"/></button>
+        <fmt:message key="renderFailure.errorOccurredInView"/>&nbsp;<strong data-sel-role="renderingFailureViewKey">${not empty originalViewKey ? fn:escapeXml(originalViewKey) : ''}</strong>.<br>
+        <fmt:message key="renderFailure.viewPath"/>&nbsp;<strong data-sel-role="renderingFailureViewPath">${not empty originalViewPath ? fn:escapeXml(originalViewPath) : ''}</strong>.<br>
+        <fmt:message key="renderFailure.errorSays"/>&nbsp;<strong data-sel-role="renderingFailureErrorMessage">${not empty error && not empty error.message ? fn:escapeXml(error.message) : ''}</strong>.<br>
+        <button data-sel-role="renderingFailureToggleFullError" onclick="jahiaRenderingFullErrorToggleStackTrace('${currentNode.identifier}')"><fmt:message key="renderFailure.toggleFullError"/></button>
     </p>
-    <div class="jahiaRenderingFullErrorStackTrace_${currentNode.identifier}" style="display: none">
+    <div data-sel-role="renderingFailureFullError" class="jahiaRenderingFullErrorStackTrace_${currentNode.identifier}" style="display: none">
         ${printedError}
     </div>
 </c:if>

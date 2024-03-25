@@ -14,28 +14,39 @@
 <%--@elvariable id="errorId" type="java.lang.String"--%>
 
 <c:if test="${renderContext.editMode}">
-    <template:addResources key="jahiaRenderingFullErrorToggler">
-        <script>
-            function jahiaRenderingFullErrorToggleStackTrace(uuid) {
-                let elements = document.querySelectorAll('.jahiaRenderingFullErrorStackTrace_' + uuid);
-                elements.forEach(function(element) {
-                    if (element.style.display === "none") {
-                        element.style.display = "block";
-                    } else {
-                        element.style.display = "none";
-                    }
-                });
-            }
-        </script>
-    </template:addResources>
-
     <p>
         <fmt:message key="renderFailure.errorOccurredInView"/>&nbsp;<strong data-sel-role="renderingFailureViewKey">${not empty originalViewKey ? fn:escapeXml(originalViewKey) : ''}</strong>.<br>
         <fmt:message key="renderFailure.viewPath"/>&nbsp;<strong data-sel-role="renderingFailureViewPath">${not empty originalViewPath ? fn:escapeXml(originalViewPath) : ''}</strong>.<br>
-        <fmt:message key="renderFailure.errorSays"/>&nbsp;<strong data-sel-role="renderingFailureErrorMessage">${not empty error && not empty error.message ? fn:escapeXml(error.message) : ''}</strong>.<br>
-        <button data-sel-role="renderingFailureToggleFullError" onclick="jahiaRenderingFullErrorToggleStackTrace('${errorId}')"><fmt:message key="renderFailure.toggleFullError"/></button>
+        <c:choose>
+            <c:when test="${not empty error}">
+                <fmt:message key="renderFailure.errorSays"/>&nbsp;<strong data-sel-role="renderingFailureErrorMessage">${not empty error.message ? fn:escapeXml(error.message) : ''}</strong>.<br>
+            </c:when>
+            <c:otherwise>
+                <fmt:message key="renderFailure.checkServerLogs"/>
+            </c:otherwise>
+        </c:choose>
+        <c:if test="${not empty errorId && not empty printedError}">
+            <button data-sel-role="renderingFailureToggleFullError" onclick="jahiaRenderingFullErrorToggleStackTrace('${errorId}')"><fmt:message key="renderFailure.toggleFullError"/></button>
+        </c:if>
     </p>
-    <div data-sel-role="renderingFailureFullError" class="jahiaRenderingFullErrorStackTrace_${errorId}" style="display: none">
-        ${printedError}
-    </div>
+
+    <c:if test="${not empty errorId && not empty printedError}">
+        <template:addResources key="jahiaRenderingFullErrorToggler">
+            <script>
+                function jahiaRenderingFullErrorToggleStackTrace(uuid) {
+                    let elements = document.querySelectorAll('.jahiaRenderingFullErrorStackTrace_' + uuid);
+                    elements.forEach(function(element) {
+                        if (element.style.display === "none") {
+                            element.style.display = "block";
+                        } else {
+                            element.style.display = "none";
+                        }
+                    });
+                }
+            </script>
+        </template:addResources>
+        <div data-sel-role="renderingFailureFullError" class="jahiaRenderingFullErrorStackTrace_${errorId}" style="display: none">
+                ${printedError}
+        </div>
+    </c:if>
 </c:if>

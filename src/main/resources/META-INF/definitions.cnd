@@ -9,9 +9,6 @@
 [jnt:bigText] > jnt:content, jmix:basicContent, jmix:editorialContent
  - text (string, richtext) primary internationalized
 
-[jnt:languageSwitcher] > jnt:content, jmix:siteComponent, jmix:studioOnly
- - typeOfDisplay (string, choicelist[resourceBundle]) = 'isoLocaleCountryCode' mandatory indexed=no < 'isoLocaleCountryCode', 'languageCode', 'doubleLetter', 'letter', 'nameInLocale', 'nameCurrentLocale', 'flag'
-
 [jnt:linkList] > jnt:content, jmix:listContent, mix:title, jmix:list orderable
  + * (jmix:link) = jmix:link
 
@@ -29,23 +26,6 @@
 [jmix:comments] mixin
  - shortView (boolean) = 'false' autocreated
  + comments (jnt:topic) = jnt:topic autocreated
-
-[jnt:listSites] > jnt:content, mix:title, jmix:siteComponent, jmix:list, jmix:studioOnly
- - edit (boolean)
- - contribute (boolean)
- - preview (boolean)
- - live (boolean)
- - administrationlink (boolean)
- - editproperties (boolean)
- - details (boolean)
- - detailsLabel (string) internationalized nofulltext
- - detailsTemplate (string)
- - export (boolean)
- - delete (boolean)
- - typeOfContent (string, choicelist[resourceBundle]) = 'website' indexed=no < 'website', 'contents', 'files'
- - numberOfSitesPerPage (long) hidden
- - numberMaxOfSitesDisplayed (long)
- - templatesSets (weakreference, choicelist[nodes='/modules;jnt:virtualsite']) multiple
 
 [jnt:componentLink] > jnt:content, mix:title, jmix:siteComponent, jmix:bindedComponent, jmix:studioOnly
  - targetTemplate (string) indexed=no
@@ -105,4 +85,3 @@
  extends = jnt:contentList
  itemtype = listOrdering
  - limit (long)
-

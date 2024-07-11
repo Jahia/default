@@ -13,7 +13,7 @@
 
 [jmix:navMenuComponent] mixin
 
-[jnt:navMenu] > jnt:content, mix:title, jmix:siteComponent, jmix:navMenuComponent
+[jnt:navMenu] > jnt:content, mix:title, jmix:queryContent, jmix:navMenuComponent
  orderable
  - j:baselineNode (string,choicelist) nofulltext < 'home', 'currentPage'
  - j:maxDepth (long) = 2

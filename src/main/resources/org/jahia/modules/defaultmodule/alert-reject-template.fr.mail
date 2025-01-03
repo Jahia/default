@@ -134,8 +134,7 @@ html:
                                                                     <tbody>
                                                                     <tr>
                                                                         <td style="line-height: 24px; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                                                            <a href="${editPrefix}${nodeInfo.get(
-                                                                                "displayablePath")}.html"
+                                                                            <a href="${cmmPrefix}${nodeInfo.get("displayablePath")}"
                                                                                style="color: rgb(255, 255, 255); text-decoration: none;"><strong
                                                                                     style="color: rgb(82, 92, 98); font-weight: 600; font-size: 14px; font-family: &quot;Nunito Sans&quot;, Helvetica, Arial, sans-serif;">${nodeInfo.get(
                                                                                 "displayableName")}</strong></a>

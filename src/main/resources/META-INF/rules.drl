@@ -24,16 +24,26 @@ rule "Tagging"
        Tag the node with the propertyValueAsString
 end
 
-rule "Image update"
-    salience 25
-// Rebuild thumbnail for an updated image and update height/width
+rule "Set image mixin on update"
+    salience 30 // must run before thumbnail/width/height rules
     when
         A file content has been modified
              - the mimetype matches image/.*
              - not in operation import
     then
-        > long timer = System.currentTimeMillis();
         Add the type jmix:image
+end
+
+rule "Set image thumbnail and dimensions"
+    salience 25
+// Rebuild thumbnail for an updated image and update height/width
+    when
+        A file content has been modified
+             - the mimetype matches image/.*
+             - the mimetype is not image/svg+xml
+             - not in operation import
+    then
+        > long timer = System.currentTimeMillis();
         Set the property j:width of the node with the width of the image
         Set the property j:height of the node with the height of the image
         Create an image "thumbnail" of size 150

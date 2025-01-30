@@ -86,8 +86,9 @@ printMenu = { node, navMenuLevel, omitFormatting ->
 
 //                    print ("<h1>"+itemPath+closeUl+"</h1>")
                     listItemCssClass = (hasChildren ? "hasChildren" : "noChildren") + (inpath ? " inPath" : "") + (selected ? " selected" : "") + (index == 0 ? " firstInLevel" : "") + (index == nbOfChilds - 1 ? " lastInLevel" : "");
-                    Resource resource = new Resource(menuItem, "html", "menuElement", currentResource.getContextConfiguration());
-                    
+                    String menuItemTemplate = currentNode.properties['j:menuItemView']?.string ?: 'menuElement'
+                    Resource resource = new Resource(menuItem, "html", menuItemTemplate, currentResource.getContextConfiguration());
+
                     currentResource.getDependencies().add(menuItem.getCanonicalPath())
                     
                     def render = RenderService.getInstance().render(resource, renderContext)

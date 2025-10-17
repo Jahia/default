@@ -1,12 +1,14 @@
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <template:tokenizedForm>
     <c:url value='${url.base}${currentNode.path}' var="url"/>
     <form id="taskDataForm_${currentNode.parent.identifier}" method="post" action="${url}">
         <input type="hidden" name="jcrMethodToCall" value="put"/>
         <div>
-            Title : <input size="50" type="title" name="jcr:title"
-                           value="${currentNode.properties['jcr:title'].string}"/>
+            <fmt:message key="label.title"/> : <input size="50" type="title" name="jcr:title"
+                           value="${fn:escapeXml(currentNode.properties['jcr:title'].string)}"/>
         </div>
     </form>
 </template:tokenizedForm>

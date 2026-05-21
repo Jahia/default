@@ -99,7 +99,9 @@ public class RolesHandler implements Serializable {
         Map<JCRNodeWrapper, List<JCRNodeWrapper>> result = new TreeMap<JCRNodeWrapper, List<JCRNodeWrapper>>(new Comparator<JCRNodeWrapper>() {
             @Override
             public int compare(JCRNodeWrapper jcrNodeWrapper, JCRNodeWrapper jcrNodeWrapper2) {
-                return jcrNodeWrapper.getDisplayableName().compareTo(jcrNodeWrapper2.getDisplayableName());
+                int c = jcrNodeWrapper.getDisplayableName().compareTo(jcrNodeWrapper2.getDisplayableName());
+                if (c != 0) return c;
+                return jcrNodeWrapper.getPath().compareTo(jcrNodeWrapper2.getPath());
             }
         });
         final JCRSessionWrapper defaultSession = JCRSessionFactory.getInstance().getCurrentUserSession(null, locale, fallbackLocale);

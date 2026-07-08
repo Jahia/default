@@ -10,6 +10,9 @@
 <jcr:nodeProperty node="${currentNode}" name="j:target" var="target"/>
 
 <c:if test="${not empty description.string}"><c:set var="linkTitle"> title="${fn:escapeXml(description.string)}"</c:set></c:if>
-<c:if test="${not empty target.string}"><c:set var="target"> target="${target.string}"</c:set></c:if>
-<c:if test="${!functions:matches('^[A-Za-z]*:.*', url.string)}"><c:set var="protocol">http://</c:set></c:if>
-<a href="${protocol}${url.string}" ${target} ${linkTitle}>${fn:escapeXml(not empty title.string ? title.string : currentNode.name)}</a>
+<c:if test="${not empty target.string}"><c:set var="target"> target="${fn:escapeXml(target.string)}"</c:set></c:if>
+<%-- Only treat the value as an absolute URL when it uses a safe, allow-listed scheme; anything
+     else (including javascript:/data:/vbscript: and scheme-less values) is prefixed with http://
+     so unsafe schemes cannot reach the href. The href value is also HTML-escaped. --%>
+<c:if test="${!(functions:matches('(?i)^(https?|ftp)://.*', url.string) or functions:matches('(?i)^(mailto|tel):.*', url.string))}"><c:set var="protocol">http://</c:set></c:if>
+<a href="${protocol}${fn:escapeXml(url.string)}" ${target} ${linkTitle}>${fn:escapeXml(not empty title.string ? title.string : currentNode.name)}</a>

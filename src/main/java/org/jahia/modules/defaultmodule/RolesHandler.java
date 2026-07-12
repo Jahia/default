@@ -22,6 +22,7 @@ import org.jahia.services.content.*;
 import org.jahia.services.content.decorator.JCRGroupNode;
 import org.jahia.services.content.decorator.JCRUserNode;
 import org.jahia.services.render.RenderContext;
+import org.jahia.services.sites.JahiaSitesService;
 import org.jahia.services.usermanager.JahiaGroupManagerService;
 import org.jahia.services.usermanager.JahiaUserManagerService;
 import org.jahia.services.usermanager.SearchCriteria;
@@ -46,7 +47,7 @@ public class RolesHandler implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(RolesHandler.class);
 
-    private static final String SITES_PATH_PREFIX = "/sites/";
+    private static final String SITES_PATH_PREFIX = JahiaSitesService.SITES_JCR_PATH + "/";
 
 
     @Autowired
@@ -125,36 +126,45 @@ public class RolesHandler implements Serializable {
         JCRNodeWrapper node = s.getNode(nodePath);
         Map<String, List<String[]>> acl = node.getAclEntries();
 
-        String siteKey = nodePath.startsWith(SITES_PATH_PREFIX) ? StringUtils.substringBefore(StringUtils.substringAfter(nodePath,SITES_PATH_PREFIX),"/") : null;
+        String siteKey = getSiteKey();
 
         for (Map.Entry<String, List<String[]>> entry : acl.entrySet()) {
-            JCRNodeWrapper p = null;
-            if (entry.getKey().startsWith("u:")) {
-                p = userManagerService.lookupUser(entry.getKey().substring(2),siteKey);
-            } else if (entry.getKey().startsWith("g:")) {
-                if (siteKey != null) {
-                    p = groupManagerService.lookupGroup(siteKey, entry.getKey().substring(2));
-                }
-                if (p == null) {
-                    p = groupManagerService.lookupGroup(null, entry.getKey().substring(2));
-                }
-            }
+            JCRNodeWrapper p = resolvePrincipal(entry.getKey(), siteKey);
             if (p != null) {
-                final List<String[]> value = entry.getValue();
-                Collections.reverse(value);
-                for (String[] strings : value) {
-                    String role = strings[2];
-
-                    if (strings[1].equals("GRANT") && rolesFromName.containsKey(role) && !result.get(rolesFromName.get(role)).contains(p)) {
-                        result.get(rolesFromName.get(role)).add(p);
-                    } else if (strings[1].equals("DENY") && rolesFromName.containsKey(role)) {
-                        result.get(rolesFromName.get(role)).remove(p);
-                    }
-                }
+                applyRoleMembership(entry.getValue(), p, rolesFromName, result);
             }
         }
 
         return result;
+    }
+
+    /** Resolves an ACL principal key ({@code "u:name"} / {@code "g:name"}) to its user/group node, or {@code null}. */
+    private JCRNodeWrapper resolvePrincipal(String aclKey, String siteKey) {
+        if (aclKey.startsWith("u:")) {
+            return userManagerService.lookupUser(aclKey.substring(2), siteKey);
+        }
+        if (aclKey.startsWith("g:")) {
+            JCRNodeWrapper group = siteKey != null ? groupManagerService.lookupGroup(siteKey, aclKey.substring(2)) : null;
+            return group != null ? group : groupManagerService.lookupGroup(null, aclKey.substring(2));
+        }
+        return null;
+    }
+
+    /** Folds a principal's ACL entries (GRANT adds, DENY removes) into the role→members {@code result} map. */
+    private void applyRoleMembership(List<String[]> aces, JCRNodeWrapper principal, Map<String, JCRNodeWrapper> rolesFromName,
+            Map<JCRNodeWrapper, List<JCRNodeWrapper>> result) {
+        Collections.reverse(aces);
+        for (String[] ace : aces) {
+            JCRNodeWrapper roleNode = rolesFromName.get(ace[2]);
+            if (roleNode == null) {
+                continue;
+            }
+            if ("GRANT".equals(ace[1]) && !result.get(roleNode).contains(principal)) {
+                result.get(roleNode).add(principal);
+            } else if ("DENY".equals(ace[1])) {
+                result.get(roleNode).remove(principal);
+            }
+        }
     }
 
     private void getRoles(Query q, Map<String, JCRNodeWrapper> rolesFromName, Map<JCRNodeWrapper, List<JCRNodeWrapper>> m) throws RepositoryException {
@@ -225,32 +235,7 @@ public class RolesHandler implements Serializable {
         final String siteKey = getSiteKey();
 
         for (String principal : principals) {
-            if (!isPrincipalInScope(principal, siteKey)) {
-                // mirror grantRole: never act on a principal outside this context's scope. This is also
-                // what the UI enforces implicitly — out-of-scope principals are not resolvable in this
-                // context, so they are never listed and never actionable (grant or revoke).
-                logger.warn("Ignoring role revoke of '{}' on '{}' for out-of-scope principal '{}'", role, nodePath, principal);
-                continue;
-            }
-            List<String[]> entries = session.getNode(nodePath).getAclEntries().get(principal);
-            if (entries == null) {
-                // only an existing ACL entry can be revoked; ignore principals not present on the node
-                // (also avoids a NullPointerException on an arbitrary/unknown principal)
-                logger.warn("Ignoring role revoke of '{}' on '{}' for principal '{}': no matching ACL entry", role, nodePath, principal);
-                continue;
-            }
-            // per-principal: kept inside the loop so state does not bleed across principals (a shared map
-            // would re-apply a previous principal's roles to this one, turning a revoke into a grant)
-            Map<String, String> roles = new HashMap<String, String>();
-            for (String[] strings : entries) {
-                if (!role.equals(strings[2])) {
-                    roles.put(strings[2], strings[1]);
-                } else if (!strings[0].equals(nodePath)) {
-                    roles.put(strings[2], "DENY");
-                }
-            }
-            session.getNode(nodePath).revokeRolesForPrincipal(principal);
-            session.getNode(nodePath).changeRoles(principal, roles);
+            revokeRoleForPrincipal(session, principal, siteKey);
         }
 
         session.save();
@@ -258,6 +243,33 @@ public class RolesHandler implements Serializable {
         if (Constants.EDIT_WORKSPACE.equals(workspace) && session.getNode(nodePath).hasNode("j:acl")) {
             publicationService.publishByMainId(session.getNode(nodePath).getNode("j:acl").getIdentifier());
         }
+    }
+
+    private void revokeRoleForPrincipal(JCRSessionWrapper session, String principal, String siteKey) throws RepositoryException {
+        if (!isPrincipalInScope(principal, siteKey)) {
+            // mirror grantRole: never act on a principal outside this context's scope. This is also what the
+            // UI enforces implicitly — out-of-scope principals are not resolvable in this context, so they
+            // are never listed and never actionable (grant or revoke).
+            logger.warn("Ignoring role revoke of '{}' on '{}' for out-of-scope principal '{}'", role, nodePath, principal);
+            return;
+        }
+        List<String[]> entries = session.getNode(nodePath).getAclEntries().get(principal);
+        if (entries == null) {
+            // only an existing ACL entry can be revoked; ignore principals not present on the node
+            // (also avoids a NullPointerException on an arbitrary/unknown principal)
+            logger.warn("Ignoring role revoke of '{}' on '{}' for principal '{}': no matching ACL entry", role, nodePath, principal);
+            return;
+        }
+        Map<String, String> roleChanges = new HashMap<>();
+        for (String[] strings : entries) {
+            if (!role.equals(strings[2])) {
+                roleChanges.put(strings[2], strings[1]);
+            } else if (!strings[0].equals(nodePath)) {
+                roleChanges.put(strings[2], "DENY");
+            }
+        }
+        session.getNode(nodePath).revokeRolesForPrincipal(principal);
+        session.getNode(nodePath).changeRoles(principal, roleChanges);
     }
 
     /**

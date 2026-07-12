@@ -224,7 +224,6 @@ public class RolesHandler implements Serializable {
         final JCRSessionWrapper session = JCRSessionFactory.getInstance().getCurrentUserSession(workspace, locale, fallbackLocale);
         final String siteKey = getSiteKey();
 
-        Map<String, String> roles = new HashMap<String, String>();
         for (String principal : principals) {
             if (!isPrincipalInScope(principal, siteKey)) {
                 // mirror grantRole: never act on a principal outside this context's scope. This is also
@@ -240,6 +239,9 @@ public class RolesHandler implements Serializable {
                 logger.warn("Ignoring role revoke of '{}' on '{}' for principal '{}': no matching ACL entry", role, nodePath, principal);
                 continue;
             }
+            // per-principal: kept inside the loop so state does not bleed across principals (a shared map
+            // would re-apply a previous principal's roles to this one, turning a revoke into a grant)
+            Map<String, String> roles = new HashMap<String, String>();
             for (String[] strings : entries) {
                 if (!role.equals(strings[2])) {
                     roles.put(strings[2], strings[1]);

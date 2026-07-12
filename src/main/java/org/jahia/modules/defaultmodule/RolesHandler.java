@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.jahia.api.Constants;
 import org.jahia.data.viewhelper.principal.PrincipalViewHelper;
 import org.jahia.services.content.*;
+import org.jahia.services.content.decorator.JCRGroupNode;
+import org.jahia.services.content.decorator.JCRUserNode;
 import org.jahia.services.render.RenderContext;
 import org.jahia.services.usermanager.JahiaGroupManagerService;
 import org.jahia.services.usermanager.JahiaUserManagerService;
@@ -44,12 +46,14 @@ public class RolesHandler implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(RolesHandler.class);
 
+    private static final String SITES_PATH_PREFIX = "/sites/";
+
 
     @Autowired
-    private transient JahiaUserManagerService userManagerService;
+    transient JahiaUserManagerService userManagerService;
 
     @Autowired
-    private transient JahiaGroupManagerService groupManagerService;
+    transient JahiaGroupManagerService groupManagerService;
 
     @Autowired
     private transient JCRPublicationService publicationService;
@@ -121,7 +125,7 @@ public class RolesHandler implements Serializable {
         JCRNodeWrapper node = s.getNode(nodePath);
         Map<String, List<String[]>> acl = node.getAclEntries();
 
-        String siteKey = nodePath.startsWith("/sites/") ? StringUtils.substringBefore(StringUtils.substringAfter(nodePath,"/sites/"),"/") : null;
+        String siteKey = nodePath.startsWith(SITES_PATH_PREFIX) ? StringUtils.substringBefore(StringUtils.substringAfter(nodePath,SITES_PATH_PREFIX),"/") : null;
 
         for (Map.Entry<String, List<String[]>> entry : acl.entrySet()) {
             JCRNodeWrapper p = null;
@@ -195,7 +199,14 @@ public class RolesHandler implements Serializable {
         }
 
         final JCRSessionWrapper session = JCRSessionFactory.getInstance().getCurrentUserSession(workspace, locale, fallbackLocale);
+        final String siteKey = getSiteKey();
         for (String principal : principals) {
+            if (!isPrincipalInScope(principal, siteKey)) {
+                // only grant to a principal valid in this context: within the administered site's scope,
+                // or — at server/system level (no site) — a server-global principal; ignore anything else
+                logger.warn("Ignoring role grant of '{}' on '{}' to out-of-scope principal '{}'", role, nodePath, principal);
+                continue;
+            }
             session.getNode(nodePath).grantRoles(principal, Collections.singleton(role));
         }
         session.save();
@@ -211,10 +222,24 @@ public class RolesHandler implements Serializable {
         }
 
         final JCRSessionWrapper session = JCRSessionFactory.getInstance().getCurrentUserSession(workspace, locale, fallbackLocale);
+        final String siteKey = getSiteKey();
 
         Map<String, String> roles = new HashMap<String, String>();
         for (String principal : principals) {
+            if (!isPrincipalInScope(principal, siteKey)) {
+                // mirror grantRole: never act on a principal outside this context's scope. This is also
+                // what the UI enforces implicitly — out-of-scope principals are not resolvable in this
+                // context, so they are never listed and never actionable (grant or revoke).
+                logger.warn("Ignoring role revoke of '{}' on '{}' for out-of-scope principal '{}'", role, nodePath, principal);
+                continue;
+            }
             List<String[]> entries = session.getNode(nodePath).getAclEntries().get(principal);
+            if (entries == null) {
+                // only an existing ACL entry can be revoked; ignore principals not present on the node
+                // (also avoids a NullPointerException on an arbitrary/unknown principal)
+                logger.warn("Ignoring role revoke of '{}' on '{}' for principal '{}': no matching ACL entry", role, nodePath, principal);
+                continue;
+            }
             for (String[] strings : entries) {
                 if (!role.equals(strings[2])) {
                     roles.put(strings[2], strings[1]);
@@ -231,6 +256,54 @@ public class RolesHandler implements Serializable {
         if (Constants.EDIT_WORKSPACE.equals(workspace) && session.getNode(nodePath).hasNode("j:acl")) {
             publicationService.publishByMainId(session.getNode(nodePath).getNode("j:acl").getIdentifier());
         }
+    }
+
+    /**
+     * @return the site key when {@link #nodePath} is under {@code /sites/<key>}, otherwise {@code null}
+     *         (a server-level context, where no per-site principal restriction applies).
+     */
+    String getSiteKey() {
+        if (nodePath == null || !nodePath.startsWith(SITES_PATH_PREFIX)) {
+            return null;
+        }
+        String key = StringUtils.substringBefore(StringUtils.substringAfter(nodePath, SITES_PATH_PREFIX), "/");
+        return StringUtils.isEmpty(key) ? null : key;
+    }
+
+    /**
+     * Tells whether a principal ({@code "u:name"} / {@code "g:name"}) may be granted a role in the current
+     * context.
+     * <ul>
+     *   <li>When administering a <b>site</b> ({@code siteKey != null}): the principal must resolve within
+     *       that site's scope — its own users/groups or a server-global principal (global-first, then the
+     *       site). A principal local to a <em>different</em> site does not resolve and is rejected.</li>
+     *   <li>At <b>server/system</b> level ({@code siteKey == null}): only a server-global principal is
+     *       accepted; any site-scoped principal is rejected.</li>
+     * </ul>
+     * The system super-user is always refused. Resolution goes through the cached, negative-cached
+     * {@code lookupUser}/{@code lookupGroup} path already used to display role members, so a global-only
+     * check costs a single cached lookup (no site tree walk). Global lookups use {@code lookupUser(name)}
+     * / {@code lookupGroup(null, name)}, which query only the global {@code /users} and {@code /groups}.
+     */
+    boolean isPrincipalInScope(String principal, String siteKey) {
+        if (principal == null || principal.length() < 3) {
+            return false;
+        }
+        String name = principal.substring(2);
+        if (principal.startsWith("u:")) {
+            JCRUserNode user = siteKey != null
+                    ? userManagerService.lookupUser(name, siteKey)  // this site or global (global-first)
+                    : userManagerService.lookupUser(name);          // global only
+            return user != null && !user.isRoot();
+        }
+        if (principal.startsWith("g:")) {
+            JCRGroupNode group = siteKey != null ? groupManagerService.lookupGroup(siteKey, name) : null;
+            if (group == null) {
+                group = groupManagerService.lookupGroup(null, name); // a server-global group is valid in both contexts
+            }
+            return group != null;
+        }
+        return false;
     }
 
     /**
@@ -261,16 +334,16 @@ public class RolesHandler implements Serializable {
         Set<JCRNodeWrapper> searchResult;
         if (searchType.equals("users")) {
             String siteKey = null;
-            if (nodePath.startsWith("/sites/")) {
-                siteKey = StringUtils.substringAfter(nodePath, "/sites/");
+            if (nodePath.startsWith(SITES_PATH_PREFIX)) {
+                siteKey = StringUtils.substringAfter(nodePath, SITES_PATH_PREFIX);
             }
             searchResult = new HashSet<JCRNodeWrapper>(PrincipalViewHelper.getSearchResult(searchCriteria.getSearchIn(),
                     siteKey, searchCriteria.getSearchString(), searchCriteria.getProperties(), searchCriteria.getStoredOn(),
                     searchCriteria.getProviders()));
         } else {
             String siteKey = null;
-            if (nodePath.startsWith("/sites/")) {
-                siteKey = StringUtils.substringAfter(nodePath, "/sites/");
+            if (nodePath.startsWith(SITES_PATH_PREFIX)) {
+                siteKey = StringUtils.substringAfter(nodePath, SITES_PATH_PREFIX);
             }
             searchResult = new HashSet<JCRNodeWrapper>(PrincipalViewHelper.getGroupSearchResult(searchCriteria.getSearchIn(), siteKey,
                     searchCriteria.getSearchString(), searchCriteria.getProperties(),

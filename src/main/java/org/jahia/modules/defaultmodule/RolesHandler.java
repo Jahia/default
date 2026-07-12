@@ -47,7 +47,11 @@ public class RolesHandler implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(RolesHandler.class);
 
+    // internal JCR path prefix (not a network URI); the "/" is a JCR path delimiter
+    @SuppressWarnings("java:S1075")
     private static final String SITES_PATH_PREFIX = JahiaSitesService.SITES_JCR_PATH + "/";
+
+    private static final String ACL_NODE_NAME = "j:acl";
 
 
     @Autowired
@@ -221,8 +225,8 @@ public class RolesHandler implements Serializable {
         }
         session.save();
         // Publish the node acls
-        if (Constants.EDIT_WORKSPACE.equals(workspace) && session.getNode(nodePath).hasNode("j:acl")) {
-            publicationService.publishByMainId(session.getNode(nodePath).getNode("j:acl").getIdentifier());
+        if (Constants.EDIT_WORKSPACE.equals(workspace) && session.getNode(nodePath).hasNode(ACL_NODE_NAME)) {
+            publicationService.publishByMainId(session.getNode(nodePath).getNode(ACL_NODE_NAME).getIdentifier());
         }
     }
 
@@ -240,8 +244,8 @@ public class RolesHandler implements Serializable {
 
         session.save();
         // Publish the node acls
-        if (Constants.EDIT_WORKSPACE.equals(workspace) && session.getNode(nodePath).hasNode("j:acl")) {
-            publicationService.publishByMainId(session.getNode(nodePath).getNode("j:acl").getIdentifier());
+        if (Constants.EDIT_WORKSPACE.equals(workspace) && session.getNode(nodePath).hasNode(ACL_NODE_NAME)) {
+            publicationService.publishByMainId(session.getNode(nodePath).getNode(ACL_NODE_NAME).getIdentifier());
         }
     }
 

@@ -30,13 +30,13 @@ def printMenu;
 printMenu = { node, navMenuLevel, omitFormatting ->
     if (navMenuLevel == 1) {
         if (styleName) {
-            print("<div class=\"${styleName.string}\">")
+            print("<div class=\"${Functions.escapeXml(styleName.string)}\">")
         }
         if (title) {
             print("<span>${Functions.escapeXml(title.string)}</span>")
         }
         if (layoutID) {
-            print("<div id=\"${layoutID.string}\">")
+            print("<div id=\"${Functions.escapeXml(layoutID.string)}\">")
         }
     }
 

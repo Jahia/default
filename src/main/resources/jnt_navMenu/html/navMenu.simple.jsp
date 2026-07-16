@@ -65,10 +65,10 @@
 <%--render (id and class)--%>
 <c:if test="${navMenuLevel == 1}">
     <c:if test="${!empty layoutID}">
-        <div id="${layoutID.string}">
+        <div id="${fn:escapeXml(layoutID.string)}">
     </c:if>
     <c:if test="${!empty styleName }">
-        <div class="${styleName.string}">
+        <div class="${fn:escapeXml(styleName.string)}">
     </c:if>
 </c:if>
 

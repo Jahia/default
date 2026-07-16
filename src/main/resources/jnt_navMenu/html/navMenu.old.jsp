@@ -52,12 +52,12 @@
 
 <c:set var="navMenuLevel" value="${empty currentResource.moduleParams.navMenuLevel ? 1 : currentResource.moduleParams.navMenuLevel}"/>
 <c:if test="${navMenuLevel == 1}">
-    <div class="${styleName.string}">
+    <div class="${fn:escapeXml(styleName.string)}">
     <c:if test="${not empty title.string}">
         <span><c:out value="${fn:escapeXml(title.string)}"/></span>
     </c:if>
     <c:if test="${!empty layoutID}">
-        <div id="${layoutID.string}">
+        <div id="${fn:escapeXml(layoutID.string)}">
     </c:if>
 </c:if>
 <c:if test="${not empty current}">

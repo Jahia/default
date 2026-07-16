@@ -28,12 +28,12 @@
     <c:set var="linknode" value="${linkreference.node}"/>
     <c:if test="${not empty linknode}">
         <c:url var="linkUrl" value="${url.base}${linknode.path}.html"/>
-        <c:set var="linkTitle"> title="${linknode.displayableName}"</c:set>
+        <c:set var="linkTitle"> title="${fn:escapeXml(linknode.displayableName)}"</c:set>
     </c:if>
     <c:if test="${empty linkUrl and not empty externalUrl}">
         <c:if test="${!functions:matches('^[A-Za-z]*:.*', externalUrl.string)}"><c:set var="protocol">http://</c:set></c:if>
         <c:url var="linkUrl" value="${protocol}${externalUrl.string}"/>
-        <c:if test="${not empty linkTitle.string}"><c:set var="linkTitle"> title="${linkTitle.string}"</c:set></c:if>
+        <c:if test="${not empty linkTitle.string}"><c:set var="linkTitle"> title="${fn:escapeXml(linkTitle.string)}"</c:set></c:if>
     </c:if>
     <c:if test="${!empty linkUrl}">
         <a href="${linkUrl}" ${target} ${linkTitle}>

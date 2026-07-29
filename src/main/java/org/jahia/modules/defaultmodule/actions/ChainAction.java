@@ -73,14 +73,14 @@ public class ChainAction extends Action implements InitializingBean {
             String path = null;
             for (String actionToDo : actions) {
                 if (DefaultPostAction.ACTION_NAME.equals(actionToDo)) {
-                    checkRequirements(defaultPostAction, renderContext, urlResolver, session);
+                    checkRequirements(defaultPostAction, renderContext, urlResolver);
                     String s = urlResolver.getUrlPathInfo().replace(".chain.do", "/*");
                     URLResolver resolver = urlResolverFactory.createURLResolver(s,req.getServerName(), req);
                     resolver.setSiteKey(urlResolver.getSiteKey());
                     result = defaultPostAction.doExecute(req, renderContext, resource, session, parameters, resolver);
                 } else {
                     Action action = actionsMap.get(actionToDo);
-                    checkRequirements(action, renderContext, urlResolver, session);
+                    checkRequirements(action, renderContext, urlResolver);
                     result = action.doExecute(req, renderContext, resource, session, parameters, urlResolver);
                     if (actionToDo.equals("redirect") && result != null && result.getUrl() != null) {
                     	path = result.getUrl();
@@ -95,13 +95,16 @@ public class ChainAction extends Action implements InitializingBean {
         return ActionResult.BAD_REQUEST;
     }
 
-    private void checkRequirements(Action action, RenderContext renderContext, URLResolver urlResolver,
-            JCRSessionWrapper session) throws RepositoryException {
-        // check that the action is not executed as SystemAction
-        if (!session.isSystem()) {
-            // not a system action -> check all the requirements
-            Render.checkActionRequirements(action, renderContext, urlResolver);
-        }
+    private void checkRequirements(Action action, RenderContext renderContext, URLResolver urlResolver)
+            throws RepositoryException {
+        // Every action named in the chain has its own requirements checked, in every case.
+        //
+        // This deliberately does not consider whether the chain itself is running with a system
+        // session. That describes how this action was invoked, not who invoked it, so it cannot
+        // stand in for the caller's entitlement: a chain that was promoted upstream in the render
+        // pipeline would otherwise run every action it names with that action's own
+        // authentication, permission and workspace requirements left unchecked.
+        Render.checkActionRequirements(action, renderContext, urlResolver);
     }
 
     /**

@@ -39,7 +39,7 @@
         <c:if test="${not empty linkTitle.string}"><c:set var="linkTitle"> title="${fn:escapeXml(linkTitle.string)}"</c:set></c:if>
     </c:if>
     <c:if test="${!empty linkUrl}">
-        <a href="${linkUrl}" ${target} ${linkTitle}>
+        <a href="${fn:escapeXml(linkUrl)}" ${target} ${linkTitle}>
     </c:if>
 
     <img src="${imageUrl}" alt="${fn:escapeXml(not empty title.string ? title.string : currentNode.name)}" <c:out value="${height} ${width}" escapeXml="false"/> />

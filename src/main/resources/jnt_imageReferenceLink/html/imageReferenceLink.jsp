@@ -24,19 +24,22 @@
     <c:if test="${not empty node.properties['j:width']}">
         <c:set var="width">width="${node.properties['j:width'].string}"</c:set>
     </c:if>
-    <c:if test="${not empty target.string}"><c:set var="target"> target="${target.string}"</c:set></c:if>
+    <c:if test="${not empty target.string}"><c:set var="target"> target="${fn:escapeXml(target.string)}"</c:set></c:if>
     <c:set var="linknode" value="${linkreference.node}"/>
     <c:if test="${not empty linknode}">
         <c:url var="linkUrl" value="${url.base}${linknode.path}.html"/>
         <c:set var="linkTitle"> title="${fn:escapeXml(linknode.displayableName)}"</c:set>
     </c:if>
     <c:if test="${empty linkUrl and not empty externalUrl}">
-        <c:if test="${!functions:matches('^[A-Za-z]*:.*', externalUrl.string)}"><c:set var="protocol">http://</c:set></c:if>
+        <%-- Only treat the value as an absolute URL when it uses a safe, allow-listed scheme; anything
+             else (including javascript:/data:/vbscript: and scheme-less values) is prefixed with http://
+             so unsafe schemes cannot reach the href. The href value is also HTML-escaped. --%>
+        <c:if test="${!(functions:matches('(?i)^(https?|ftp)://.*', externalUrl.string) or functions:matches('(?i)^(mailto|tel):.*', externalUrl.string))}"><c:set var="protocol">http://</c:set></c:if>
         <c:url var="linkUrl" value="${protocol}${externalUrl.string}"/>
         <c:if test="${not empty linkTitle.string}"><c:set var="linkTitle"> title="${fn:escapeXml(linkTitle.string)}"</c:set></c:if>
     </c:if>
     <c:if test="${!empty linkUrl}">
-        <a href="${linkUrl}" ${target} ${linkTitle}>
+        <a href="${fn:escapeXml(linkUrl)}" ${target} ${linkTitle}>
     </c:if>
 
     <img src="${imageUrl}" alt="${fn:escapeXml(not empty title.string ? title.string : currentNode.name)}" <c:out value="${height} ${width}" escapeXml="false"/> />

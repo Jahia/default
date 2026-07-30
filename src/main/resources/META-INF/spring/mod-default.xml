@@ -173,6 +173,18 @@
         <property name="applyOnConfigurations" value="module" />
     </bean>
 
+    <!-- The role-management screen is reached from the site-scoped administration route (main resource:
+         the site) and from the server-wide one (main resource: the global settings node), so either
+         administration permission is accepted. -->
+    <bean id="settingsComponentPermissionFilter"
+          class="org.jahia.modules.defaultmodule.SettingsComponentPermissionFilter">
+        <property name="priority" value="22"/>
+        <property name="description"
+                  value="Renders a settings component only for a caller holding an administration permission on the main resource"/>
+        <property name="applyOnNodeTypes" value="jnt:manageRoles"/>
+        <property name="requiredPermissions" value="site-admin,admin"/>
+    </bean>
+
     <util:map id="defaultModuleProperties">
         <entry key="memberDisplayLimit" value="${jahia.settings.memberDisplayLimit:100}"/>
     </util:map>

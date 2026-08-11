@@ -21,7 +21,6 @@ import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
 import org.jahia.services.templates.JahiaTemplateManagerService;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -57,11 +56,6 @@ public final class ChainActionTest {
     @Mock JCRSessionWrapper jcrSessionWrapper;
     @Mock URLResolver urlResolver;
 
-    @Before
-    public void setup() {
-        when(jcrSessionWrapper.isSystem()).thenReturn(false);
-    }
-
     @Test
     public void testAllActionsExecuted() throws Exception {
         Action action1 = mockAction("action1");
@@ -81,6 +75,32 @@ public final class ChainActionTest {
     @Test
     public void testProtectedActionIsNotExecutedWhenUnauthenticated() throws Exception {
         when(renderContext.isLoggedIn()).thenReturn(false);
+
+        Action action1 = mockAction("action1");
+        Action action2 = mockAction("action2", a -> when(a.isRequireAuthenticatedUser()).thenReturn(true));
+        registerActions(action1, action2);
+
+        ChainAction chainAction = new ChainAction();
+        chainAction.setTemplateService(templateService);
+
+        Map<String, List<String>> parameters = mapOf(ChainAction.CHAIN_OF_ACTION, Arrays.asList("action1,action2"));
+        Exception e = assertThrows(AccessDeniedException.class, () ->
+                chainAction.doExecute(httpRequest, renderContext, resource, jcrSessionWrapper, parameters, urlResolver)
+        );
+        assertEquals("Action 'action2' requires an authenticated user", e.getMessage());
+
+        verify(action1).doExecute(httpRequest, renderContext, resource, jcrSessionWrapper, parameters, urlResolver);
+        verify(action2, never()).doExecute(any(), any(), any(), any(), any(), any());
+    }
+
+    @Test
+    public void testProtectedActionIsNotExecutedWhenUnauthenticatedEvenIfTheChainRunsWithASystemSession() throws Exception {
+        when(renderContext.isLoggedIn()).thenReturn(false);
+        // The chain can be handed a system session by the caller upstream. That describes how the
+        // chain was invoked, not who invoked it, so it must not relax the requirements declared by
+        // the actions the chain names. Lenient because the implementation is expected NOT to look
+        // at this at all — the stub states the scenario, it is not an expectation.
+        lenient().when(jcrSessionWrapper.isSystem()).thenReturn(true);
 
         Action action1 = mockAction("action1");
         Action action2 = mockAction("action2", a -> when(a.isRequireAuthenticatedUser()).thenReturn(true));

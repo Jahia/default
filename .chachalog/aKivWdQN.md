@@ -2,4 +2,4 @@
 default: patch
 ---
 
-Render the roles screen only for callers administering the resource
+Render each roles screen from its settings template, for the administrators that template requires.

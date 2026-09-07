@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
+<%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="out" type="java.io.PrintWriter"--%>
 <%--@elvariable id="script" type="org.jahia.services.render.scripting.Script"--%>
@@ -23,6 +24,12 @@
     <c:if test="${!empty author}"><meta name="author" content="${author.string}" /></c:if>
     <c:if test="${!empty keywords}"><meta name="keywords" content="${keywords}" /></c:if>
     <title>${fn:escapeXml(renderContext.mainResource.node.displayableName)}</title>
+    <%-- A content rendered here has no page of its own, so nothing loads the site's stylesheets: the site
+         node is rendered with its hidden.resources view when the template set (or another module installed
+         on the site) ships one. That view only declares resources, which land in this head. --%>
+    <c:if test="${functions:hasScriptView(renderContext.site, 'hidden.resources', renderContext)}">
+        <template:module node="${renderContext.site}" view="hidden.resources" editable="false"/>
+    </c:if>
 </head>
 
 <body>

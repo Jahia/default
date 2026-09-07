@@ -3,4 +3,4 @@
 default: minor
 ---
 
-Added support for a dedicated Page Builder layout on content types that ship one; it is shown only while editing.
+Added support for a dedicated Page Builder layout on content types that ship one; it is shown only while editing (#164).

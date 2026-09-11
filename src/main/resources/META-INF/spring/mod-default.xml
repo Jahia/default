@@ -153,6 +153,7 @@
     <bean class="org.jahia.modules.defaultmodule.actions.admin.AdminCreateSiteAction">
         <property name="sitesService" ref="JahiaSitesService"/>
         <property name="requiredPermission" value="adminVirtualSites" />
+        <property name="requiredWorkspace" value="default"/>
         <property name="requiredMethods" value="POST"/>
     </bean>
 

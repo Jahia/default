@@ -33,8 +33,11 @@
         var revokes = document.getElementsByClassName("revokeRoleButton");
         for (var i = 0; i < revokes.length; i++) {
             revokes[i].addEventListener("click", function(e) {
-                var split = e.currentTarget.id.split("_");
-                revokeRole(split[0], split[1]);
+                var id = e.currentTarget.id;
+                var index = id.lastIndexOf('_');
+                if(index > -1){
+                    revokeRole(id.substr(0, index), id.substr(index+1));
+                };
             });
         }
     });

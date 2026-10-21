@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
+<%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 <%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
 <%--@elvariable id="out" type="java.io.PrintWriter"--%>
 <%--@elvariable id="script" type="org.jahia.services.render.scripting.Script"--%>
@@ -11,10 +12,14 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<%--<c:set var="mainTemplate" value="${renderContext.mainResource.template}"/>--%>
-<%--<c:if test="${(not empty currentNode.properties['j:mainResourceView'].string) and (not (currentNode.properties['j:mainResourceView'].string eq 'default'))}">--%>
-    <c:set var="mainTemplate" value="${currentNode.properties['j:mainResourceView'].string}"/>
-<%--</c:if>--%>
+<c:set var="mainTemplate" value="${currentNode.properties['j:mainResourceView'].string}"/>
+<%-- In the edit frame, a main resource that ships a hidden.visualEdit view is rendered through it: an authoring
+     layout for the Page Builder that never reaches preview or live. The choice is made here rather than left to
+     view resolution because the JavaScript-module script resolver has no fallback: asking a JS module for a view
+     it does not ship fails the render instead of falling back to default. --%>
+<c:if test="${renderContext.editMode and functions:hasScriptView(renderContext.mainResource.node, 'hidden.visualEdit', renderContext)}">
+    <c:set var="mainTemplate" value="hidden.visualEdit"/>
+</c:if>
 
 <c:choose>
     <c:when test="${not empty inWrapper and inWrapper eq false}">

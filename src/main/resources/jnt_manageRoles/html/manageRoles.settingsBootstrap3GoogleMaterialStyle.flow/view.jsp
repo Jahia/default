@@ -96,7 +96,7 @@
                             </td>
 
                             <td>
-                                <a class="btn btn-fab btn-fab-xs btn-danger revokeRoleButton" title="<fmt:message key='label.delete'/>" href="#delete" id="${fn:escapeXml(principalKey)}_${entry.key.name}"
+                                <a class="btn btn-fab btn-fab-xs btn-danger revokeRoleButton" title="<fmt:message key='label.delete'/>" href="#delete"
                                    data-principal="${fn:escapeXml(principalKey)}" data-role="${fn:escapeXml(entry.key.name)}">
                                     <i class="material-icons">delete</i>
                                 </a>

@@ -3,7 +3,6 @@
 <%@ taglib prefix="user" uri="http://www.jahia.org/tags/user" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
-<%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 
 <script type="text/javascript">
 
@@ -80,7 +79,6 @@
 
                             <td>
                                 <button style="margin-bottom:0;" class="btn btn-danger btn-small revokeRoleButton"
-                                        id="${fn:escapeXml(functions:escapeJavaScript(principalKey))}_${entry.key.name}"
                                         data-principal="${fn:escapeXml(principalKey)}"
                                         data-role="${fn:escapeXml(entry.key.name)}">
                                     <i class="icon-remove icon-white"></i>

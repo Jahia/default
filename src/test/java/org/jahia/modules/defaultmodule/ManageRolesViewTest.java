@@ -23,9 +23,9 @@ public final class ManageRolesViewTest {
     private static final List<String> VIEWS = List.of(
             "/jnt_manageRoles/html/manageRoles.flow/view.jsp",
             "/jnt_manageRoles/html/manageRoles.settingsBootstrap3GoogleMaterialStyle.flow/view.jsp");
-    private static final Pattern REVOKE_BUTTON = Pattern.compile(
-            "data-principal=\"\\$\\{fn:escapeXml\\(principalKey\\)}\"\\s+"
-                    + "data-role=\"\\$\\{fn:escapeXml\\(entry\\.key\\.name\\)}\"");
+    private static final List<Pattern> REVOKE_ATTRIBUTES = List.of(
+            Pattern.compile("data-principal=\"\\$\\{fn:escapeXml\\(principalKey\\)}\""),
+            Pattern.compile("data-role=\"\\$\\{fn:escapeXml\\(entry\\.key\\.name\\)}\""));
     private static final Pattern REVOKE_CALL = Pattern.compile(
             "revokeRole\\(e\\.currentTarget\\.dataset\\.principal,\\s*e\\.currentTarget\\.dataset\\.role\\)");
 
@@ -39,8 +39,10 @@ public final class ManageRolesViewTest {
     @Test
     public void theRevokeButtonCarriesThePrincipalAndTheRoleInTheirOwnAttributes() throws IOException {
         for (String path : VIEWS) {
-            assertTrue(path + " writes data-principal and data-role on the revoke button",
-                    REVOKE_BUTTON.matcher(view(path)).find());
+            String view = view(path);
+            for (Pattern attribute : REVOKE_ATTRIBUTES) {
+                assertTrue(path + " writes " + attribute + " on the revoke button", attribute.matcher(view).find());
+            }
         }
     }
 

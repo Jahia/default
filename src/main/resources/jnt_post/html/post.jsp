@@ -50,7 +50,8 @@
     <p>
         <span class="author">
             <c:if test="${createdBy.string ne 'guest'}">
-                <a href="<c:url value='${url.base}${user:lookupUserByUsernameAndSite(createdBy.string, currentNode.resolveSite.name).path}.html'/>">${createdBy.string}</a></c:if>
+                <c:url var="authorUrl" value='${url.base}${functions:escapePath(user:lookupUserByUsernameAndSite(createdBy.string, currentNode.resolveSite.name).path)}.html'/>
+                <a href="${fn:escapeXml(authorUrl)}">${fn:escapeXml(createdBy.string)}</a></c:if>
             <c:if test="${createdBy.string eq 'guest'}">${fn:escapeXml(currentNode.properties.pseudo.string)}</c:if>:&nbsp;</span>
         ${fn:escapeXml(content.string)}
     </p>

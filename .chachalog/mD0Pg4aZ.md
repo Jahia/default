@@ -2,4 +2,4 @@
 default: patch
 ---
 
-Hardened comments so the name of their author and the link to the author are written to the page exactly as stored.
+Hardened comments so the name of their author is shown exactly as stored, and the link to the author always points to their profile.

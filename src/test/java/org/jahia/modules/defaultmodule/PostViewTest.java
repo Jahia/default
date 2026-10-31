@@ -25,11 +25,10 @@ import static org.junit.Assert.assertTrue;
 public final class PostViewTest {
 
     private static final String VIEW = "/jnt_post/html/post.jsp";
-    private static final Pattern LINK = Pattern.compile("<a\\s+href=\"([^\"]*)\">([^<]*)</a>");
-    private static final Pattern ENCODED = Pattern.compile("\\$\\{fn:escapeXml\\([^}]+\\)}");
+    private static final Pattern LINK = Pattern.compile("<a\\b[^>]*\\bhref=\"([^\"]*)\"[^>]*>([^<]*)</a>");
     private static final Pattern AUTHOR_URL = Pattern.compile("<c:url var=\"authorUrl\" value='([^']*)'/>");
-    private static final Pattern PATH_ENCODED =
-            Pattern.compile("\\$\\{url\\.base}\\$\\{functions:escapePath\\([^}]+\\)}\\.html");
+    private static final Pattern PATH_ENCODED = Pattern.compile("\\$\\{url\\.base}\\$\\{functions:escapePath\\("
+            + "user:lookupUserByUsernameAndSite\\(createdBy\\.string, [^)]+\\)\\.path\\)}\\.html");
 
     private static String view() throws IOException {
         try (InputStream in = PostViewTest.class.getResourceAsStream(VIEW)) {
@@ -53,10 +52,9 @@ public final class PostViewTest {
     }
 
     @Test
-    public void theLinkAddressIsEncodedForTheAttribute() throws IOException {
+    public void theLinkAddressIsTheAuthorUrlEncodedForTheAttribute() throws IOException {
         for (String[] link : links()) {
-            assertTrue("href writes its value through fn:escapeXml, found: " + link[0],
-                    ENCODED.matcher(link[0]).matches());
+            assertEquals("${fn:escapeXml(authorUrl)}", link[0]);
         }
     }
 
@@ -64,15 +62,14 @@ public final class PostViewTest {
     public void theAuthorPathIsEncodedForTheUrl() throws IOException {
         Matcher matcher = AUTHOR_URL.matcher(view());
         assertTrue("the view builds the author link address as authorUrl", matcher.find());
-        assertTrue("the author path goes through functions:escapePath, found: " + matcher.group(1),
+        assertTrue("the path of the author goes through functions:escapePath, found: " + matcher.group(1),
                 PATH_ENCODED.matcher(matcher.group(1)).matches());
     }
 
     @Test
-    public void theLinkTextIsEncodedForTheText() throws IOException {
+    public void theLinkTextIsTheAuthorNameEncodedForTheText() throws IOException {
         for (String[] link : links()) {
-            assertTrue("link text writes its value through fn:escapeXml, found: " + link[1],
-                    ENCODED.matcher(link[1].trim()).matches());
+            assertEquals("${fn:escapeXml(createdBy.string)}", link[1].trim());
         }
     }
 }

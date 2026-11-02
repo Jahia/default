@@ -127,7 +127,7 @@
 </script>
 
 <div class="page-header">
-    <h2>Role: ${role}</h2>
+    <h2>Role: ${fn:escapeXml(role)}</h2>
 </div>
 
 <div class="panel panel-default">
@@ -199,7 +199,7 @@
                     </label>
                     <div class="input-group">
                         <input class="form-control" type="text" id="searchString" name="searchString"
-                               value='${memberSearchCriteria.searchString}'
+                               value="${fn:escapeXml(memberSearchCriteria.searchString)}"
                                onkeydown="if (event.keyCode == 13) submitForm('search');"/>
                         <span class="input-group-btn">
                             <button class="btn btn-primary btn-fab btn-fab-xs" type="submit" name="_eventId_search">

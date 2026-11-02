@@ -107,7 +107,7 @@
 <div>
     <form action="${flowExecutionUrl}" method="post" style="display: inline;">
         <div>
-            <h2>${role}</h2>
+            <h2>${fn:escapeXml(role)}</h2>
             <button class="btn" type="submit" name="_eventId_rolesList">
                 <i class="icon-arrow-left"></i>
                 &nbsp;<fmt:message key="default.manageRoles.backToRoles"/>
@@ -135,7 +135,7 @@
             <div class="input-append">
                 <label style="display: none;" for="searchString"><fmt:message key="label.search"/></label>
                 <input class="span6" type="text" id="searchString" name="searchString"
-                       value='${memberSearchCriteria.searchString}'
+                       value="${fn:escapeXml(memberSearchCriteria.searchString)}"
                        onkeydown="if (event.keyCode == 13) submitForm('search');"/>
                 <button class="btn btn-primary" type="submit" name="_eventId_search">
                     <i class="icon-search icon-white"></i>

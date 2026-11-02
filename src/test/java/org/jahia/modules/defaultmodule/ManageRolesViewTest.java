@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -32,6 +33,8 @@ public final class ManageRolesViewTest {
             "<h2>(Role: )?\\$\\{fn:escapeXml\\(role\\)}</h2>");
     private static final Pattern SEARCH_VALUE = Pattern.compile(
             "value=\"\\$\\{fn:escapeXml\\(memberSearchCriteria\\.searchString\\)}\"");
+    private static final Pattern BARE_ROLE = Pattern.compile("\\$\\{\\s*role\\s*}");
+    private static final Pattern BARE_SEARCH_TEXT = Pattern.compile("\\$\\{\\s*memberSearchCriteria\\.searchString\\s*}");
     private static final List<Pattern> REVOKE_ATTRIBUTES = List.of(
             Pattern.compile("data-principal=\"\\$\\{fn:escapeXml\\(principalKey\\)}\""),
             Pattern.compile("data-role=\"\\$\\{fn:escapeXml\\(entry\\.key\\.name\\)}\""));
@@ -66,14 +69,18 @@ public final class ManageRolesViewTest {
     @Test
     public void theMemberScreenWritesTheRoleHeadingAsText() throws IOException {
         for (String path : MEMBER_VIEWS) {
-            assertTrue(path + " writes the role heading with fn:escapeXml", ROLE_HEADING.matcher(view(path)).find());
+            String view = view(path);
+            assertTrue(path + " writes the role heading with fn:escapeXml", ROLE_HEADING.matcher(view).find());
+            assertFalse(path + " writes the role only through fn:escapeXml", BARE_ROLE.matcher(view).find());
         }
     }
 
     @Test
     public void theMemberScreenWritesTheSearchTextAsText() throws IOException {
         for (String path : MEMBER_VIEWS) {
-            assertTrue(path + " writes the search field value with fn:escapeXml", SEARCH_VALUE.matcher(view(path)).find());
+            String view = view(path);
+            assertTrue(path + " writes the search field value with fn:escapeXml", SEARCH_VALUE.matcher(view).find());
+            assertFalse(path + " writes the search text only through fn:escapeXml", BARE_SEARCH_TEXT.matcher(view).find());
         }
     }
 }

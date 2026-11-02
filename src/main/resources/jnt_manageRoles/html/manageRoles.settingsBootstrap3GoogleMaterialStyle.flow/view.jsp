@@ -33,8 +33,7 @@
         var revokes = document.getElementsByClassName("revokeRoleButton");
         for (var i = 0; i < revokes.length; i++) {
             revokes[i].addEventListener("click", function(e) {
-                var split = e.currentTarget.id.split("_");
-                revokeRole(split[0], split[1]);
+                revokeRole(e.currentTarget.dataset.principal, e.currentTarget.dataset.role);
             });
         }
     });
@@ -97,7 +96,8 @@
                             </td>
 
                             <td>
-                                <a class="btn btn-fab btn-fab-xs btn-danger revokeRoleButton" title="<fmt:message key='label.delete'/>" href="#delete" id="${fn:escapeXml(principalKey)}_${entry.key.name}">
+                                <a class="btn btn-fab btn-fab-xs btn-danger revokeRoleButton" title="<fmt:message key='label.delete'/>" href="#delete"
+                                   data-principal="${fn:escapeXml(principalKey)}" data-role="${fn:escapeXml(entry.key.name)}">
                                     <i class="material-icons">delete</i>
                                 </a>
                             </td>

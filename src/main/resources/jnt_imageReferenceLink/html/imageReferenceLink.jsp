@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
 <%@ taglib prefix="jahia" uri="http://www.jahia.org/tags/templateLib" %>
 
@@ -52,6 +51,9 @@
 		<jahia:addCacheDependency path="${reference.string}" />
 	</c:if>
 	<c:if test="${renderContext.editMode}">
-    	<fmt:message key="label.empty"/>
-    </c:if>
+		<%-- An empty box with height rather than a word: Page Builder leaves a module that rendered
+		     text out of the overlay it draws over content missing in the displayed language, and the
+		     height is what keeps the component selectable when no image has been chosen at all. --%>
+		<div class="jahia-empty-image" style="min-height: 100px"></div>
+	</c:if>
 </c:if>
